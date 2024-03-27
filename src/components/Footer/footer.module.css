@@ -1,0 +1,26 @@
+.footer {
+  margin-top: rem(20px);
+  border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-top: rem(10px);
+  padding-bottom: rem(10px);
+}
+
+.inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+  } */
+}
+
+/* .links {
+  @media (max-width: $mantine-breakpoint-xs) {
+    margin-top: var(--mantine-spacing-md);
+  }
+} */
