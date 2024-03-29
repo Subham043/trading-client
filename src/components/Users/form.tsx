@@ -4,8 +4,8 @@ import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { Box, Button, LoadingOverlay, PasswordInput, TextInput } from "@mantine/core";
 import * as yup from 'yup';
-import { useAddUserQuery, useUpdateUserQuery, useUserQuery } from "../../hooks/data/useUserQuery";
 import { AxiosError } from "axios";
+import { useAddUser, useUpdateUser, useUser } from "../../hooks/data/users";
 
 
 const schema = yup.object().shape({
@@ -38,9 +38,9 @@ const UserForm:FC<UserFormProps> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const {toastError, toastSuccess} = useToast();
-    const {data, isFetching, isLoading} = useUserQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addUser = useAddUserQuery()
-    const updateUser = useUpdateUserQuery(props.type === "Edit" ? props.id : 0)
+    const {data, isFetching, isLoading} = useUser(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const addUser = useAddUser()
+    const updateUser = useUpdateUser(props.type === "Edit" ? props.id : 0)
     const form = useForm({
         initialValues: {
             email: '',
@@ -53,15 +53,16 @@ const UserForm:FC<UserFormProps> = (props) => {
     
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
-            form.initialize({
+            form.setValues({
                 email: data.email,
                 name: data.name,
                 password: '',
                 confirm_password: '',
             });
         }
-    }, [data, props.type]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, props.type, props.status]);
+    
     const onSubmit = async () => {
         setLoading(true);
         const userMutateOptions = {

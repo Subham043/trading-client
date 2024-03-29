@@ -24,6 +24,7 @@
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
     "install": "^0.13.0",
+    "lodash.debounce": "^4.0.8",
     "mantine-form-yup-resolver": "^2.0.0",
     "npm": "^10.5.0",
     "react": "^18.2.0",
@@ -33,6 +34,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

@@ -4,6 +4,9 @@ import classes from './users.module.css';
 import UserTable from "../../components/Users/table";
 import { IconSearch } from "@tabler/icons-react";
 import UserDrawer from "../../components/Users/drawer";
+import { useSearchParams } from "react-router-dom";
+import debounce from "lodash.debounce";
+import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 
 export type DrawerProps = {
     status: boolean;
@@ -18,6 +21,8 @@ const UsersPage:FC = () => {
     const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
     const [drawer, setDrawer] = useState<DrawerProps>({status: false, type: 'Create'});
     const toggleDrawer = (value:DrawerProps) => setDrawer(value);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchHandler = debounce((value: string) => setSearchParams({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: value}), 500)
 
     return (
         <div>
@@ -29,6 +34,7 @@ const UsersPage:FC = () => {
                     rightSectionPointerEvents="none"
                     rightSection={icon}
                     placeholder="Search"
+                    onChange={(event) => searchHandler(event.target.value)}
                 />
             </Group>
             <Paper shadow="sm" className={classes.paper_background}>

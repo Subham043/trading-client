@@ -1,15 +1,14 @@
 import { FC, useState } from "react"
 import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
 import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
-import { useUsersQuery } from "../../hooks/data/useUsersQuery";
 import { UserQueryType } from "../../utils/types";
 import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
 import { DrawerProps } from "../../pages/users";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
-import { useDeleteUserQuery } from "../../hooks/data/useUserQuery";
 import { useToast } from "../../hooks/useToast";
 import { AxiosError } from "axios";
+import { useDeleteUser, useUsers } from "../../hooks/data/users";
 
 const roleColors: Record<string, string> = {
   admin: 'blue',
@@ -24,7 +23,7 @@ const statusColors: Record<string, string> = {
 const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: DrawerProps) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const deleteUser = useDeleteUserQuery(id)
+  const deleteUser = useDeleteUser(id)
   const {toastError, toastSuccess} = useToast();
   const initials = name.split(' ').map((name) => name[0]).join('').toUpperCase();
   const onDelete = () => {
@@ -106,7 +105,7 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: DrawerProps) => voi
 
 const UserTable:FC<{toggleDrawer: (value: DrawerProps) => void}> = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const {data:users, isFetching, isLoading} = useUsersQuery({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+  const {data:users, isFetching, isLoading} = useUsers({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
   return (
     <Box pos="relative">
       <LoadingOverlay visible={isLoading || isFetching} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />

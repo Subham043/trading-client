@@ -5,15 +5,38 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useAxios } from "../useAxios";
-import { PaginationType, UserQueryType } from "../../utils/types";
+import {
+  ApiPaginationQueryType,
+  PaginationType,
+  UserQueryType,
+} from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
-import { useSearchParams } from "react-router-dom";
-import { UsersQueryKey } from "./useUsersQuery";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
+import { useSearchParams } from "react-router-dom";
 
 export const UserQueryKey = "user";
+export const UsersQueryKey = "users";
 
-export const useUserQuery: (
+export const useUsers: (
+  params: ApiPaginationQueryType
+) => UseQueryResult<PaginationType<{ user: UserQueryType[] }>, unknown> = ({
+  search = "",
+  page = QueryInitialPageParam,
+  limit = QueryTotalCount,
+}) => {
+  const { axios } = useAxios();
+  return useQuery({
+    queryKey: [UsersQueryKey, page, limit, search],
+    queryFn: async () => {
+      const response = await axios.get<{
+        data: PaginationType<{ user: UserQueryType[] }>;
+      }>(api_routes.users + `?page=${page}&limit=${limit}&search=${search}`);
+      return response.data.data;
+    },
+  });
+};
+
+export const useUser: (
   id: number,
   enabled: boolean
 ) => UseQueryResult<UserQueryType, unknown> = (id, enabled) => {
@@ -30,7 +53,7 @@ export const useUserQuery: (
   });
 };
 
-export const useUpdateUserQuery = (id: number) => {
+export const useUpdateUser = (id: number) => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
@@ -73,7 +96,7 @@ export const useUpdateUserQuery = (id: number) => {
   });
 };
 
-export const useAddUserQuery = () => {
+export const useAddUser = () => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
@@ -117,7 +140,7 @@ export const useAddUserQuery = () => {
   });
 };
 
-export const useDeleteUserQuery = (id: number) => {
+export const useDeleteUser = (id: number) => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
