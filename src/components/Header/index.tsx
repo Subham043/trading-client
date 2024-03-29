@@ -55,7 +55,7 @@ const Header:FC<HeaderProps> = ({ opened, toggle, accountModalOpen }) => {
 
   return (
     <div className={classes.header}>
-      <Container className={classes.mainSection} size="xl">
+      <Container className={classes.mainSection} size="98%">
         <Group justify="space-between">
 
           <Burger opened={opened} onClick={toggle} size="sm" />

@@ -74,7 +74,10 @@ const UserForm:FC<UserFormProps> = (props) => {
     const onSubmit = async () => {
         setLoading(true);
         const userMutateOptions = {
-            onSuccess: () => toastSuccess("User " + props.type === "Edit" ? "updated" : "created" + " successfully."),
+            onSuccess: () => {
+                toastSuccess("User " + props.type === "Edit" ? "updated" : "created" + " successfully.")
+                props.type==="Create" && form.reset();
+            },
             onError: (error:Error) => {
                 if(error instanceof AxiosError){
                     if(error?.response?.data?.formErrors?.email){

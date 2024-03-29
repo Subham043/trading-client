@@ -1,6 +1,6 @@
 import { Group, ScrollArea, rem, UnstyledButton, Text, Collapse, ThemeIcon, Box } from '@mantine/core';
 import {
-  IconNotes,
+  // IconNotes,
   IconGauge,
   IconChevronRight,
   IconUserCircle,
@@ -14,17 +14,17 @@ import { Link } from 'react-router-dom';
 const mockdata = [
   { label: 'Dashboard', icon: IconGauge, link: page_routes.dashboard },
   { label: 'Users', icon: IconUserCircle, link: page_routes.users },
-  {
-    label: 'Market news',
-    icon: IconNotes,
-    initiallyOpened: false,
-    links: [
-      { label: 'Overview', link: '/' },
-      { label: 'Forecasts', link: '/' },
-      { label: 'Outlook', link: '/' },
-      { label: 'Real time', link: '/' },
-    ],
-  },
+  // {
+  //   label: 'Market news',
+  //   icon: IconNotes,
+  //   initiallyOpened: false,
+  //   links: [
+  //     { label: 'Overview', link: '/' },
+  //     { label: 'Forecasts', link: '/' },
+  //     { label: 'Outlook', link: '/' },
+  //     { label: 'Real time', link: '/' },
+  //   ],
+  // },
 ];
 
 function LinkContainer({ icon: Icon, label }: LinksGroupProps) {

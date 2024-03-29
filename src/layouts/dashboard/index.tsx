@@ -15,14 +15,14 @@ const DashboardLayout:FC = () => {
 
     return (
         <>
-            <div style={{ width: '100%'}}>
+            <div style={{ width: '100%', position: 'relative'}}>
                 <Grid maw='100%' w='100%' overflow="hidden">
                     {opened && <Grid.Col span={2} px={0} pb={0}>
                         <Sidebar/>
                     </Grid.Col>}
                     <Grid.Col style={{ position: 'relative', minHeight: opened ? '100%' : rem('101vh')}} span={opened ? 10 : 12} px={0}>
                         <Header opened={opened} toggle={toggle} accountModalOpen={accountModalToggle.open} />
-                        <Container size='xl'>
+                        <Container size='98%'>
                             <Outlet />
                         </Container>
                         <Footer />

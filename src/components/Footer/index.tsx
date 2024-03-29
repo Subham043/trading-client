@@ -7,7 +7,7 @@ const Footer:FC = () => {
 
   return (
     <div className={classes.footer}>
-      <Container className={classes.inner} size='xl'>
+      <Container className={classes.inner} size='98%'>
         <Logo style={{ width: rem(100) }} />
       </Container>
     </div>
