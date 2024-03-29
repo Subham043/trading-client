@@ -33,3 +33,26 @@ export type AxiosResponseType<T> = AxiosResponse<
   AxiosSuccessResponseType<T>,
   AxiosErrorResponseType
 >;
+
+export type ApiPaginationQueryType = {
+  page?: string;
+  limit?: string;
+  search?: string;
+};
+
+export type UserQueryType = {
+  id: number;
+  name: string;
+  email: string;
+  status: "active" | "blocked";
+  role: "user" | "admin";
+  createdAt: Date;
+};
+
+export type PaginationType<T> = T & {
+  total: number;
+  current_page: number;
+  per_page: number;
+  first_page: number;
+  last_page: number;
+};
