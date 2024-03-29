@@ -7,7 +7,7 @@ export const page_routes = {
   auth: {
     login: "/login",
     forgot_password: "/forgot-password",
-    reset_password: "/reset-password",
+    reset_password: "/reset-password/:key",
   },
   account: {
     profile: "/profile",

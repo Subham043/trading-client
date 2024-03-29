@@ -14,6 +14,10 @@ import { Link } from 'react-router-dom';
 import { yupResolver } from 'mantine-form-yup-resolver';
 import * as yup from 'yup';
 import { useForm } from '@mantine/form';
+import { useState } from 'react';
+import { useToast } from '../../../hooks/useToast';
+import api from '../../../utils/axios';
+import { api_routes } from '../../../utils/api_routes';
 
 const schema = yup.object().shape({
   email: yup
@@ -23,6 +27,8 @@ const schema = yup.object().shape({
 });
 
 const ForgotPasswordPage = () => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const {toastError, toastSuccess} = useToast();
 
     const form = useForm({
         initialValues: {
@@ -30,6 +36,26 @@ const ForgotPasswordPage = () => {
         },
         validate: yupResolver(schema),
     });
+
+    const onSubmit = async () => {
+        setLoading(true);
+        try {
+            const response = await api.post<{message:string}>(api_routes.auth.forgot_password, form.values);
+            toastSuccess(response.data.message);
+            form.reset();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error:any) {
+            if(error?.response?.data?.formErrors?.email){
+                form.setFieldError('email', error.response.data.formErrors?.email[0]);
+            }else if(error?.response?.data?.message){
+                toastError(error.response.data.message);
+            }else{
+                toastError('Something went wrong.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -41,7 +67,7 @@ const ForgotPasswordPage = () => {
             </Text>
 
             <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
-                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <form onSubmit={form.onSubmit(onSubmit)}>
                     <TextInput withAsterisk label="Your email" placeholder="me@mantine.dev" {...form.getInputProps('email')} />
                     <Group justify="space-between" mt="lg">
                         <Link to={page_routes.auth.login}>
@@ -50,7 +76,7 @@ const ForgotPasswordPage = () => {
                                 <Text ml={5} size='sm'>Back to the login page</Text>
                             </Center>
                         </Link>
-                        <Button type='submit'>Reset password</Button>
+                        <Button type='submit' loading={loading} disabled={loading} data-disabled={loading}>Reset password</Button>
                     </Group>
                 </form>
             </Paper>

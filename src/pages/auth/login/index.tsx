@@ -55,7 +55,15 @@ const LoginPage:FC = () => {
             navigate(from, {replace: true});
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error:any) {
-            toastError('Invalid credentials.');
+            if(error?.response?.data?.formErrors?.email){
+                form.setFieldError('email', error.response.data.formErrors?.email[0]);
+            }else if(error?.response?.data?.formErrors?.password){
+                form.setFieldError('password', error.response.data.formErrors?.password[0]);
+            }else if(error?.response?.data?.message){
+                toastError(error.response.data.message);
+            }else{
+                toastError('Invalid credentials.');
+            }
         } finally {
             setLoading(false);
         }
