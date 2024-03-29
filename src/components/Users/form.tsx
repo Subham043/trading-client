@@ -8,7 +8,7 @@ import { AxiosError } from "axios";
 import { useAddUser, useUpdateUser, useUser } from "../../hooks/data/users";
 
 
-const schema = yup.object().shape({
+const createSchema = yup.object().shape({
   email: yup
     .string()
     .required('Email is required')
@@ -23,6 +23,16 @@ const schema = yup.object().shape({
     .string()
     .required('Confirm Password is required')
     .oneOf([yup.ref("password")], "Passwords must match"),
+});
+
+const updateSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email'),
+  name: yup
+    .string()
+    .required('Name is required'),
 });
 
 
@@ -48,7 +58,7 @@ const UserForm:FC<UserFormProps> = (props) => {
             password: '',
             confirm_password: '',
         },
-        validate: yupResolver(schema),
+        validate: yupResolver(props.type === "Edit" ? updateSchema : createSchema),
     });
     
     useEffect(() => {
@@ -56,8 +66,6 @@ const UserForm:FC<UserFormProps> = (props) => {
             form.setValues({
                 email: data.email,
                 name: data.name,
-                password: '',
-                confirm_password: '',
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,8 +121,12 @@ const UserForm:FC<UserFormProps> = (props) => {
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <TextInput withAsterisk data-autofocus label="Name" placeholder="mantine dev" {...form.getInputProps('name')} mt="md" />
                 <TextInput withAsterisk label="Email" placeholder="you@mantine.dev" {...form.getInputProps('email')} mt="md" />
-                <PasswordInput label="Password" placeholder="Password" withAsterisk mt="md" {...form.getInputProps('password')} />
-                <PasswordInput label="Confirm Password" placeholder="Confirm password" withAsterisk mt="md" {...form.getInputProps('confirm_password')} />
+                {
+                    props.type === "Create" && <>
+                        <PasswordInput label="Password" placeholder="Password" withAsterisk mt="md" {...form.getInputProps('password')} />
+                        <PasswordInput label="Confirm Password" placeholder="Confirm password" withAsterisk mt="md" {...form.getInputProps('confirm_password')} />
+                    </>
+                }
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={loading} disabled={loading} data-disabled={loading}>
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>
