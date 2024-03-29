@@ -24,9 +24,10 @@ import { useToast } from '../../hooks/useToast';
 interface HeaderProps {
   opened: boolean;
   toggle: () => void;
+  accountModalOpen: () => void;
 }
 
-const Header:FC<HeaderProps> = ({ opened, toggle }) => {
+const Header:FC<HeaderProps> = ({ opened, toggle, accountModalOpen }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const {toastError, toastSuccess} = useToast();
   const {user, removeUser} = useUser();
@@ -45,7 +46,7 @@ const Header:FC<HeaderProps> = ({ opened, toggle }) => {
             if(error?.response?.data?.message){
                 toastError(error.response.data.message);
             }else{
-                toastError('Invalid credentials.');
+                toastError('Something went wrong. Please try again later.');
             }
         } finally {
             setLoading(false);
@@ -85,6 +86,7 @@ const Header:FC<HeaderProps> = ({ opened, toggle }) => {
                 leftSection={
                   <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                 }
+                onClick={accountModalOpen}
               >
                 Account settings
               </Menu.Item>
