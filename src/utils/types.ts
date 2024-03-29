@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { ReactNode } from "react";
 
 export type ChildrenType = {
@@ -13,3 +14,22 @@ export type UserType = {
   status: string;
   createdAt: string;
 };
+
+export type AxiosSuccessResponseType<T> = {
+  message: string;
+  code: number;
+  success: true;
+  data?: T;
+};
+
+export type AxiosErrorResponseType = {
+  message: string;
+  code: number;
+  success: false;
+  formErrors?: Record<string, string[]>;
+};
+
+export type AxiosResponseType<T> = AxiosResponse<
+  AxiosSuccessResponseType<T>,
+  AxiosErrorResponseType
+>;

@@ -8,8 +8,11 @@ export const api_routes = {
     login: "/auth/login",
     forgot_password: "/auth/forgot-password",
     reset_password: "/auth/reset-password",
+    logout: "/auth/logout",
   },
   account: {
     profile: "/account/profile",
+    password: "/account/password",
   },
+  users: "/users",
 } as const;
