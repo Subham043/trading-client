@@ -14,6 +14,7 @@ import AxiosProvider from "./contexts/axiosProvider";
 import PersistLayout from "./layouts/persist/persistLayout";
 import ProtectedLayout from "./layouts/protected/protectedLayout";
 import GuestLayout from "./layouts/guest/guestLayout";
+import UsersPage from "./pages/users";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                 <Route element={<ProtectedLayout />}>
                   <Route element={<DashboardLayout />}>
                     <Route path={page_routes.dashboard} element={<DashboardPage />} />
+                    <Route path={page_routes.users} element={<UsersPage />} />
                   </Route>
                 </Route>
 
