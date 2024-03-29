@@ -12,7 +12,10 @@ type AccountModalProps = {
 const AccountModal:FC<AccountModalProps> = ({opened, close}) => {
     const iconStyle = { width: rem(12), height: rem(12) };
     return <>
-        <Modal opened={opened} onClose={close} centered size="md" withCloseButton={false}>
+        <Modal opened={opened} onClose={close} centered size="md" withCloseButton={false} overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}>
             <Tabs defaultValue="profile">
                 <Tabs.List>
                     <Tabs.Tab value="profile" leftSection={<IconUserCircle style={iconStyle} />}>

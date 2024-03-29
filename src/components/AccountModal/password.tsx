@@ -67,11 +67,11 @@ const PasswordUpdate:FC<PasswordUpdateProps> = ({close}) => {
             <PasswordInput label="New Password" placeholder="New password" withAsterisk mt="md" {...form.getInputProps('password')} />
             <PasswordInput label="Confirm Password" placeholder="Confirm password" withAsterisk mt="md" {...form.getInputProps('confirm_password')} />
             <Group mt="lg">
-                <Button type='button' variant="filled" color='red' onClick={close}>
-                    Cancel
-                </Button>
                 <Button type='submit' variant="filled" color='blue' loading={loading} disabled={loading} data-disabled={loading}>
                     Update
+                </Button>
+                <Button type='button' variant="filled" color='red' onClick={close}>
+                    Cancel
                 </Button>
             </Group>
         </form>
