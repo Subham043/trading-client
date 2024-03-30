@@ -1,12 +1,9 @@
 .footer {
-  margin-top: rem(20px);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
   border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
   padding-top: rem(10px);
-  padding-bottom: rem(10px);
+  padding-bottom: rem(13px);
 }
 
 .inner {

@@ -17,7 +17,7 @@ const AuthLayout:FC = () => {
                         align="center"
                         w='100%'
                     >
-                        <Grid.Col span={5}>
+                        <Grid.Col span={{ base: 12, sm: 7, md: 5, lg: 5 }}>
                             <Outlet /> 
                         </Grid.Col>
                     </Grid>

@@ -1,4 +1,4 @@
-import { Group, ScrollArea, rem, UnstyledButton, Text, Collapse, ThemeIcon, Box } from '@mantine/core';
+import { Group, ScrollArea, rem, UnstyledButton, Text, Collapse, ThemeIcon, Box, Burger } from '@mantine/core';
 import {
   // IconNotes,
   IconGauge,
@@ -10,6 +10,11 @@ import classes from './sidebar.module.css';
 import { FC, useState } from 'react';
 import { page_routes } from '../../utils/page_routes';
 import { Link } from 'react-router-dom';
+
+interface SidebarProps {
+  opened: boolean;
+  toggle: () => void;
+}
 
 const mockdata = [
   { label: 'Dashboard', icon: IconGauge, link: page_routes.dashboard },
@@ -91,7 +96,7 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }: LinksGr
   );
 }
 
-const Sidebar:FC = () => {
+const Sidebar:FC<SidebarProps> = ({ opened, toggle }) => {
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
@@ -99,6 +104,7 @@ const Sidebar:FC = () => {
       <div className={classes.header}>
         <Group justify="space-between">
           <Logo style={{ width: rem(120) }} />
+          <Burger opened={opened} onClick={toggle} size="sm" className={classes.burger} />
         </Group>
       </div>
 
