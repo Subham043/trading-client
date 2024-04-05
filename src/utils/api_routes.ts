@@ -15,4 +15,5 @@ export const api_routes = {
     password: "/account/password",
   },
   users: "/users",
+  companyMasters: "/company-masters",
 } as const;

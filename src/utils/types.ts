@@ -15,6 +15,30 @@ export type UserType = {
   createdAt: string;
 };
 
+export type CompanyMasterType = {
+  id: number;
+  CIN?: string | undefined;
+  ISIN?: string | undefined;
+  faceValue?: number | undefined;
+  closingPriceNSE?: number | undefined;
+  closingPriceBSE?: number | undefined;
+  registeredOffice?: string | undefined;
+  city?: string | undefined;
+  state?: string | undefined;
+  pincode?: number | undefined;
+  telephone?: string | undefined;
+  fax?: string | undefined;
+  email?: string | undefined;
+  website?: string | undefined;
+  nameContactPerson?: string | undefined;
+  designationContactPerson?: string | undefined;
+  emailContactPerson?: string | undefined;
+  phoneContactPerson?: string | undefined;
+  createdAt: string;
+};
+
+export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;
+
 export type AxiosSuccessResponseType<T> = {
   message: string;
   code: number;

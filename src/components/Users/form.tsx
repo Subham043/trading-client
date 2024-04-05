@@ -120,7 +120,7 @@ const UserForm:FC<UserFormProps> = (props) => {
 
     return (
         <Box pos="relative">
-            <LoadingOverlay visible={isLoading || isFetching} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+            <LoadingOverlay visible={isLoading || isFetching} zIndex={20} overlayProps={{ radius: "sm", blur: 2 }} />
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <TextInput withAsterisk data-autofocus label="Name" placeholder="mantine dev" {...form.getInputProps('name')} mt="md" />
                 <TextInput withAsterisk label="Email" placeholder="you@mantine.dev" {...form.getInputProps('email')} mt="md" />

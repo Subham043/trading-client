@@ -4,6 +4,7 @@ import {
   IconGauge,
   IconChevronRight,
   IconUserCircle,
+  IconBuilding,
 } from '@tabler/icons-react';
 import { Logo } from './Logo';
 import classes from './sidebar.module.css';
@@ -19,6 +20,7 @@ interface SidebarProps {
 const mockdata = [
   { label: 'Dashboard', icon: IconGauge, link: page_routes.dashboard },
   { label: 'Users', icon: IconUserCircle, link: page_routes.users },
+  { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters },
   // {
   //   label: 'Market news',
   //   icon: IconNotes,
