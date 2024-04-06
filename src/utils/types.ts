@@ -17,6 +17,9 @@ export type UserType = {
 
 export type CompanyMasterType = {
   id: number;
+  newName?: string | undefined;
+  BSE?: string | undefined;
+  NSE?: string | undefined;
   CIN?: string | undefined;
   ISIN?: string | undefined;
   faceValue?: number | undefined;
@@ -38,6 +41,25 @@ export type CompanyMasterType = {
 };
 
 export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;
+
+export type NameChangeMasterType = {
+  id: number;
+  newName?: string | undefined;
+  previousName?: string | undefined;
+  dateNameChange?: string | undefined;
+  BSE?: string | undefined;
+  NSE?: string | undefined;
+  oldSecuritySymbol?: string | undefined;
+  newSecuritySymbol?: string | undefined;
+  dateSecurityChange?: string | undefined;
+  companyId: number;
+  createdAt: string;
+};
+
+export type NameChangeMasterFormType = Omit<
+  NameChangeMasterType,
+  "id" | "createdAt" | "companyId"
+>;
 
 export type AxiosSuccessResponseType<T> = {
   message: string;

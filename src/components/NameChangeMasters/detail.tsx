@@ -4,17 +4,18 @@ import { useParams } from "react-router-dom";
 import { ModalProps } from "../../pages/companyMasters/detail";
 import classes from '../../pages/companyMasters/detail/companyMasters.module.css'
 import { useCompanyMaster } from "../../hooks/data/company_masters";
-import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
 
 const CompanyMasterDetail:FC<{toggleModal: (value: ModalProps) => void}> = (props) => {
-  const param = useParams<{companyId: string}>();
-  const {data, isFetching, isLoading} = useCompanyMaster(Number(param.companyId), true);
+  const param = useParams<{id: string}>();
+  const {data, isFetching, isLoading} = useCompanyMaster(Number(param.id), true);
+//   const [searchParams, setSearchParams] = useSearchParams();
+//   const {data:companyMasters, isFetching, isLoading} = useCompanyMasters({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
   return (
     <Box pos="relative" bg="transparent">
         <LoadingOverlay visible={isLoading || isFetching} zIndex={30} overlayProps={{ radius: "sm", blur: 2 }} />
         <Group justify="space-between" mb="lg" align="center">
             <Text size="xl" fw={700}>Company Master Detail</Text>
-            <Button type='submit' variant="filled" color='blue' onClick={() => props.toggleModal({status: true, type: 'Edit', id: Number(param.companyId)})}>
+            <Button type='submit' variant="filled" color='blue' onClick={() => props.toggleModal({status: true, type: 'Edit', id: Number(param.id)})}>
                 Edit
             </Button>
         </Group>
@@ -120,12 +121,6 @@ const CompanyMasterDetail:FC<{toggleModal: (value: ModalProps) => void}> = (prop
                 </Paper>
             </Box>
         </SimpleGrid>
-        <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Name Change Masters</Text>
-            </div>
-            <NameChangeMastersListPage />
-        </Box>
     </Box>
   );
 }

@@ -16,6 +16,9 @@ type FormType = {
     phoneContactPerson?: string | undefined;
     fax?: string | undefined;
     telephone?: string | undefined;
+    newName?: string | undefined;
+    BSE?: string | undefined;
+    NSE?: string | undefined;
     CIN?: string | undefined;
     ISIN: string;
     faceValue: number;
@@ -83,6 +86,18 @@ const schema: yup.ObjectSchema<FormType> = yup.object().shape({
     .string()
     .typeError('CIN must be a string')
     .optional(),
+  BSE: yup
+    .string()
+    .typeError('BSE must be a string')
+    .optional(),
+  NSE: yup
+    .string()
+    .typeError('NSE must be a string')
+    .optional(),
+  newName: yup
+    .string()
+    .typeError('Name must be a string')
+    .required("Name is required"),
   ISIN: yup
     .string()
     .typeError('ISIN must be a string')
@@ -121,6 +136,9 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
         initialValues: {
             ISIN: '',
             CIN: undefined,
+            newName: undefined,
+            BSE: undefined,
+            NSE: undefined,
             faceValue: 0.0,
             closingPriceNSE: 0.0,
             closingPriceBSE: 0.0,
@@ -143,23 +161,26 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             form.setValues({
-                ISIN: data.ISIN,
-                CIN: data.CIN,
-                faceValue: data.faceValue,
-                closingPriceNSE: data.closingPriceNSE,
-                closingPriceBSE: data.closingPriceBSE,
-                registeredOffice: data.registeredOffice,
-                city: data.city,
-                state: data.state,
-                pincode: data.pincode,
-                telephone: data.telephone,
-                fax: data.fax,
-                email: data.email,
-                website: data.website,
-                nameContactPerson: data.nameContactPerson,
-                designationContactPerson: data.designationContactPerson,
-                emailContactPerson: data.emailContactPerson,
-                phoneContactPerson: data.phoneContactPerson,
+                ISIN: data.ISIN ? data.ISIN : undefined,
+                CIN: data.CIN ? data.CIN : undefined,
+                newName: data.newName ? data.newName : undefined,
+                BSE: data.BSE ? data.BSE : undefined,
+                NSE: data.NSE ? data.NSE : undefined,
+                faceValue: data.faceValue ? data.faceValue : 0.0,
+                closingPriceNSE: data.closingPriceNSE ? data.closingPriceNSE : 0.0,
+                closingPriceBSE: data.closingPriceBSE ? data.closingPriceBSE : 0.0,
+                registeredOffice: data.registeredOffice ? data.registeredOffice : undefined,
+                city: data.city ? data.city : undefined,
+                state: data.state ? data.state : undefined,
+                pincode: data.pincode ? data.pincode : undefined,
+                telephone: data.telephone ? data.telephone : undefined,
+                fax: data.fax ? data.fax : undefined,
+                email: data.email ? data.email : undefined,
+                website: data.website ? data.website : undefined,
+                nameContactPerson: data.nameContactPerson ? data.nameContactPerson : undefined,
+                designationContactPerson: data.designationContactPerson ? data.designationContactPerson : undefined,
+                emailContactPerson: data.emailContactPerson ? data.emailContactPerson : undefined,
+                phoneContactPerson: data.phoneContactPerson ? data.phoneContactPerson : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,6 +197,12 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
                 if(error instanceof AxiosError){
                     if(error?.response?.data?.formErrors?.email){
                         form.setFieldError('email', error.response.data.formErrors?.email[0]);
+                    }else if(error?.response?.data?.formErrors?.newName){
+                        form.setFieldError('newName', error.response.data.formErrors?.newName[0]);
+                    }else if(error?.response?.data?.formErrors?.BSE){
+                        form.setFieldError('BSE', error.response.data.formErrors?.BSE[0]);
+                    }else if(error?.response?.data?.formErrors?.NSE){
+                        form.setFieldError('NSE', error.response.data.formErrors?.NSE[0]);
                     }else if(error?.response?.data?.formErrors?.ISIN){
                         form.setFieldError('ISIN', error.response.data.formErrors?.ISIN[0]);
                     }else if(error?.response?.data?.formErrors?.CIN){
@@ -229,6 +256,9 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
             emailContactPerson: (form.values.emailContactPerson && form.values.emailContactPerson.length>0) ? form.values.emailContactPerson : undefined,
             phoneContactPerson: (form.values.phoneContactPerson && form.values.phoneContactPerson.length>0) ? form.values.phoneContactPerson : undefined,
             CIN: (form.values.CIN && form.values.CIN.length>0) ? form.values.CIN : undefined,
+            newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
+            BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
+            NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
             city: (form.values.city && form.values.city.length>0) ? form.values.city : undefined,
             state: (form.values.state && form.values.state.length>0) ? form.values.state : undefined,
             registeredOffice: (form.values.registeredOffice && form.values.registeredOffice.length>0) ? form.values.registeredOffice : undefined,
@@ -261,7 +291,12 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
         <Box pos="relative">
             <LoadingOverlay visible={isLoading || isFetching} zIndex={20} overlayProps={{ radius: "sm", blur: 2 }} />
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput withAsterisk label="Name" {...form.getInputProps('newName')} />
+                    <TextInput label="NSE" {...form.getInputProps('NSE')} />
+                    <TextInput label="BSE" {...form.getInputProps('BSE')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput withAsterisk data-autofocus label="ISIN" {...form.getInputProps('ISIN')} />
                     <TextInput label="CIN" {...form.getInputProps('CIN')} />
                 </SimpleGrid>

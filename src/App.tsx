@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QueryClientOptions } from "./utils/constant";
 import CompanyMastersPage from "./pages/companyMasters/list";
 import CompanyMastersDetailPage from "./pages/companyMasters/detail";
+import NameChangeMastersMainPage from "./pages/nameChangeMasters/main";
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -37,8 +38,9 @@ function App() {
                     <Route element={<DashboardLayout />}>
                       <Route path={page_routes.dashboard} element={<DashboardPage />} />
                       <Route path={page_routes.users} element={<UsersPage />} />
-                      <Route path={page_routes.companyMasters} element={<CompanyMastersPage />} />
-                      <Route path={`${page_routes.companyMasters}/:id`} element={<CompanyMastersDetailPage />} />
+                      <Route path={page_routes.companyMasters.list} element={<CompanyMastersPage />} />
+                      <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
+                      <Route path={page_routes.nameChangeMasters.main} element={<NameChangeMastersMainPage />} />
                     </Route>
                   </Route>
 
