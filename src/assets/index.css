@@ -7,3 +7,8 @@ a:hover {
 a > *:hover {
     text-decoration: none !important;
 }
+
+a.active {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+}

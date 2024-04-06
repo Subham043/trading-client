@@ -7,6 +7,9 @@ import { Box, Button, LoadingOverlay, SimpleGrid, TextInput } from "@mantine/cor
 import * as yup from 'yup';
 import { AxiosError } from "axios";
 import { useAddNameChangeMaster, useNameChangeMaster, useNameChangeMasterLatest, useUpdateNameChangeMaster } from "../../hooks/data/name_change_masters";
+import { useQueryClient } from "@tanstack/react-query";
+import { CompanyMasterKey } from "../../hooks/data/company_masters";
+import { CompanyMasterType } from "../../utils/types";
 
 type FormType = {
     newName?: string | undefined;
@@ -66,6 +69,7 @@ type NameChangeMasterFormProps = {
 const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
+    const queryClient = useQueryClient();
     const {toastError, toastSuccess} = useToast();
     const {data:newData, isFetching:isNewFetching, isLoading:isNewLoading} = useNameChangeMasterLatest(props.mainCompanyId, (props.type === "Create" && props.status));
     const {data, isFetching, isLoading} = useNameChangeMaster(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
@@ -165,6 +169,16 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     onSettled: () => nameChangeMasterMutateOptions.onSettled(),
                 }
             );
+            queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, data ? data.companyId : undefined], (prev) => {
+                if(prev){
+                    return {
+                        ...prev,
+                        newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
+                        BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
+                        NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
+                    }
+                }
+            });
         }else{
             addNameChangeMaster.mutateAsync(
                 formData,
@@ -174,6 +188,16 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     onSettled: () => nameChangeMasterMutateOptions.onSettled(),
                 }
             );
+            queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, newData ? newData.companyId : undefined], (prev) => {
+                if(prev){
+                    return {
+                        ...prev,
+                        newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
+                        BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
+                        NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
+                    }
+                }
+            });
         }
     };
 

@@ -6,6 +6,11 @@ import { Box, Button, LoadingOverlay, SimpleGrid, TextInput } from "@mantine/cor
 import * as yup from 'yup';
 import { AxiosError } from "axios";
 import { useAddCompanyMaster, useUpdateCompanyMaster, useCompanyMaster } from "../../hooks/data/company_masters";
+import { useQueryClient } from "@tanstack/react-query";
+import { NameChangeMasterType, PaginationType } from "../../utils/types";
+import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters";
+import { useSearchParams } from "react-router-dom";
+import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 
 type FormType = {
     email?: string | undefined;
@@ -128,7 +133,9 @@ type CompanyMasterFormProps = {
 const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [searchParams] = useSearchParams();
     const {toastError, toastSuccess} = useToast();
+    const queryClient = useQueryClient();
     const {data, isFetching, isLoading} = useCompanyMaster(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const addCompanyMaster = useAddCompanyMaster()
     const updateCompanyMaster = useUpdateCompanyMaster(props.type === "Edit" ? props.id : 0)
@@ -273,6 +280,34 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
                     onError: (error) => companyMasterMutateOptions.onError(error), 
                     onSuccess: () => companyMasterMutateOptions.onSuccess(), 
                     onSettled: () => companyMasterMutateOptions.onSettled(),
+                }
+            );
+            queryClient.setQueryData<
+                PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
+            >(
+                [
+                NameChangeMastersQueryKey,
+                data ? data.id : 0,
+                searchParams.get("page") || QueryInitialPageParam.toString(),
+                searchParams.get("limit") || QueryTotalCount.toString(),
+                searchParams.get("search") || "",
+                ],
+                (prev) => {
+                if (prev) {
+                    return {
+                        ...prev,
+                        nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
+                            nameChangeMaster.id === ((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0)
+                            ? {
+                                ...nameChangeMaster,
+                                newName: formData.newName,
+                                BSE: formData.BSE,
+                                NSE: formData.NSE,
+                            }
+                            : nameChangeMaster
+                        ),
+                    };
+                }
                 }
             );
         }else{

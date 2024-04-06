@@ -1,4 +1,4 @@
-import { Group, ScrollArea, rem, UnstyledButton, Text, Collapse, ThemeIcon, Box, Burger } from '@mantine/core';
+import { Group, ScrollArea, rem, UnstyledButton, Collapse, ThemeIcon, Box, Burger } from '@mantine/core';
 import {
   // IconNotes,
   IconGauge,
@@ -11,7 +11,7 @@ import { Logo } from './Logo';
 import classes from './sidebar.module.css';
 import { FC, useState } from 'react';
 import { page_routes } from '../../utils/page_routes';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface SidebarProps {
   opened: boolean;
@@ -60,15 +60,13 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }: LinksGr
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
-      component="a"
+    <NavLink
       className={classes.link}
-      href={link.link}
+      to={link.link}
       key={link.label}
-      onClick={(event) => event.preventDefault()}
     >
       {link.label}
-    </Text>
+    </NavLink>
   ));
 
   return (
@@ -91,11 +89,11 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }: LinksGr
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </> : <>
-      <Link to={link ? link : '/'} className={classes.control}>
+      <NavLink to={link ? link : '/'} className={classes.control}>
         <Group justify="space-between" gap={0}>
           <LinkContainer icon={Icon} label={label} />
         </Group>
-      </Link>
+      </NavLink>
     </>
   );
 }

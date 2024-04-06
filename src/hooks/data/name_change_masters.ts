@@ -17,6 +17,7 @@ import { useSearchParams } from "react-router-dom";
 
 export const NameChangeMasterKey = "name_change_master";
 export const NameChangeMastersQueryKey = "name_change_masters";
+export const NameChangeMastersCompanyQueryKey = "name_change_company_masters";
 
 export const useNameChangeMastersMain: (
   params: ApiPaginationQueryType
@@ -36,7 +37,7 @@ export const useNameChangeMastersMain: (
 }) => {
   const { axios } = useAxios();
   return useQuery({
-    queryKey: [NameChangeMastersQueryKey, page, limit, search],
+    queryKey: [NameChangeMastersCompanyQueryKey, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>;
@@ -207,7 +208,7 @@ export const useDeleteNameChangeMaster = (id: number, companyId: number) => {
   return useMutation({
     mutationFn: async () => {
       const response = await axios.delete<{ data: NameChangeMasterType }>(
-        api_routes.nameChangeMasters + `/${id}`
+        api_routes.nameChangeMasters + `/delete/${id}`
       );
       return response.data.data;
     },

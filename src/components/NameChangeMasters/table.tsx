@@ -2,17 +2,16 @@ import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { NameChangeMasterType } from "../../utils/types";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
-import { ModalProps } from "../../pages/nameChangeMasters/list";
+import { DrawerProps, ModalProps } from "../../pages/nameChangeMasters/list";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useToast } from "../../hooks/useToast";
 import { AxiosError } from "axios";
-import { page_routes } from "../../utils/page_routes";
 import { useDeleteNameChangeMaster, useNameChangeMasters } from "../../hooks/data/name_change_masters";
 
 
-const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: ModalProps) => void}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleModal}) => {
+const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const deleteNameChangeMaster = useDeleteNameChangeMaster(id, companyId)
@@ -67,11 +66,9 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: M
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.nameChangeMasters.main}/${id}`}>
-              <ActionIcon  variant="subtle" color="gray">
-                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-              </ActionIcon>
-            </Link>
+            <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
+                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
@@ -101,7 +98,7 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: M
   )
 }
 
-const NameChangeMasterTable:FC<{toggleModal: (value: ModalProps) => void, companyId: number}> = (props) => {
+const NameChangeMasterTable:FC<{toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void, companyId: number}> = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const {data:nameChangeMasters, isFetching, isLoading} = useNameChangeMasters({companyId: props.companyId, page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
   return (
@@ -122,7 +119,7 @@ const NameChangeMasterTable:FC<{toggleModal: (value: ModalProps) => void, compan
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{
-              (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} />)
+              (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} />)
             }</Table.Tbody>
           </Table>
         </Table.ScrollContainer>

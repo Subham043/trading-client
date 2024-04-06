@@ -25,15 +25,21 @@ const CompanyMasterDetail:FC<{toggleModal: (value: ModalProps) => void}> = (prop
                         <Table verticalSpacing="sm">
                             <Table.Thead>
                                 <Table.Tr>
+                                    <Table.Th>Name</Table.Th>
                                     <Table.Th>ISIN</Table.Th>
                                     <Table.Th>CIN</Table.Th>
+                                    <Table.Th>BSE</Table.Th>
+                                    <Table.Th>NSE</Table.Th>
                                     <Table.Th>Face Value</Table.Th>
                                     <Table.Th>Closing Price in NSE</Table.Th>
                                     <Table.Th>Closing Price in BSE</Table.Th>
                                 </Table.Tr>
                                 <Table.Tr>
+                                    <Table.Td>{data.newName}</Table.Td>
                                     <Table.Td>{data.ISIN}</Table.Td>
                                     <Table.Td>{data.CIN}</Table.Td>
+                                    <Table.Td>{data.BSE}</Table.Td>
+                                    <Table.Td>{data.NSE}</Table.Td>
                                     <Table.Td>{data.faceValue}</Table.Td>
                                     <Table.Td>{data.closingPriceNSE}</Table.Td>
                                     <Table.Td>{data.closingPriceBSE}</Table.Td>

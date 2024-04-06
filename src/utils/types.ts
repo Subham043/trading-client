@@ -38,6 +38,7 @@ export type CompanyMasterType = {
   emailContactPerson?: string | undefined;
   phoneContactPerson?: string | undefined;
   createdAt: string;
+  nameChangeMasterId?: number | undefined;
 };
 
 export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;

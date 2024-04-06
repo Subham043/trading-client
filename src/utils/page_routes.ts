@@ -11,7 +11,6 @@ export const page_routes = {
   },
   nameChangeMasters: {
     main: "/name-change-masters",
-    view: "/name-change-masters/:id",
   },
   auth: {
     login: "/login",
