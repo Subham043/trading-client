@@ -48,6 +48,9 @@ export type NameChangeMasterType = {
   newName?: string | undefined;
   previousName?: string | undefined;
   dateNameChange?: string | undefined;
+  newRTA?: string | undefined;
+  previousRTA?: string | undefined;
+  dateRTAChange?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
   oldSecuritySymbol?: string | undefined;

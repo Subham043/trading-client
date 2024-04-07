@@ -6,6 +6,7 @@ import { Box, Button, LoadingOverlay, PasswordInput, TextInput } from "@mantine/
 import * as yup from 'yup';
 import { AxiosError } from "axios";
 import { useAddUser, useUpdateUser, useUser } from "../../hooks/data/users";
+import { DrawerProps } from "../../pages/users";
 
 
 const createSchema = yup.object().shape({
@@ -44,7 +45,7 @@ type UserFormProps = {
     type: "Edit";
     id: number;
 }
-const UserForm:FC<UserFormProps> = (props) => {
+const UserForm:FC<UserFormProps & {toggleDrawer: (value: DrawerProps) => void}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const {toastError, toastSuccess} = useToast();
@@ -77,6 +78,7 @@ const UserForm:FC<UserFormProps> = (props) => {
             onSuccess: () => {
                 toastSuccess("User " + props.type === "Edit" ? "updated" : "created" + " successfully.")
                 props.type==="Create" && form.reset();
+                props.toggleDrawer({status: false, type: 'Create'});
             },
             onError: (error:Error) => {
                 if(error instanceof AxiosError){

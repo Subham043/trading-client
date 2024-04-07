@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
-import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconEye, IconTrash, IconX } from '@tabler/icons-react';
 import { NameChangeMasterType } from "../../utils/types";
 import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
@@ -11,7 +11,7 @@ import { AxiosError } from "axios";
 import { useDeleteNameChangeMaster, useNameChangeMasters } from "../../hooks/data/name_change_masters";
 
 
-const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleModal, toggleDrawer}) => {
+const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const deleteNameChangeMaster = useDeleteNameChangeMaster(id, companyId)
@@ -69,9 +69,9 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: M
             <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
                 <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
+            {/* <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            </ActionIcon> */}
             <Popover width={200} opened={opened} onChange={setOpened} trapFocus position="bottom-end" withArrow shadow="md" clickOutsideEvents={['mouseup', 'touchend']}>
               <Popover.Target>
                 <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>

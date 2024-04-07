@@ -11,6 +11,7 @@ import { NameChangeMasterType, PaginationType } from "../../utils/types";
 import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters";
 import { useSearchParams } from "react-router-dom";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
+import { ModalProps } from "../../pages/companyMasters/list";
 
 type FormType = {
     email?: string | undefined;
@@ -109,15 +110,15 @@ const schema: yup.ObjectSchema<FormType> = yup.object().shape({
     .required('ISIN is required'),
   faceValue: yup
     .number()
-    .typeError('Face value must be a string')
+    .typeError('Face value must be a number')
     .required('Face value is required'),
   closingPriceNSE: yup
     .number()
-    .typeError('Closing Price in NSE must be a string')
+    .typeError('Closing Price in NSE must be a number')
     .required('Closing Price in NSE is required'),
   closingPriceBSE: yup
     .number()
-    .typeError('Closing Price in BSE must be a string')
+    .typeError('Closing Price in BSE must be a number')
     .required('Closing Price in BSE is required'),
 });
 
@@ -130,7 +131,7 @@ type CompanyMasterFormProps = {
     type: "Edit";
     id: number;
 }
-const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
+const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: ModalProps) => void}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
@@ -199,6 +200,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps> = (props) => {
             onSuccess: () => {
                 toastSuccess("Company Master " + props.type === "Edit" ? "updated" : "created" + " successfully.")
                 props.type==="Create" && form.reset();
+                props.toggleModal({type: "Create", status: false});
             },
             onError: (error:Error) => {
                 if(error instanceof AxiosError){

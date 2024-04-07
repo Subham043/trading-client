@@ -34,6 +34,18 @@ const NameChangeMasterDetail:FC<DrawerProps> = (props) => {
                             <Table.Td>{data.dateNameChange && dayjs(data.dateNameChange.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
                         </Table.Tr>
                         <Table.Tr>
+                            <Table.Th>New RTA</Table.Th>
+                            <Table.Td>{data.newRTA}</Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
+                            <Table.Th>Previous RTA</Table.Th>
+                            <Table.Td>{data.previousRTA}</Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
+                            <Table.Th>Date of RTA Change</Table.Th>
+                            <Table.Td>{data.dateRTAChange && dayjs(data.dateRTAChange.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
                             <Table.Th>New Security Symbol</Table.Th>
                             <Table.Td>{data.newSecuritySymbol}</Table.Td>
                         </Table.Tr>

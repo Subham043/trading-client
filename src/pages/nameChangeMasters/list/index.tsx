@@ -40,7 +40,7 @@ const NameChangeMastersListPage:FC = () => {
         <div>
             <Group justify="space-between" mb="lg">
                 <Button type='submit' variant="filled" color='blue' onClick={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})}>
-                    Create
+                    Change
                 </Button>
                 <TextInput
                     rightSectionPointerEvents="none"

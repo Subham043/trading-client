@@ -9,7 +9,7 @@ const CompanyMasterModal:FC<ModalProps & {toggleModal: (value: ModalProps) => vo
           backgroundOpacity: 0.55,
           blur: 3,
         }}>
-            <CompanyMasterForm {...props} />
+            <CompanyMasterForm {...props} toggleModal={props.toggleModal} />
         </Modal>
     )
 }
