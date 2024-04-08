@@ -46,6 +46,52 @@ export const initialValues: SchemaType = {
   phoneContactPerson: undefined,
 };
 
+export const transformValues = (values: SchemaType) => {
+  return {
+    ISIN: values.ISIN,
+    closingPriceBSE: Number(values.closingPriceBSE),
+    closingPriceNSE: Number(values.closingPriceNSE),
+    faceValue: Number(values.faceValue),
+    email: values.email && values.email.length > 0 ? values.email : undefined,
+    website:
+      values.website && values.website.length > 0 ? values.website : undefined,
+    nameContactPerson:
+      values.nameContactPerson && values.nameContactPerson.length > 0
+        ? values.nameContactPerson
+        : undefined,
+    designationContactPerson:
+      values.designationContactPerson &&
+      values.designationContactPerson.length > 0
+        ? values.designationContactPerson
+        : undefined,
+    emailContactPerson:
+      values.emailContactPerson && values.emailContactPerson.length > 0
+        ? values.emailContactPerson
+        : undefined,
+    phoneContactPerson:
+      values.phoneContactPerson && values.phoneContactPerson.length > 0
+        ? values.phoneContactPerson
+        : undefined,
+    CIN: values.CIN && values.CIN.length > 0 ? values.CIN : undefined,
+    newName:
+      values.newName && values.newName.length > 0 ? values.newName : undefined,
+    BSE: values.BSE && values.BSE.length > 0 ? values.BSE : undefined,
+    NSE: values.NSE && values.NSE.length > 0 ? values.NSE : undefined,
+    city: values.city && values.city.length > 0 ? values.city : undefined,
+    state: values.state && values.state.length > 0 ? values.state : undefined,
+    registeredOffice:
+      values.registeredOffice && values.registeredOffice.length > 0
+        ? values.registeredOffice
+        : undefined,
+    pincode: values.pincode ? Number(values.pincode) : undefined,
+    telephone:
+      values.telephone && values.telephone.length > 0
+        ? values.telephone
+        : undefined,
+    fax: values.fax && values.fax.length > 0 ? values.fax : undefined,
+  };
+};
+
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   email: yup
     .string()

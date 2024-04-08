@@ -11,7 +11,7 @@ import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters"
 import { useSearchParams } from "react-router-dom";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
-import { SchemaType, initialValues, schema } from "./schema";
+import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 type CompanyMasterFormProps = CompanyMastersModalProps;
@@ -27,6 +27,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     const updateCompanyMaster = useUpdateCompanyMasterMutation(props.type === "Edit" ? props.id : 0)
     const form = useForm<SchemaType>({
         initialValues,
+        transformValues,
         validate: yupResolver(schema),
     });
     
@@ -112,30 +113,9 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 }
             }
         }
-        const formData = {
-            ISIN: form.values.ISIN,
-            closingPriceBSE: Number(form.values.closingPriceBSE),
-            closingPriceNSE: Number(form.values.closingPriceNSE),
-            faceValue: Number(form.values.faceValue),
-            email: (form.values.email && form.values.email.length>0) ? form.values.email : undefined,
-            website: (form.values.website && form.values.website.length>0) ? form.values.website : undefined,
-            nameContactPerson: (form.values.nameContactPerson && form.values.nameContactPerson.length>0) ? form.values.nameContactPerson : undefined,
-            designationContactPerson: (form.values.designationContactPerson && form.values.designationContactPerson.length>0) ? form.values.designationContactPerson : undefined,
-            emailContactPerson: (form.values.emailContactPerson && form.values.emailContactPerson.length>0) ? form.values.emailContactPerson : undefined,
-            phoneContactPerson: (form.values.phoneContactPerson && form.values.phoneContactPerson.length>0) ? form.values.phoneContactPerson : undefined,
-            CIN: (form.values.CIN && form.values.CIN.length>0) ? form.values.CIN : undefined,
-            newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
-            BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
-            NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
-            city: (form.values.city && form.values.city.length>0) ? form.values.city : undefined,
-            state: (form.values.state && form.values.state.length>0) ? form.values.state : undefined,
-            registeredOffice: (form.values.registeredOffice && form.values.registeredOffice.length>0) ? form.values.registeredOffice : undefined,
-            pincode: (form.values.pincode) ? Number(form.values.pincode) : undefined,
-            telephone: (form.values.telephone && form.values.telephone.length>0) ? form.values.telephone : undefined,
-            fax: (form.values.fax && form.values.fax.length>0) ? form.values.fax : undefined,
-        }
+        
         if(props.type === "Edit"){
-            await updateCompanyMaster.mutateAsync(formData, companyMasterMutateOptions);
+            await updateCompanyMaster.mutateAsync(form.getTransformedValues(), companyMasterMutateOptions);
             queryClient.setQueryData<
                 PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
             >(
@@ -154,9 +134,9 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                                 nameChangeMaster.id === ((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0)
                                 ? {
                                     ...nameChangeMaster,
-                                    newName: formData.newName,
-                                    BSE: formData.BSE,
-                                    NSE: formData.NSE,
+                                    newName: form.getTransformedValues().newName,
+                                    BSE: form.getTransformedValues().BSE,
+                                    NSE: form.getTransformedValues().NSE,
                                 }
                                 : nameChangeMaster
                             ),
@@ -165,7 +145,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 }
             );
         }else{
-            await addCompanyMaster.mutateAsync(formData, companyMasterMutateOptions);
+            await addCompanyMaster.mutateAsync(form.getTransformedValues(), companyMasterMutateOptions);
         }
     };
 
