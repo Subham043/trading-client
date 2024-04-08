@@ -61,7 +61,7 @@ export const useUsersQuerySetData = () => {
 
   const addUsers = (newUserVal: UserQueryType) => {
     queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
-      [UsersQueryKey, page, limit, search],
+      [UsersQueryKey, QueryInitialPageParam.toString(), limit, search],
       (prev) => {
         if (prev) {
           return {

@@ -70,7 +70,7 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteUser.isPending}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteUser.isPending} disabled={deleteUser.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>

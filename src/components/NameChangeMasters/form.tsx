@@ -1,77 +1,17 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { DateInput } from '@mantine/dates';
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Box, Button, LoadingOverlay, SimpleGrid, TextInput } from "@mantine/core";
-import * as yup from 'yup';
-import { AxiosError } from "axios";
-import { useAddNameChangeMaster, useNameChangeMaster, useNameChangeMasterLatest, useUpdateNameChangeMaster } from "../../hooks/data/name_change_masters";
-import { useQueryClient } from "@tanstack/react-query";
+import { Button, SimpleGrid, TextInput } from "@mantine/core";
+import { isAxiosError } from "axios";
+import { useAddNameChangeMasterMutation, useNameChangeMasterQuery, useNameChangeMasterLatestQuery, useUpdateNameChangeMasterMutation } from "../../hooks/data/name_change_masters";
+import { MutateOptions, useQueryClient } from "@tanstack/react-query";
 import { CompanyMasterKey } from "../../hooks/data/company_masters";
-import { CompanyMasterType } from "../../utils/types";
+import { CompanyMasterType, NameChangeMasterFormType, NameChangeMasterType } from "../../utils/types";
 import { NameChangeMastersListModalProps } from "../../pages/nameChangeMasters/list";
-
-type FormType = {
-    newName?: string | undefined;
-    previousName?: string | undefined;
-    dateNameChange?: string | undefined;
-    newRTA?: string | undefined;
-    previousRTA?: string | undefined;
-    dateRTAChange?: string | undefined;
-    BSE?: string | undefined;
-    NSE?: string | undefined;
-    newSecuritySymbol?: string | undefined;
-    oldSecuritySymbol?: string | undefined;
-    dateSecurityChange?: string | undefined;
-};
-
-const schema: yup.ObjectSchema<FormType> = yup.object().shape({
-  BSE: yup
-    .string()
-    .typeError('BSE must be a string')
-    .optional(),
-  NSE: yup
-    .string()
-    .typeError('NSE must be a string')
-    .optional(),
-  newName: yup
-    .string()
-    .typeError('New Name must be a string')
-    .optional(),
-  previousName: yup
-    .string()
-    .typeError('Previous Name must be a string')
-    .optional(),
-  dateNameChange: yup
-    .string()
-    .typeError('Date of Name Change must be a string')
-    .optional(),
-  newRTA: yup
-    .string()
-    .typeError('New RTA must be a string')
-    .optional(),
-  previousRTA: yup
-    .string()
-    .typeError('Previous RTA must be a string')
-    .optional(),
-  dateRTAChange: yup
-    .string()
-    .typeError('Date of RTA Change must be a string')
-    .optional(),
-  newSecuritySymbol: yup
-    .string()
-    .typeError('New Security Symbol must be a string')
-    .optional(),
-  oldSecuritySymbol: yup
-    .string()
-    .typeError('Old Security Symbol must be a string')
-    .optional(),
-  dateSecurityChange: yup
-    .string()
-    .typeError('Date of Security Change must be a string')
-    .optional(),
-});
+import { SchemaType, initialValues, schema } from "./schema";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
 type NameChangeMasterFormProps = {
@@ -82,29 +22,18 @@ type NameChangeMasterFormProps = {
     type: "Edit";
     id: number;
 }
+type nameChangeMasterMutateOptionsType = MutateOptions<NameChangeMasterType, Error, NameChangeMasterFormType, unknown>;
+
 const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number, toggleModal: (value: NameChangeMastersListModalProps) => void}> = (props) => {
 
-    const [loading, setLoading] = useState<boolean>(false);
     const queryClient = useQueryClient();
-    const {toastError, toastSuccess} = useToast();
-    const {data:newData, isFetching:isNewFetching, isLoading:isNewLoading} = useNameChangeMasterLatest(props.mainCompanyId, (props.type === "Create" && props.status));
-    const {data, isFetching, isLoading} = useNameChangeMaster(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addNameChangeMaster = useAddNameChangeMaster(props.mainCompanyId)
-    const updateNameChangeMaster = useUpdateNameChangeMaster(props.type === "Edit" ? props.id : 0, props.mainCompanyId)
-    const form = useForm<FormType>({
-        initialValues: {
-            newName: undefined,
-            previousName: undefined,
-            dateNameChange: undefined,
-            newRTA: undefined,
-            previousRTA: undefined,
-            dateRTAChange: undefined,
-            BSE: undefined,
-            NSE: undefined,
-            newSecuritySymbol: undefined,
-            oldSecuritySymbol: undefined,
-            dateSecurityChange: undefined,
-        },
+    const {toastError} = useToast();
+    const {data:newData, isFetching:isNewFetching, isLoading:isNewLoading, status:newStatus, error:newError,  refetch:newRefetch} = useNameChangeMasterLatestQuery(props.mainCompanyId, (props.type === "Create" && props.status));
+    const {data, isFetching, isLoading, status, error,  refetch} = useNameChangeMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const addNameChangeMaster = useAddNameChangeMasterMutation(props.mainCompanyId)
+    const updateNameChangeMaster = useUpdateNameChangeMasterMutation(props.type === "Edit" ? props.id : 0, props.mainCompanyId)
+    const form = useForm<SchemaType>({
+        initialValues,
         validate: yupResolver(schema),
     });
     
@@ -139,15 +68,13 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
     }, [data, newData, props.type, props.status]);
     
     const onSubmit = async () => {
-        setLoading(true);
-        const nameChangeMasterMutateOptions = {
+        const nameChangeMasterMutateOptions:nameChangeMasterMutateOptionsType = {
             onSuccess: () => {
-                toastSuccess("Name Change Master " + props.type === "Edit" ? "updated" : "created" + " successfully.")
                 props.type==="Create" && form.reset();
                 props.toggleModal({status: false, type: "Create", companyId: props.mainCompanyId});
             },
             onError: (error:Error) => {
-                if(error instanceof AxiosError){
+                if(isAxiosError(error)){
                     if(error?.response?.data?.formErrors?.newName){
                         form.setFieldError('newName', error.response.data.formErrors?.newName[0]);
                     }else if(error?.response?.data?.formErrors?.previousName){
@@ -173,11 +100,8 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }
-                }else{
-                    toastError('Something went wrong. Please try again later.');
                 }
-            },
-            onSettled: () => setLoading(false)
+            }
         }
         const formData = {
             BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
@@ -193,14 +117,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             dateSecurityChange: (form.values.dateSecurityChange && form.values.dateSecurityChange.length>0) ? form.values.dateSecurityChange : undefined,
         }
         if(props.type === "Edit"){
-            updateNameChangeMaster.mutateAsync(
-                formData,
-                {
-                    onError: (error) => nameChangeMasterMutateOptions.onError(error), 
-                    onSuccess: () => nameChangeMasterMutateOptions.onSuccess(), 
-                    onSettled: () => nameChangeMasterMutateOptions.onSettled(),
-                }
-            );
+            await updateNameChangeMaster.mutateAsync(formData, nameChangeMasterMutateOptions);
             queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, data ? data.companyId : undefined], (prev) => {
                 if(prev){
                     return {
@@ -212,14 +129,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                 }
             });
         }else{
-            addNameChangeMaster.mutateAsync(
-                formData,
-                {
-                    onError: (error) => nameChangeMasterMutateOptions.onError(error), 
-                    onSuccess: () => nameChangeMasterMutateOptions.onSuccess(), 
-                    onSettled: () => nameChangeMasterMutateOptions.onSettled(),
-                }
-            );
+            await addNameChangeMaster.mutateAsync(formData, nameChangeMasterMutateOptions);
             queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, newData ? newData.companyId : undefined], (prev) => {
                 if(prev){
                     return {
@@ -234,8 +144,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
     };
 
     return (
-        <Box pos="relative">
-            <LoadingOverlay visible={isLoading || isFetching || isNewFetching || isNewLoading} zIndex={20} overlayProps={{ radius: "sm", blur: 2 }} />
+        <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): (newData ? true : false)} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (isNewLoading || isNewFetching)} status={props.status && props.type==="Edit" ? status : newStatus} error={props.status && props.type==="Edit" ? error : newError} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : newRefetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="NSE" {...form.getInputProps('NSE')} />
@@ -273,11 +182,11 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                         placeholder="Date of Security Change"
                     />
                 </SimpleGrid>
-                <Button type='submit' variant="filled" color='blue' mt="lg" loading={loading} disabled={loading} data-disabled={loading}>
+                <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} data-disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending}>
                     {props.type === "Create" ? "Change" : "Update"}
                 </Button>
             </form>
-        </Box>
+        </ErrorBoundary>
     )
 }
 

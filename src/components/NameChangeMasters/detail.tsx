@@ -1,12 +1,12 @@
 import { FC } from "react"
 import { Table } from '@mantine/core';
 import { NameChangeMastersListDrawerProps } from "../../pages/nameChangeMasters/list";
-import { useNameChangeMaster } from "../../hooks/data/name_change_masters";
+import { useNameChangeMasterQuery } from "../../hooks/data/name_change_masters";
 import dayjs from "dayjs";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 const NameChangeMasterDetail:FC<NameChangeMastersListDrawerProps> = (props) => {
-  const {data, isFetching, isLoading, status, error, refetch} = useNameChangeMaster(props.drawerStatus ? props.id : 0, props.drawerStatus);
+  const {data, isFetching, isLoading, status, error, refetch} = useNameChangeMasterQuery(props.drawerStatus ? props.id : 0, props.drawerStatus);
   return (
     <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         {(data) && <Table.ScrollContainer minWidth={'100%'}>

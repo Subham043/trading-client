@@ -3,13 +3,13 @@ import { Table, Group, Text, Box, Button, Paper, SimpleGrid } from '@mantine/cor
 import { useParams } from "react-router-dom";
 import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detail";
 import classes from '../../pages/companyMasters/detail/companyMasters.module.css'
-import { useCompanyMaster } from "../../hooks/data/company_masters";
+import { useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProps) => void}> = (props) => {
   const param = useParams<{companyId: string}>();
-  const {data, isFetching, isLoading, status, error, refetch} = useCompanyMaster(Number(param.companyId), true);
+  const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(Number(param.companyId), true);
   return (
     <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         <Group justify="space-between" mb="lg" align="center">

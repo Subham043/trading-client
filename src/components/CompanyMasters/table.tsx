@@ -2,37 +2,20 @@ import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { CompanyMasterType } from "../../utils/types";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import dayjs from 'dayjs';
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
-import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
-import { useToast } from "../../hooks/useToast";
-import { AxiosError } from "axios";
-import { useDeleteCompanyMaster, useCompanyMasters } from "../../hooks/data/company_masters";
+import { useDeleteCompanyMasterMutation, useCompanyMastersQuery } from "../../hooks/data/company_masters";
 import { page_routes } from "../../utils/page_routes";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
 const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: CompanyMastersModalProps) => void}> = ({id, newName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const deleteCompanyMaster = useDeleteCompanyMaster(id)
-  const {toastError, toastSuccess} = useToast();
-  const onDelete = () => {
-    setLoading(true);
-    deleteCompanyMaster.mutateAsync(undefined,{
-      onSuccess: () => toastSuccess("Company Master deleted successfully."),
-      onError: (error:Error) => {
-          if(error instanceof AxiosError){
-              if(error?.response?.data?.message){
-                  toastError(error.response.data.message);
-              }
-          }else{
-              toastError('Something went wrong. Please try again later.');
-          }
-      },
-      onSettled: () => setLoading(false)
-    })
+  const deleteCompanyMaster = useDeleteCompanyMasterMutation(id)
+
+  const onDelete = async () => {
+    await deleteCompanyMaster.mutateAsync(undefined)
   }
   return (
     <Table.Tr>
@@ -94,7 +77,7 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={loading}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteCompanyMaster.isPending} disabled={deleteCompanyMaster.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -108,8 +91,7 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
 }
 
 const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
-  const [searchParams] = useSearchParams();
-  const {data:companyMasters, isFetching, isLoading, status, error, refetch} = useCompanyMasters({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+  const {data:companyMasters, isFetching, isLoading, status, error, refetch} = useCompanyMastersQuery();
   return (
     <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>

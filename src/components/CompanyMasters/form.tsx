@@ -1,168 +1,32 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Box, Button, LoadingOverlay, SimpleGrid, TextInput } from "@mantine/core";
-import * as yup from 'yup';
-import { AxiosError } from "axios";
-import { useAddCompanyMaster, useUpdateCompanyMaster, useCompanyMaster } from "../../hooks/data/company_masters";
-import { useQueryClient } from "@tanstack/react-query";
-import { NameChangeMasterType, PaginationType } from "../../utils/types";
+import { Button, SimpleGrid, TextInput } from "@mantine/core";
+import { isAxiosError } from "axios";
+import { useAddCompanyMasterMutation, useUpdateCompanyMasterMutation, useCompanyMasterQuery } from "../../hooks/data/company_masters";
+import { MutateOptions, useQueryClient } from "@tanstack/react-query";
+import { CompanyMasterFormType, CompanyMasterType, NameChangeMasterType, PaginationType } from "../../utils/types";
 import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters";
 import { useSearchParams } from "react-router-dom";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
+import { SchemaType, initialValues, schema } from "./schema";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
-type FormType = {
-    email?: string | undefined;
-    website?: string | undefined;
-    nameContactPerson?: string | undefined;
-    designationContactPerson?: string | undefined;
-    emailContactPerson?: string | undefined;
-    phoneContactPerson?: string | undefined;
-    fax?: string | undefined;
-    telephone?: string | undefined;
-    newName?: string | undefined;
-    BSE?: string | undefined;
-    NSE?: string | undefined;
-    CIN?: string | undefined;
-    ISIN: string;
-    faceValue: number;
-    closingPriceNSE: number;
-    closingPriceBSE: number;
-    registeredOffice?: string | undefined;
-    city?: string | undefined;
-    state?: string | undefined;
-    pincode?: number | undefined;
-};
+type CompanyMasterFormProps = CompanyMastersModalProps;
+type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, CompanyMasterFormType, unknown>;
 
-const schema: yup.ObjectSchema<FormType> = yup.object().shape({
-  email: yup
-    .string()
-    .typeError('Email must be a string')
-    .email('Invalid email')
-    .optional(),
-  website: yup
-    .string()
-    .typeError('Website must be a string')
-    .url('Invalid url')
-    .optional(),
-  nameContactPerson: yup
-    .string()
-    .typeError('Name of Contact Person must be a string')
-    .optional(),
-  designationContactPerson: yup
-    .string()
-    .typeError('Designation of Contact Person must be a string')
-    .optional(),
-  emailContactPerson: yup
-    .string()
-    .typeError('Email of Contact Person must be a string')
-    .email('Invalid email')
-    .optional(),
-  phoneContactPerson: yup
-    .string()
-    .typeError('Phone of Contact Person must be a string')
-    .optional(),
-  fax: yup
-    .string()
-    .typeError('Fax must be a string')
-    .optional(),
-  telephone: yup
-    .string()
-    .typeError('Telephone must be a string')
-    .optional(),
-  pincode: yup
-    .number()
-    .typeError('Pincode must be a number')
-    .optional(),
-  state: yup
-    .string()
-    .typeError('State must be a string')
-    .optional(),
-  city: yup
-    .string()
-    .typeError('City must be a string')
-    .optional(),
-  registeredOffice: yup
-    .string()
-    .typeError('Registered Office must be a string')
-    .optional(),
-  CIN: yup
-    .string()
-    .typeError('CIN must be a string')
-    .optional(),
-  BSE: yup
-    .string()
-    .typeError('BSE must be a string')
-    .optional(),
-  NSE: yup
-    .string()
-    .typeError('NSE must be a string')
-    .optional(),
-  newName: yup
-    .string()
-    .typeError('Name must be a string')
-    .required("Name is required"),
-  ISIN: yup
-    .string()
-    .typeError('ISIN must be a string')
-    .required('ISIN is required'),
-  faceValue: yup
-    .number()
-    .typeError('Face value must be a number')
-    .required('Face value is required'),
-  closingPriceNSE: yup
-    .number()
-    .typeError('Closing Price in NSE must be a number')
-    .required('Closing Price in NSE is required'),
-  closingPriceBSE: yup
-    .number()
-    .typeError('Closing Price in BSE must be a number')
-    .required('Closing Price in BSE is required'),
-});
-
-
-type CompanyMasterFormProps = {
-    status: boolean;
-    type: "Create",
-} | {
-    status: boolean;
-    type: "Edit";
-    id: number;
-}
 const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
 
-    const [loading, setLoading] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
-    const {toastError, toastSuccess} = useToast();
+    const {toastError} = useToast();
     const queryClient = useQueryClient();
-    const {data, isFetching, isLoading} = useCompanyMaster(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addCompanyMaster = useAddCompanyMaster()
-    const updateCompanyMaster = useUpdateCompanyMaster(props.type === "Edit" ? props.id : 0)
-    const form = useForm<FormType>({
-        initialValues: {
-            ISIN: '',
-            CIN: undefined,
-            newName: undefined,
-            BSE: undefined,
-            NSE: undefined,
-            faceValue: 0.0,
-            closingPriceNSE: 0.0,
-            closingPriceBSE: 0.0,
-            registeredOffice: undefined,
-            city: undefined,
-            state: undefined,
-            pincode: undefined,
-            telephone: undefined,
-            fax: undefined,
-            email: undefined,
-            website: undefined,
-            nameContactPerson: undefined,
-            designationContactPerson: undefined,
-            emailContactPerson: undefined,
-            phoneContactPerson: undefined,
-        },
+    const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const addCompanyMaster = useAddCompanyMasterMutation()
+    const updateCompanyMaster = useUpdateCompanyMasterMutation(props.type === "Edit" ? props.id : 0)
+    const form = useForm<SchemaType>({
+        initialValues,
         validate: yupResolver(schema),
     });
     
@@ -195,15 +59,13 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     }, [data, props.type, props.status]);
     
     const onSubmit = async () => {
-        setLoading(true);
-        const companyMasterMutateOptions = {
+        const companyMasterMutateOptions:companyMasterMutateOptionsType = {
             onSuccess: () => {
-                toastSuccess("Company Master " + props.type === "Edit" ? "updated" : "created" + " successfully.")
                 props.type==="Create" && form.reset();
                 props.toggleModal({type: "Create", status: false});
             },
             onError: (error:Error) => {
-                if(error instanceof AxiosError){
+                if(isAxiosError(error)){
                     if(error?.response?.data?.formErrors?.email){
                         form.setFieldError('email', error.response.data.formErrors?.email[0]);
                     }else if(error?.response?.data?.formErrors?.newName){
@@ -247,11 +109,8 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }
-                }else{
-                    toastError('Something went wrong. Please try again later.');
                 }
-            },
-            onSettled: () => setLoading(false)
+            }
         }
         const formData = {
             ISIN: form.values.ISIN,
@@ -276,14 +135,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
             fax: (form.values.fax && form.values.fax.length>0) ? form.values.fax : undefined,
         }
         if(props.type === "Edit"){
-            updateCompanyMaster.mutateAsync(
-                formData,
-                {
-                    onError: (error) => companyMasterMutateOptions.onError(error), 
-                    onSuccess: () => companyMasterMutateOptions.onSuccess(), 
-                    onSettled: () => companyMasterMutateOptions.onSettled(),
-                }
-            );
+            await updateCompanyMaster.mutateAsync(formData, companyMasterMutateOptions);
             queryClient.setQueryData<
                 PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
             >(
@@ -295,38 +147,30 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 searchParams.get("search") || "",
                 ],
                 (prev) => {
-                if (prev) {
-                    return {
-                        ...prev,
-                        nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
-                            nameChangeMaster.id === ((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0)
-                            ? {
-                                ...nameChangeMaster,
-                                newName: formData.newName,
-                                BSE: formData.BSE,
-                                NSE: formData.NSE,
-                            }
-                            : nameChangeMaster
-                        ),
-                    };
-                }
+                    if (prev) {
+                        return {
+                            ...prev,
+                            nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
+                                nameChangeMaster.id === ((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0)
+                                ? {
+                                    ...nameChangeMaster,
+                                    newName: formData.newName,
+                                    BSE: formData.BSE,
+                                    NSE: formData.NSE,
+                                }
+                                : nameChangeMaster
+                            ),
+                        };
+                    }
                 }
             );
         }else{
-            addCompanyMaster.mutateAsync(
-                formData,
-                {
-                    onError: (error) => companyMasterMutateOptions.onError(error), 
-                    onSuccess: () => companyMasterMutateOptions.onSuccess(), 
-                    onSettled: () => companyMasterMutateOptions.onSettled(),
-                }
-            );
+            await addCompanyMaster.mutateAsync(formData, companyMasterMutateOptions);
         }
     };
 
     return (
-        <Box pos="relative">
-            <LoadingOverlay visible={isLoading || isFetching} zIndex={20} overlayProps={{ radius: "sm", blur: 2 }} />
+        <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput withAsterisk label="Name" {...form.getInputProps('newName')} />
@@ -362,11 +206,11 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                     <TextInput label="Email of Contact Person" {...form.getInputProps('emailContactPerson')} />
                     <TextInput label="Phone of Contact Person" {...form.getInputProps('phoneContactPerson')} />
                 </SimpleGrid>
-                <Button type='submit' variant="filled" color='blue' mt="lg" loading={loading} disabled={loading} data-disabled={loading}>
+                <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addCompanyMaster.isPending : updateCompanyMaster.isPending} disabled={props.type === "Create" ? addCompanyMaster.isPending : updateCompanyMaster.isPending} data-disabled={props.type === "Create" ? addCompanyMaster.isPending : updateCompanyMaster.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>
             </form>
-        </Box>
+        </ErrorBoundary>
     )
 }
 

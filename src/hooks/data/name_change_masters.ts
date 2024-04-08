@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-query";
 import { useAxios } from "../useAxios";
 import {
-  ApiPaginationQueryType,
   PaginationType,
   NameChangeMasterType,
   NameChangeMasterFormType,
@@ -14,14 +13,14 @@ import {
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useSearchParams } from "react-router-dom";
+import { useToast } from "../useToast";
+import { isAxiosError } from "axios";
 
 export const NameChangeMasterKey = "name_change_master";
 export const NameChangeMastersQueryKey = "name_change_masters";
 export const NameChangeMastersCompanyQueryKey = "name_change_company_masters";
 
-export const useNameChangeMastersMain: (
-  params: ApiPaginationQueryType
-) => UseQueryResult<
+export const useNameChangeMastersMainQuery: () => UseQueryResult<
   PaginationType<{
     nameChangeMaster: (NameChangeMasterType & {
       CIN?: string | null | undefined;
@@ -30,12 +29,13 @@ export const useNameChangeMastersMain: (
     })[];
   }>,
   unknown
-> = ({
-  search = "",
-  page = QueryInitialPageParam,
-  limit = QueryTotalCount,
-}) => {
+> = () => {
   const { axios } = useAxios();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || QueryInitialPageParam.toString();
+  const limit = searchParams.get("limit") || QueryTotalCount.toString();
+  const search = searchParams.get("search") || "";
+
   return useQuery({
     queryKey: [NameChangeMastersCompanyQueryKey, page, limit, search],
     queryFn: async () => {
@@ -50,18 +50,18 @@ export const useNameChangeMastersMain: (
   });
 };
 
-export const useNameChangeMasters: (
-  params: { companyId: number } & ApiPaginationQueryType
-) => UseQueryResult<
+export const useNameChangeMastersQuery: (params: {
+  companyId: number;
+}) => UseQueryResult<
   PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>,
   unknown
-> = ({
-  companyId,
-  search = "",
-  page = QueryInitialPageParam,
-  limit = QueryTotalCount,
-}) => {
+> = ({ companyId }) => {
   const { axios } = useAxios();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || QueryInitialPageParam.toString();
+  const limit = searchParams.get("limit") || QueryTotalCount.toString();
+  const search = searchParams.get("search") || "";
+
   return useQuery({
     queryKey: [NameChangeMastersQueryKey, companyId, page, limit, search],
     queryFn: async () => {
@@ -76,7 +76,7 @@ export const useNameChangeMasters: (
   });
 };
 
-export const useNameChangeMaster: (
+export const useNameChangeMasterQuery: (
   id: number,
   enabled: boolean
 ) => UseQueryResult<NameChangeMasterType, unknown> = (id, enabled) => {
@@ -93,7 +93,7 @@ export const useNameChangeMaster: (
   });
 };
 
-export const useNameChangeMasterLatest: (
+export const useNameChangeMasterLatestQuery: (
   companyId: number,
   enabled: boolean
 ) => UseQueryResult<NameChangeMasterType, unknown> = (companyId, enabled) => {
@@ -110,10 +110,126 @@ export const useNameChangeMasterLatest: (
   });
 };
 
-export const useUpdateNameChangeMaster = (id: number, companyId: number) => {
-  const { axios } = useAxios();
+export const useNameChangeMastersQuerySetData = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || QueryInitialPageParam.toString();
+  const limit = searchParams.get("limit") || QueryTotalCount.toString();
+  const search = searchParams.get("search") || "";
+
+  const addNameChangeMasters = (
+    companyId: number,
+    newNameChangeMasterVal: NameChangeMasterType
+  ) => {
+    queryClient.setQueryData<
+      PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
+    >(
+      [
+        NameChangeMastersQueryKey,
+        companyId,
+        QueryInitialPageParam.toString(),
+        limit,
+        search,
+      ],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            nameChangeMaster: [
+              newNameChangeMasterVal,
+              ...prev.nameChangeMaster,
+            ],
+          };
+        }
+      }
+    );
+  };
+
+  const updateNameChangeMasters = (
+    id: number,
+    companyId: number,
+    updateNameChangeMasterVal: NameChangeMasterType
+  ) => {
+    queryClient.setQueryData<
+      PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
+    >([NameChangeMastersQueryKey, companyId, page, limit, search], (prev) => {
+      if (prev) {
+        return {
+          ...prev,
+          nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
+            nameChangeMaster.id === id
+              ? updateNameChangeMasterVal
+              : nameChangeMaster
+          ),
+        };
+      }
+    });
+  };
+
+  const deleteNameChangeMasters = (id: number, companyId: number) => {
+    queryClient.setQueryData<
+      PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
+    >([NameChangeMastersQueryKey, companyId, page, limit, search], (prev) => {
+      if (prev) {
+        return {
+          ...prev,
+          nameChangeMaster: prev.nameChangeMaster.filter(
+            (nameChangeMaster) => nameChangeMaster.id !== id
+          ),
+        };
+      }
+    });
+  };
+
+  return {
+    addNameChangeMasters,
+    updateNameChangeMasters,
+    deleteNameChangeMasters,
+  };
+};
+
+export const useNameChangeMasterQuerySetData = () => {
+  const queryClient = useQueryClient();
+
+  const addNameChangeMaster = (
+    newNameChangeMasterVal: NameChangeMasterType
+  ) => {
+    queryClient.setQueryData<NameChangeMasterType>(
+      [NameChangeMasterKey, newNameChangeMasterVal.id],
+      newNameChangeMasterVal
+    );
+  };
+
+  const updateNameChangeMaster = (
+    id: number,
+    updateNameChangeMasterVal: NameChangeMasterType
+  ) => {
+    queryClient.setQueryData(
+      [NameChangeMasterKey, id],
+      updateNameChangeMasterVal
+    );
+  };
+
+  const deleteNameChangeMaster = (id: number) => {
+    queryClient.setQueryData([NameChangeMasterKey, id], undefined);
+  };
+
+  return {
+    addNameChangeMaster,
+    updateNameChangeMaster,
+    deleteNameChangeMaster,
+  };
+};
+
+export const useUpdateNameChangeMasterMutation = (
+  id: number,
+  companyId: number
+) => {
+  const { axios } = useAxios();
+  const { updateNameChangeMasters } = useNameChangeMastersQuerySetData();
+  const { updateNameChangeMaster } = useNameChangeMasterQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async (updateNameChangeMasterVal: NameChangeMasterFormType) => {
       const response = await axios.put<{ data: NameChangeMasterType }>(
@@ -125,41 +241,24 @@ export const useUpdateNameChangeMaster = (id: number, companyId: number) => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: (updateNameChangeMasterVal) => {
       // ✅ update detail view directly
-      queryClient.setQueryData(
-        [NameChangeMasterKey, id],
-        updateNameChangeMasterVal
-      );
-      queryClient.setQueryData<
-        PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
-      >(
-        [
-          NameChangeMastersQueryKey,
-          companyId,
-          searchParams.get("page") || QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
-                nameChangeMaster.id === id
-                  ? updateNameChangeMasterVal
-                  : nameChangeMaster
-              ),
-            };
-          }
-        }
-      );
+      updateNameChangeMaster(id, updateNameChangeMasterVal);
+      updateNameChangeMasters(id, companyId, updateNameChangeMasterVal);
+      toastSuccess("Name Change Master updated successfully.");
+    },
+    onError: (error) => {
+      if (!isAxiosError(error)) {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
 
-export const useAddNameChangeMaster = (companyId: number) => {
+export const useAddNameChangeMasterMutation = (companyId: number) => {
   const { axios } = useAxios();
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
+  const { addNameChangeMasters } = useNameChangeMastersQuerySetData();
+  const { addNameChangeMaster } = useNameChangeMasterQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async (newNameChangeMasterVal: NameChangeMasterFormType) => {
       const response = await axios.post<{ data: NameChangeMasterType }>(
@@ -171,40 +270,27 @@ export const useAddNameChangeMaster = (companyId: number) => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: (newNameChangeMasterVal) => {
       // ✅ update detail view directly
-      queryClient.setQueryData<NameChangeMasterType>(
-        [NameChangeMasterKey, newNameChangeMasterVal.id],
-        newNameChangeMasterVal
-      );
-      queryClient.setQueryData<
-        PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
-      >(
-        [
-          NameChangeMastersQueryKey,
-          companyId,
-          QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              nameChangeMaster: [
-                newNameChangeMasterVal,
-                ...prev.nameChangeMaster,
-              ],
-            };
-          }
-        }
-      );
+      addNameChangeMaster(newNameChangeMasterVal);
+      addNameChangeMasters(companyId, newNameChangeMasterVal);
+      toastSuccess("Name Change Master created successfully.");
+    },
+    onError: (error) => {
+      if (!isAxiosError(error)) {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
 
-export const useDeleteNameChangeMaster = (id: number, companyId: number) => {
+export const useDeleteNameChangeMasterMutation = (
+  id: number,
+  companyId: number
+) => {
   const { axios } = useAxios();
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
+  const { deleteNameChangeMasters } = useNameChangeMastersQuerySetData();
+  const { deleteNameChangeMaster } = useNameChangeMasterQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async () => {
       const response = await axios.delete<{ data: NameChangeMasterType }>(
@@ -215,27 +301,18 @@ export const useDeleteNameChangeMaster = (id: number, companyId: number) => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: () => {
       // ✅ update detail view directly
-      queryClient.setQueryData<
-        PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
-      >(
-        [
-          NameChangeMastersQueryKey,
-          companyId,
-          searchParams.get("page") || QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              nameChangeMaster: prev.nameChangeMaster.filter(
-                (nameChangeMaster) => nameChangeMaster.id !== id
-              ),
-            };
-          }
+      deleteNameChangeMaster(id);
+      deleteNameChangeMasters(id, companyId);
+      toastSuccess("Name Change Master deleted successfully.");
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        if (error?.response?.data?.message) {
+          toastError(error.response.data.message);
         }
-      );
+      } else {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
