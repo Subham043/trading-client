@@ -2,13 +2,9 @@ import { FC, useState } from "react"
 import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover } from '@mantine/core';
 import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { UserQueryType } from "../../utils/types";
-import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
 import { UserDrawerProps } from "../../pages/users";
-import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
-import { useToast } from "../../hooks/useToast";
-import { AxiosError } from "axios";
-import { useDeleteUser, useUsers } from "../../hooks/data/users";
+import { useDeleteUserMutation, useUsersQuery } from "../../hooks/data/users";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 const roleColors: Record<string, string> = {
@@ -23,26 +19,9 @@ const statusColors: Record<string, string> = {
 
 const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const deleteUser = useDeleteUser(id)
-  const {toastError, toastSuccess} = useToast();
+  const deleteUser = useDeleteUserMutation(id);
   const initials = name.split(' ').map((name) => name[0]).join('').toUpperCase();
-  const onDelete = () => {
-    setLoading(true);
-    deleteUser.mutateAsync(undefined,{
-      onSuccess: () => toastSuccess("User deleted successfully."),
-      onError: (error:Error) => {
-          if(error instanceof AxiosError){
-              if(error?.response?.data?.message){
-                  toastError(error.response.data.message);
-              }
-          }else{
-              toastError('Something went wrong. Please try again later.');
-          }
-      },
-      onSettled: () => setLoading(false)
-    })
-  }
+  const onDelete = async () => await deleteUser.mutateAsync();
   return (
     <Table.Tr>
       <Table.Td>
@@ -91,7 +70,7 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={loading}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteUser.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -105,8 +84,7 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
 }
 
 const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) => {
-  const [searchParams] = useSearchParams();
-  const {data:users, isFetching, isLoading, status, error, refetch} = useUsers({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+  const {data:users, isFetching, isLoading, status, error, refetch} = useUsersQuery();
   
   return (
     <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>

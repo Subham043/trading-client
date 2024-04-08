@@ -1,64 +1,26 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Box, Button, LoadingOverlay, PasswordInput, TextInput } from "@mantine/core";
-import * as yup from 'yup';
+import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { AxiosError } from "axios";
-import { useAddUser, useUpdateUser, useUser } from "../../hooks/data/users";
+import { useAddUserMutation, useUpdateUserMutation, useUserQuery } from "../../hooks/data/users";
 import { UserDrawerProps } from "../../pages/users";
+import { MutateOptions } from "@tanstack/react-query";
+import { UserQueryType } from "../../utils/types";
+import { SchemaType, createSchema, updateSchema } from "./schema";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const createSchema = yup.object().shape({
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Invalid email'),
-  name: yup
-    .string()
-    .required('Name is required'),
-  password: yup
-    .string()
-    .required('Password is required'),
-  confirm_password: yup
-    .string()
-    .required('Confirm Password is required')
-    .oneOf([yup.ref("password")], "Passwords must match"),
-});
-
-const updateSchema = yup.object().shape({
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Invalid email'),
-  name: yup
-    .string()
-    .required('Name is required'),
-});
-
-
-type UserFormProps = {
-    status: boolean;
-    type: "Create",
-} | {
-    status: boolean;
-    type: "Edit";
-    id: number;
-}
+type UserFormProps = UserDrawerProps;
+type userMutateOptionsType = MutateOptions<UserQueryType, Error, SchemaType, unknown>;
 const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => void}> = (props) => {
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const {toastError, toastSuccess} = useToast();
-    const {data, isFetching, isLoading} = useUser(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addUser = useAddUser()
-    const updateUser = useUpdateUser(props.type === "Edit" ? props.id : 0)
-    const form = useForm({
-        initialValues: {
-            email: '',
-            name: '',
-            password: '',
-            confirm_password: '',
-        },
+    const {toastError} = useToast();
+    const {data, isFetching, isLoading, status, error, refetch} = useUserQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const addUser = useAddUserMutation()
+    const updateUser = useUpdateUserMutation(props.type === "Edit" ? props.id : 0)
+    const form = useForm<SchemaType>({
         validate: yupResolver(props.type === "Edit" ? updateSchema : createSchema),
     });
     
@@ -73,10 +35,8 @@ const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => voi
     }, [data, props.type, props.status]);
     
     const onSubmit = async () => {
-        setLoading(true);
-        const userMutateOptions = {
+        const userMutateOptions:userMutateOptionsType = {
             onSuccess: () => {
-                toastSuccess("User " + props.type === "Edit" ? "updated" : "created" + " successfully.")
                 props.type==="Create" && form.reset();
                 props.toggleDrawer({status: false, type: 'Create'});
             },
@@ -93,36 +53,18 @@ const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => voi
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }
-                }else{
-                    toastError('Something went wrong. Please try again later.');
                 }
-            },
-            onSettled: () => setLoading(false)
+            }
         }
         if(props.type === "Edit"){
-            updateUser.mutateAsync(
-                {...form.values},
-                {
-                    onError: (error) => userMutateOptions.onError(error), 
-                    onSuccess: () => userMutateOptions.onSuccess(), 
-                    onSettled: () => userMutateOptions.onSettled(),
-                }
-            );
+            await updateUser.mutateAsync(form.values, userMutateOptions);
         }else{
-            addUser.mutateAsync(
-                {...form.values},
-                {
-                    onError: (error) => userMutateOptions.onError(error), 
-                    onSuccess: () => userMutateOptions.onSuccess(), 
-                    onSettled: () => userMutateOptions.onSettled(),
-                }
-            );
+            await addUser.mutateAsync(form.values, userMutateOptions);
         }
     };
 
     return (
-        <Box pos="relative">
-            <LoadingOverlay visible={isLoading || isFetching} zIndex={20} overlayProps={{ radius: "sm", blur: 2 }} />
+        <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <TextInput withAsterisk data-autofocus label="Name" placeholder="mantine dev" {...form.getInputProps('name')} mt="md" />
                 <TextInput withAsterisk label="Email" placeholder="you@mantine.dev" {...form.getInputProps('email')} mt="md" />
@@ -132,11 +74,11 @@ const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => voi
                         <PasswordInput label="Confirm Password" placeholder="Confirm password" withAsterisk mt="md" {...form.getInputProps('confirm_password')} />
                     </>
                 }
-                <Button type='submit' variant="filled" color='blue' mt="lg" loading={loading} disabled={loading} data-disabled={loading}>
+                <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addUser.isPending : updateUser.isPending} disabled={props.type === "Create" ? addUser.isPending : updateUser.isPending} data-disabled={props.type === "Create" ? addUser.isPending : updateUser.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>
             </form>
-        </Box>
+        </ErrorBoundary>
     )
 }
 

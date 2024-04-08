@@ -5,26 +5,25 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useAxios } from "../useAxios";
-import {
-  ApiPaginationQueryType,
-  PaginationType,
-  UserQueryType,
-} from "../../utils/types";
+import { PaginationType, UserQueryType } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useSearchParams } from "react-router-dom";
+import { useToast } from "../useToast";
+import { isAxiosError } from "axios";
 
 export const UserQueryKey = "user";
 export const UsersQueryKey = "users";
 
-export const useUsers: (
-  params: ApiPaginationQueryType
-) => UseQueryResult<PaginationType<{ user: UserQueryType[] }>, unknown> = ({
-  search = "",
-  page = QueryInitialPageParam,
-  limit = QueryTotalCount,
-}) => {
+export const useUsersQuery: () => UseQueryResult<
+  PaginationType<{ user: UserQueryType[] }>,
+  unknown
+> = () => {
   const { axios } = useAxios();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || QueryInitialPageParam.toString();
+  const limit = searchParams.get("limit") || QueryTotalCount.toString();
+  const search = searchParams.get("search") || "";
   return useQuery({
     queryKey: [UsersQueryKey, page, limit, search],
     queryFn: async () => {
@@ -36,7 +35,7 @@ export const useUsers: (
   });
 };
 
-export const useUser: (
+export const useUserQuery: (
   id: number,
   enabled: boolean
 ) => UseQueryResult<UserQueryType, unknown> = (id, enabled) => {
@@ -53,10 +52,92 @@ export const useUser: (
   });
 };
 
-export const useUpdateUser = (id: number) => {
-  const { axios } = useAxios();
+export const useUsersQuerySetData = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || QueryInitialPageParam.toString();
+  const limit = searchParams.get("limit") || QueryTotalCount.toString();
+  const search = searchParams.get("search") || "";
+
+  const addUsers = (newUserVal: UserQueryType) => {
+    queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
+      [UsersQueryKey, page, limit, search],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            user: [newUserVal, ...prev.user],
+          };
+        }
+      }
+    );
+  };
+
+  const updateUsers = (id: number, updateUserVal: UserQueryType) => {
+    queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
+      [UsersQueryKey, page, limit, search],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            user: prev.user.map((user) =>
+              user.id === id ? updateUserVal : user
+            ),
+          };
+        }
+      }
+    );
+  };
+
+  const deleteUsers = (id: number) => {
+    queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
+      [UsersQueryKey, page, limit, search],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            user: prev.user.filter((user) => user.id !== id),
+          };
+        }
+      }
+    );
+  };
+
+  return {
+    addUsers,
+    updateUsers,
+    deleteUsers,
+  };
+};
+
+export const useUserQuerySetData = () => {
+  const queryClient = useQueryClient();
+
+  const addUser = (newUserVal: UserQueryType) => {
+    queryClient.setQueryData([UserQueryKey, newUserVal.id], newUserVal);
+  };
+
+  const updateUser = (id: number, updateUserVal: UserQueryType) => {
+    queryClient.setQueryData([UserQueryKey, id], updateUserVal);
+  };
+
+  const deleteUser = (id: number) => {
+    queryClient.setQueryData([UserQueryKey, id], undefined);
+  };
+
+  return {
+    addUser,
+    updateUser,
+    deleteUser,
+  };
+};
+
+export const useUpdateUserMutation = (id: number) => {
+  const { axios } = useAxios();
+  const { updateUser } = useUserQuerySetData();
+  const { updateUsers } = useUsersQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async (updateUserVal: {
       email: string;
@@ -73,33 +154,24 @@ export const useUpdateUser = (id: number) => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: (updateUserVal) => {
       // ✅ update detail view directly
-      queryClient.setQueryData([UserQueryKey, id], updateUserVal);
-      queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
-        [
-          UsersQueryKey,
-          searchParams.get("page") || QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              user: prev.user.map((user) =>
-                user.id === id ? updateUserVal : user
-              ),
-            };
-          }
-        }
-      );
+      updateUser(id, updateUserVal);
+      updateUsers(id, updateUserVal);
+      toastSuccess("User updated successfully.");
+    },
+    onError: (error) => {
+      if (!isAxiosError(error)) {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
 
-export const useAddUser = () => {
+export const useAddUserMutation = () => {
   const { axios } = useAxios();
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
+  const { addUser } = useUserQuerySetData();
+  const { addUsers } = useUsersQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async (newUserVal: {
       email: string;
@@ -116,34 +188,24 @@ export const useAddUser = () => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: (newUserVal) => {
       // ✅ update detail view directly
-      queryClient.setQueryData<UserQueryType>(
-        [UserQueryKey, newUserVal.id],
-        newUserVal
-      );
-      queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
-        [
-          UsersQueryKey,
-          QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              user: [newUserVal, ...prev.user],
-            };
-          }
-        }
-      );
+      addUser(newUserVal);
+      addUsers(newUserVal);
+      toastSuccess("User created successfully.");
+    },
+    onError: (error) => {
+      if (!isAxiosError(error)) {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
 
-export const useDeleteUser = (id: number) => {
+export const useDeleteUserMutation = (id: number) => {
   const { axios } = useAxios();
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
+  const { deleteUser } = useUserQuerySetData();
+  const { deleteUsers } = useUsersQuerySetData();
+  const { toastSuccess, toastError } = useToast();
+
   return useMutation({
     mutationFn: async () => {
       const response = await axios.delete<{ data: UserQueryType }>(
@@ -154,22 +216,18 @@ export const useDeleteUser = (id: number) => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: () => {
       // ✅ update detail view directly
-      queryClient.setQueryData<PaginationType<{ user: UserQueryType[] }>>(
-        [
-          UsersQueryKey,
-          searchParams.get("page") || QueryInitialPageParam.toString(),
-          searchParams.get("limit") || QueryTotalCount.toString(),
-          searchParams.get("search") || "",
-        ],
-        (prev) => {
-          if (prev) {
-            return {
-              ...prev,
-              user: prev.user.filter((user) => user.id !== id),
-            };
-          }
+      deleteUser(id);
+      deleteUsers(id);
+      toastSuccess("User deleted successfully.");
+    },
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        if (error?.response?.data?.message) {
+          toastError(error.response.data.message);
         }
-      );
+      } else {
+        toastError("Something went wrong. Please try again later.");
+      }
     },
   });
 };
