@@ -114,15 +114,18 @@ export const useUserQuerySetData = () => {
   const queryClient = useQueryClient();
 
   const addUser = (newUserVal: UserQueryType) => {
-    queryClient.setQueryData([UserQueryKey, newUserVal.id], newUserVal);
+    queryClient.setQueryData<UserQueryType>(
+      [UserQueryKey, newUserVal.id],
+      newUserVal
+    );
   };
 
   const updateUser = (id: number, updateUserVal: UserQueryType) => {
-    queryClient.setQueryData([UserQueryKey, id], updateUserVal);
+    queryClient.setQueryData<UserQueryType>([UserQueryKey, id], updateUserVal);
   };
 
   const deleteUser = (id: number) => {
-    queryClient.setQueryData([UserQueryKey, id], undefined);
+    queryClient.setQueryData<UserQueryType>([UserQueryKey, id], undefined);
   };
 
   return {

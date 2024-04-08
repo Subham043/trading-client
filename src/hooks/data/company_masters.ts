@@ -136,11 +136,17 @@ export const useCompanyMasterQuerySetData = () => {
     id: number,
     updateCompanyMasterVal: CompanyMasterType
   ) => {
-    queryClient.setQueryData([CompanyMasterKey, id], updateCompanyMasterVal);
+    queryClient.setQueryData<CompanyMasterType>(
+      [CompanyMasterKey, id],
+      (prev) => ({ ...prev, ...updateCompanyMasterVal })
+    );
   };
 
   const deleteCompanyMaster = (id: number) => {
-    queryClient.setQueryData([CompanyMasterKey, id], undefined);
+    queryClient.setQueryData<CompanyMasterType>(
+      [CompanyMasterKey, id],
+      undefined
+    );
   };
 
   return {

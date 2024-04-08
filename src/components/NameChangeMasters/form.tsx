@@ -6,11 +6,11 @@ import { yupResolver } from "mantine-form-yup-resolver";
 import { Button, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddNameChangeMasterMutation, useNameChangeMasterQuery, useNameChangeMasterLatestQuery, useUpdateNameChangeMasterMutation } from "../../hooks/data/name_change_masters";
-import { MutateOptions, useQueryClient } from "@tanstack/react-query";
-import { CompanyMasterKey } from "../../hooks/data/company_masters";
-import { CompanyMasterType, NameChangeMasterFormType, NameChangeMasterType } from "../../utils/types";
+import { MutateOptions } from "@tanstack/react-query";
+import { useCompanyMasterQuerySetData } from "../../hooks/data/company_masters";
+import { AxiosErrorResponseType, NameChangeMasterFormType, NameChangeMasterType } from "../../utils/types";
 import { NameChangeMastersListModalProps } from "../../pages/nameChangeMasters/list";
-import { SchemaType, initialValues, schema } from "./schema";
+import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
@@ -26,14 +26,15 @@ type nameChangeMasterMutateOptionsType = MutateOptions<NameChangeMasterType, Err
 
 const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number, toggleModal: (value: NameChangeMastersListModalProps) => void}> = (props) => {
 
-    const queryClient = useQueryClient();
     const {toastError} = useToast();
     const {data:newData, isFetching:isNewFetching, isLoading:isNewLoading, status:newStatus, error:newError,  refetch:newRefetch} = useNameChangeMasterLatestQuery(props.mainCompanyId, (props.type === "Create" && props.status));
     const {data, isFetching, isLoading, status, error,  refetch} = useNameChangeMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const addNameChangeMaster = useAddNameChangeMasterMutation(props.mainCompanyId)
     const updateNameChangeMaster = useUpdateNameChangeMasterMutation(props.type === "Edit" ? props.id : 0, props.mainCompanyId)
+    const { updateCompanyMaster } = useCompanyMasterQuerySetData();
     const form = useForm<SchemaType>({
         initialValues,
+        transformValues,
         validate: yupResolver(schema),
     });
     
@@ -72,74 +73,43 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             onSuccess: () => {
                 props.type==="Create" && form.reset();
                 props.toggleModal({status: false, type: "Create", companyId: props.mainCompanyId});
+                if(props.type === "Edit"){
+                    updateCompanyMaster(data ? data.companyId : 0, {
+                        BSE: form.getTransformedValues().BSE,
+                        NSE: form.getTransformedValues().NSE,
+                        newName: form.getTransformedValues().newName,
+                        id: data ? data.companyId : 0,
+                        nameChangeMasterId: data ? data.id : 0,
+                        createdAt: new Date().toISOString(),
+                    })
+                }else{
+                    updateCompanyMaster(newData ? newData.companyId : 0, {
+                        BSE: form.getTransformedValues().BSE,
+                        NSE: form.getTransformedValues().NSE,
+                        newName: form.getTransformedValues().newName,
+                        id: newData ? newData.companyId : 0,
+                        nameChangeMasterId: newData ? newData.id : 0,
+                        createdAt: new Date().toISOString(),
+                    })
+                }
             },
             onError: (error:Error) => {
-                if(isAxiosError(error)){
-                    if(error?.response?.data?.formErrors?.newName){
-                        form.setFieldError('newName', error.response.data.formErrors?.newName[0]);
-                    }else if(error?.response?.data?.formErrors?.previousName){
-                        form.setFieldError('previousName', error.response.data.formErrors?.previousName[0]);
-                    }else if(error?.response?.data?.formErrors?.newRTA){
-                        form.setFieldError('newRTA', error.response.data.formErrors?.newRTA[0]);
-                    }else if(error?.response?.data?.formErrors?.previousRTA){
-                        form.setFieldError('previousRTA', error.response.data.formErrors?.previousRTA[0]);
-                    }else if(error?.response?.data?.formErrors?.BSE){
-                        form.setFieldError('BSE', error.response.data.formErrors?.BSE[0]);
-                    }else if(error?.response?.data?.formErrors?.NSE){
-                        form.setFieldError('NSE', error.response.data.formErrors?.NSE[0]);
-                    }else if(error?.response?.data?.formErrors?.dateNameChange){
-                        form.setFieldError('dateNameChange', error.response.data.formErrors?.dateNameChange[0]);
-                    }else if(error?.response?.data?.formErrors?.dateRTAChange){
-                        form.setFieldError('dateRTAChange', error.response.data.formErrors?.dateRTAChange[0]);
-                    }else if(error?.response?.data?.formErrors?.newSecuritySymbol){
-                        form.setFieldError('newSecuritySymbol', error.response.data.formErrors?.newSecuritySymbol[0]);
-                    }else if(error?.response?.data?.formErrors?.oldSecuritySymbol){
-                        form.setFieldError('oldSecuritySymbol', error.response.data.formErrors?.oldSecuritySymbol[0]);
-                    }else if(error?.response?.data?.formErrors?.dateSecurityChange){
-                        form.setFieldError('dateSecurityChange', error.response.data.formErrors?.dateSecurityChange[0]);
+                if(isAxiosError<AxiosErrorResponseType>(error)){
+                    if(error?.response?.data?.formErrors){
+                        for (const [key, value] of Object.entries(error?.response?.data?.formErrors)) {
+                            form.setFieldError(key, value[0]);
+                        }
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }
                 }
             }
         }
-        const formData = {
-            BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
-            NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
-            newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
-            previousName: (form.values.previousName && form.values.previousName.length>0) ? form.values.previousName : undefined,
-            dateNameChange: (form.values.dateNameChange && form.values.dateNameChange.length>0) ? form.values.dateNameChange : undefined,
-            newRTA: (form.values.newRTA && form.values.newRTA.length>0) ? form.values.newRTA : undefined,
-            previousRTA: (form.values.previousRTA && form.values.previousRTA.length>0) ? form.values.previousRTA : undefined,
-            dateRTAChange: (form.values.dateRTAChange && form.values.dateRTAChange.length>0) ? form.values.dateRTAChange : undefined,
-            newSecuritySymbol: (form.values.newSecuritySymbol && form.values.newSecuritySymbol.length>0) ? form.values.newSecuritySymbol : undefined,
-            oldSecuritySymbol: (form.values.oldSecuritySymbol && form.values.oldSecuritySymbol.length>0) ? form.values.oldSecuritySymbol : undefined,
-            dateSecurityChange: (form.values.dateSecurityChange && form.values.dateSecurityChange.length>0) ? form.values.dateSecurityChange : undefined,
-        }
+        
         if(props.type === "Edit"){
-            await updateNameChangeMaster.mutateAsync(formData, nameChangeMasterMutateOptions);
-            queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, data ? data.companyId : undefined], (prev) => {
-                if(prev){
-                    return {
-                        ...prev,
-                        newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
-                        BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
-                        NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
-                    }
-                }
-            });
+            await updateNameChangeMaster.mutateAsync(form.getTransformedValues(), nameChangeMasterMutateOptions);
         }else{
-            await addNameChangeMaster.mutateAsync(formData, nameChangeMasterMutateOptions);
-            queryClient.setQueryData<CompanyMasterType>([CompanyMasterKey, newData ? newData.companyId : undefined], (prev) => {
-                if(prev){
-                    return {
-                        ...prev,
-                        newName: (form.values.newName && form.values.newName.length>0) ? form.values.newName : undefined,
-                        BSE: (form.values.BSE && form.values.BSE.length>0) ? form.values.BSE : undefined,
-                        NSE: (form.values.NSE && form.values.NSE.length>0) ? form.values.NSE : undefined,
-                    }
-                }
-            });
+            await addNameChangeMaster.mutateAsync(form.getTransformedValues(), nameChangeMasterMutateOptions);
         }
     };
 

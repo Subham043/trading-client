@@ -28,6 +28,45 @@ export const initialValues: SchemaType = {
   dateSecurityChange: undefined,
 };
 
+export const transformValues = (values: SchemaType) => {
+  return {
+    BSE: values.BSE && values.BSE.length > 0 ? values.BSE : undefined,
+    NSE: values.NSE && values.NSE.length > 0 ? values.NSE : undefined,
+    newName:
+      values.newName && values.newName.length > 0 ? values.newName : undefined,
+    previousName:
+      values.previousName && values.previousName.length > 0
+        ? values.previousName
+        : undefined,
+    dateNameChange:
+      values.dateNameChange && values.dateNameChange.length > 0
+        ? values.dateNameChange
+        : undefined,
+    newRTA:
+      values.newRTA && values.newRTA.length > 0 ? values.newRTA : undefined,
+    previousRTA:
+      values.previousRTA && values.previousRTA.length > 0
+        ? values.previousRTA
+        : undefined,
+    dateRTAChange:
+      values.dateRTAChange && values.dateRTAChange.length > 0
+        ? values.dateRTAChange
+        : undefined,
+    newSecuritySymbol:
+      values.newSecuritySymbol && values.newSecuritySymbol.length > 0
+        ? values.newSecuritySymbol
+        : undefined,
+    oldSecuritySymbol:
+      values.oldSecuritySymbol && values.oldSecuritySymbol.length > 0
+        ? values.oldSecuritySymbol
+        : undefined,
+    dateSecurityChange:
+      values.dateSecurityChange && values.dateSecurityChange.length > 0
+        ? values.dateSecurityChange
+        : undefined,
+  };
+};
+
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   BSE: yup.string().typeError("BSE must be a string").optional(),
   NSE: yup.string().typeError("NSE must be a string").optional(),

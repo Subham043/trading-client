@@ -5,11 +5,9 @@ import { yupResolver } from "mantine-form-yup-resolver";
 import { Button, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddCompanyMasterMutation, useUpdateCompanyMasterMutation, useCompanyMasterQuery } from "../../hooks/data/company_masters";
-import { MutateOptions, useQueryClient } from "@tanstack/react-query";
-import { CompanyMasterFormType, CompanyMasterType, NameChangeMasterType, PaginationType } from "../../utils/types";
-import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters";
-import { useSearchParams } from "react-router-dom";
-import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
+import { MutateOptions } from "@tanstack/react-query";
+import { AxiosErrorResponseType, CompanyMasterFormType, CompanyMasterType } from "../../utils/types";
+import { useNameChangeMastersQuerySetData } from "../../hooks/data/name_change_masters";
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
 import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -19,12 +17,11 @@ type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, Co
 
 const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
 
-    const [searchParams] = useSearchParams();
     const {toastError} = useToast();
-    const queryClient = useQueryClient();
     const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const addCompanyMaster = useAddCompanyMasterMutation()
     const updateCompanyMaster = useUpdateCompanyMasterMutation(props.type === "Edit" ? props.id : 0)
+    const { updateNameChangeMasters } = useNameChangeMastersQuerySetData();
     const form = useForm<SchemaType>({
         initialValues,
         transformValues,
@@ -64,49 +61,23 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
             onSuccess: () => {
                 props.type==="Create" && form.reset();
                 props.toggleModal({type: "Create", status: false});
+                if(props.type === "Edit"){
+                    updateNameChangeMasters((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0, data ? data.id : 0, {
+                        id: (data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0,
+                        newName: form.getTransformedValues().newName,
+                        BSE: form.getTransformedValues().BSE,
+                        NSE: form.getTransformedValues().NSE,
+                        companyId: (data && data.id) ? data.id : 0,
+                        createdAt: new Date().toISOString(),
+                    });
+                }
             },
             onError: (error:Error) => {
-                if(isAxiosError(error)){
-                    if(error?.response?.data?.formErrors?.email){
-                        form.setFieldError('email', error.response.data.formErrors?.email[0]);
-                    }else if(error?.response?.data?.formErrors?.newName){
-                        form.setFieldError('newName', error.response.data.formErrors?.newName[0]);
-                    }else if(error?.response?.data?.formErrors?.BSE){
-                        form.setFieldError('BSE', error.response.data.formErrors?.BSE[0]);
-                    }else if(error?.response?.data?.formErrors?.NSE){
-                        form.setFieldError('NSE', error.response.data.formErrors?.NSE[0]);
-                    }else if(error?.response?.data?.formErrors?.ISIN){
-                        form.setFieldError('ISIN', error.response.data.formErrors?.ISIN[0]);
-                    }else if(error?.response?.data?.formErrors?.CIN){
-                        form.setFieldError('CIN', error.response.data.formErrors?.CIN[0]);
-                    }else if(error?.response?.data?.formErrors?.faceValue){
-                        form.setFieldError('faceValue', error.response.data.formErrors?.faceValue[0]);
-                    }else if(error?.response?.data?.formErrors?.closingPriceBSE){
-                        form.setFieldError('closingPriceBSE', error.response.data.formErrors?.closingPriceBSE[0]);
-                    }else if(error?.response?.data?.formErrors?.closingPriceNSE){
-                        form.setFieldError('closingPriceNSE', error.response.data.formErrors?.closingPriceNSE[0]);
-                    }else if(error?.response?.data?.formErrors?.registeredOffice){
-                        form.setFieldError('registeredOffice', error.response.data.formErrors?.registeredOffice[0]);
-                    }else if(error?.response?.data?.formErrors?.city){
-                        form.setFieldError('city', error.response.data.formErrors?.city[0]);
-                    }else if(error?.response?.data?.formErrors?.state){
-                        form.setFieldError('state', error.response.data.formErrors?.state[0]);
-                    }else if(error?.response?.data?.formErrors?.pincode){
-                        form.setFieldError('pincode', error.response.data.formErrors?.pincode[0]);
-                    }else if(error?.response?.data?.formErrors?.telephone){
-                        form.setFieldError('telephone', error.response.data.formErrors?.telephone[0]);
-                    }else if(error?.response?.data?.formErrors?.fax){
-                        form.setFieldError('fax', error.response.data.formErrors?.fax[0]);
-                    }else if(error?.response?.data?.formErrors?.website){
-                        form.setFieldError('website', error.response.data.formErrors?.website[0]);
-                    }else if(error?.response?.data?.formErrors?.nameContactPerson){
-                        form.setFieldError('nameContactPerson', error.response.data.formErrors?.nameContactPerson[0]);
-                    }else if(error?.response?.data?.formErrors?.designationContactPerson){
-                        form.setFieldError('designationContactPerson', error.response.data.formErrors?.designationContactPerson[0]);
-                    }else if(error?.response?.data?.formErrors?.emailContactPerson){
-                        form.setFieldError('emailContactPerson', error.response.data.formErrors?.emailContactPerson[0]);
-                    }else if(error?.response?.data?.formErrors?.phoneContactPerson){
-                        form.setFieldError('phoneContactPerson', error.response.data.formErrors?.phoneContactPerson[0]);
+                if(isAxiosError<AxiosErrorResponseType>(error)){
+                    if(error?.response?.data?.formErrors){
+                        for (const [key, value] of Object.entries(error?.response?.data?.formErrors)) {
+                            form.setFieldError(key, value[0]);
+                        }
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }
@@ -116,34 +87,6 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
         
         if(props.type === "Edit"){
             await updateCompanyMaster.mutateAsync(form.getTransformedValues(), companyMasterMutateOptions);
-            queryClient.setQueryData<
-                PaginationType<{ nameChangeMaster: NameChangeMasterType[] }>
-            >(
-                [
-                NameChangeMastersQueryKey,
-                data ? data.id : 0,
-                searchParams.get("page") || QueryInitialPageParam.toString(),
-                searchParams.get("limit") || QueryTotalCount.toString(),
-                searchParams.get("search") || "",
-                ],
-                (prev) => {
-                    if (prev) {
-                        return {
-                            ...prev,
-                            nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
-                                nameChangeMaster.id === ((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0)
-                                ? {
-                                    ...nameChangeMaster,
-                                    newName: form.getTransformedValues().newName,
-                                    BSE: form.getTransformedValues().BSE,
-                                    NSE: form.getTransformedValues().NSE,
-                                }
-                                : nameChangeMaster
-                            ),
-                        };
-                    }
-                }
-            );
         }else{
             await addCompanyMaster.mutateAsync(form.getTransformedValues(), companyMasterMutateOptions);
         }

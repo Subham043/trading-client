@@ -3,11 +3,11 @@ import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useAddUserMutation, useUpdateUserMutation, useUserQuery } from "../../hooks/data/users";
 import { UserDrawerProps } from "../../pages/users";
 import { MutateOptions } from "@tanstack/react-query";
-import { UserQueryType } from "../../utils/types";
+import { AxiosErrorResponseType, UserQueryType } from "../../utils/types";
 import { SchemaType, createSchema, updateSchema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
@@ -41,15 +41,11 @@ const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => voi
                 props.toggleDrawer({status: false, type: 'Create'});
             },
             onError: (error:Error) => {
-                if(error instanceof AxiosError){
-                    if(error?.response?.data?.formErrors?.email){
-                        form.setFieldError('email', error.response.data.formErrors?.email[0]);
-                    }else if(error?.response?.data?.formErrors?.name){
-                        form.setFieldError('name', error.response.data.formErrors?.name[0]);
-                    }else if(error?.response?.data?.formErrors?.password){
-                        form.setFieldError('password', error.response.data.formErrors?.password[0]);
-                    }else if(error?.response?.data?.formErrors?.confirm_password){
-                        form.setFieldError('confirm_password', error.response.data.formErrors?.confirm_password[0]);
+                if(isAxiosError<AxiosErrorResponseType>(error)){
+                    if(error?.response?.data?.formErrors){
+                        for (const [key, value] of Object.entries(error?.response?.data?.formErrors)) {
+                            form.setFieldError(key, value[0]);
+                        }
                     }else if(error?.response?.data?.message){
                         toastError(error.response.data.message);
                     }

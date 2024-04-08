@@ -158,7 +158,7 @@ export const useNameChangeMastersQuerySetData = () => {
           ...prev,
           nameChangeMaster: prev.nameChangeMaster.map((nameChangeMaster) =>
             nameChangeMaster.id === id
-              ? updateNameChangeMasterVal
+              ? { ...nameChangeMaster, ...updateNameChangeMasterVal }
               : nameChangeMaster
           ),
         };
@@ -204,14 +204,17 @@ export const useNameChangeMasterQuerySetData = () => {
     id: number,
     updateNameChangeMasterVal: NameChangeMasterType
   ) => {
-    queryClient.setQueryData(
+    queryClient.setQueryData<NameChangeMasterType>(
       [NameChangeMasterKey, id],
       updateNameChangeMasterVal
     );
   };
 
   const deleteNameChangeMaster = (id: number) => {
-    queryClient.setQueryData([NameChangeMasterKey, id], undefined);
+    queryClient.setQueryData<NameChangeMasterType>(
+      [NameChangeMasterKey, id],
+      undefined
+    );
   };
 
   return {
