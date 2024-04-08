@@ -1,17 +1,18 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
 import { IconCheck, IconEye, IconTrash, IconX } from '@tabler/icons-react';
 import { NameChangeMasterType } from "../../utils/types";
 import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
-import { DrawerProps, ModalProps } from "../../pages/nameChangeMasters/list";
+import { NameChangeMastersListDrawerProps, NameChangeMastersListModalProps } from "../../pages/nameChangeMasters/list";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useToast } from "../../hooks/useToast";
 import { AxiosError } from "axios";
 import { useDeleteNameChangeMaster, useNameChangeMasters } from "../../hooks/data/name_change_masters";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
+const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const deleteNameChangeMaster = useDeleteNameChangeMaster(id, companyId)
@@ -98,39 +99,30 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: M
   )
 }
 
-const NameChangeMasterTable:FC<{toggleModal: (value: ModalProps) => void, toggleDrawer: (value: DrawerProps) => void, companyId: number}> = (props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const {data:nameChangeMasters, isFetching, isLoading} = useNameChangeMasters({companyId: props.companyId, page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+const NameChangeMasterTable:FC<{toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void, companyId: number}> = (props) => {
+  const [searchParams] = useSearchParams();
+  const {data:nameChangeMasters, isFetching, isLoading, status, error, refetch} = useNameChangeMasters({companyId: props.companyId, page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
   return (
-    <Box pos="relative">
-      <LoadingOverlay visible={isLoading || isFetching} zIndex={30} overlayProps={{ radius: "sm", blur: 2 }} />
-      {(nameChangeMasters && nameChangeMasters.nameChangeMaster.length>0) ? <>
-        <Table.ScrollContainer minWidth={800}>
-          <Table verticalSpacing="sm">
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>New Name</Table.Th>
-                <Table.Th>Previous Name</Table.Th>
-                <Table.Th>Date of Name Change</Table.Th>
-                <Table.Th>BSE</Table.Th>
-                <Table.Th>NSE</Table.Th>
-                <Table.Th>Created On</Table.Th>
-                <Table.Th />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{
-              (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} />)
-            }</Table.Tbody>
-          </Table>
-        </Table.ScrollContainer>
-        <Center mt="md" pb="sm">
-          <Pagination value={nameChangeMasters?.current_page || 10} total={nameChangeMasters?.last_page || 10} onChange={(page) => setSearchParams(page ? {page: page.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''} : {})} />
-        </Center>
-      </>: 
-      <Center mt="md" pb="sm" pt="sm">
-        <Text>No data found</Text>
-      </Center>}
-    </Box>
+    <ErrorBoundary hasData={nameChangeMasters ? nameChangeMasters.nameChangeMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={nameChangeMasters?.current_page} last_page={nameChangeMasters?.last_page} refetch={refetch}>
+      <Table.ScrollContainer minWidth={800}>
+        <Table verticalSpacing="sm">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>New Name</Table.Th>
+              <Table.Th>Previous Name</Table.Th>
+              <Table.Th>Date of Name Change</Table.Th>
+              <Table.Th>BSE</Table.Th>
+              <Table.Th>NSE</Table.Th>
+              <Table.Th>Created On</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{
+            (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} />)
+          }</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </ErrorBoundary>
   );
 }
 

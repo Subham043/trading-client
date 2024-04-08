@@ -6,7 +6,7 @@ import { Box, Button, LoadingOverlay, PasswordInput, TextInput } from "@mantine/
 import * as yup from 'yup';
 import { AxiosError } from "axios";
 import { useAddUser, useUpdateUser, useUser } from "../../hooks/data/users";
-import { DrawerProps } from "../../pages/users";
+import { UserDrawerProps } from "../../pages/users";
 
 
 const createSchema = yup.object().shape({
@@ -45,7 +45,7 @@ type UserFormProps = {
     type: "Edit";
     id: number;
 }
-const UserForm:FC<UserFormProps & {toggleDrawer: (value: DrawerProps) => void}> = (props) => {
+const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => void}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const {toastError, toastSuccess} = useToast();

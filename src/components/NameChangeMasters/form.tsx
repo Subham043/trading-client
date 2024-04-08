@@ -10,7 +10,7 @@ import { useAddNameChangeMaster, useNameChangeMaster, useNameChangeMasterLatest,
 import { useQueryClient } from "@tanstack/react-query";
 import { CompanyMasterKey } from "../../hooks/data/company_masters";
 import { CompanyMasterType } from "../../utils/types";
-import { ModalProps } from "../../pages/nameChangeMasters/list";
+import { NameChangeMastersListModalProps } from "../../pages/nameChangeMasters/list";
 
 type FormType = {
     newName?: string | undefined;
@@ -82,7 +82,7 @@ type NameChangeMasterFormProps = {
     type: "Edit";
     id: number;
 }
-const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number, toggleModal: (value: ModalProps) => void}> = (props) => {
+const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number, toggleModal: (value: NameChangeMastersListModalProps) => void}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const queryClient = useQueryClient();

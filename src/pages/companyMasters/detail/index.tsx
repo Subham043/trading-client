@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import CompanyMasterModal from "../../../components/CompanyMasters/modal";
 import CompanyMasterDetail from "../../../components/CompanyMasters/detail";
 
-export type ModalProps = {
+export type CompanyMastersDetailModalProps = {
     status: boolean;
     type: "Create",
 } | {
@@ -12,8 +12,8 @@ export type ModalProps = {
 }
 
 const CompanyMastersDetailPage:FC = () => {
-    const [modal, setModal] = useState<ModalProps>({status: false, type: 'Create'});
-    const toggleModal = (value:ModalProps) => setModal(value);
+    const [modal, setModal] = useState<CompanyMastersDetailModalProps>({status: false, type: 'Create'});
+    const toggleModal = (value:CompanyMastersDetailModalProps) => setModal(value);
 
     return (
         <div>

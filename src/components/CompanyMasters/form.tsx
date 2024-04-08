@@ -11,7 +11,7 @@ import { NameChangeMasterType, PaginationType } from "../../utils/types";
 import { NameChangeMastersQueryKey } from "../../hooks/data/name_change_masters";
 import { useSearchParams } from "react-router-dom";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
-import { ModalProps } from "../../pages/companyMasters/list";
+import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
 
 type FormType = {
     email?: string | undefined;
@@ -131,7 +131,7 @@ type CompanyMasterFormProps = {
     type: "Edit";
     id: number;
 }
-const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: ModalProps) => void}> = (props) => {
+const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [searchParams] = useSearchParams();

@@ -1,18 +1,19 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { CompanyMasterType } from "../../utils/types";
 import { Link, useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
-import { ModalProps } from "../../pages/companyMasters/list";
+import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useToast } from "../../hooks/useToast";
 import { AxiosError } from "axios";
 import { useDeleteCompanyMaster, useCompanyMasters } from "../../hooks/data/company_masters";
 import { page_routes } from "../../utils/page_routes";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: ModalProps) => void}> = ({id, newName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal}) => {
+const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: CompanyMastersModalProps) => void}> = ({id, newName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const deleteCompanyMaster = useDeleteCompanyMaster(id)
@@ -106,40 +107,31 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: ModalPr
   )
 }
 
-const CompanyMasterTable:FC<{toggleModal: (value: ModalProps) => void}> = (props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const {data:companyMasters, isFetching, isLoading} = useCompanyMasters({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
+  const [searchParams] = useSearchParams();
+  const {data:companyMasters, isFetching, isLoading, status, error, refetch} = useCompanyMasters({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
   return (
-    <Box pos="relative">
-      <LoadingOverlay visible={isLoading || isFetching} zIndex={30} overlayProps={{ radius: "sm", blur: 2 }} />
-      {(companyMasters && companyMasters.companyMaster.length>0) ? <>
-        <Table.ScrollContainer minWidth={800}>
-          <Table verticalSpacing="sm">
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Name</Table.Th>
-                <Table.Th>ISIN</Table.Th>
-                <Table.Th>CIN</Table.Th>
-                <Table.Th>BSE</Table.Th>
-                <Table.Th>NSE</Table.Th>
-                <Table.Th>Face Value</Table.Th>
-                <Table.Th>Created On</Table.Th>
-                <Table.Th />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{
-              (companyMasters ? companyMasters.companyMaster : []).map((item) => <CompanyMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} />)
-            }</Table.Tbody>
-          </Table>
-        </Table.ScrollContainer>
-        <Center mt="md" pb="sm">
-          <Pagination value={companyMasters?.current_page || 10} total={companyMasters?.last_page || 10} onChange={(page) => setSearchParams(page ? {page: page.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''} : {})} />
-        </Center>
-      </>: 
-      <Center mt="md" pb="sm" pt="sm">
-        <Text>No data found</Text>
-      </Center>}
-    </Box>
+    <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
+      <Table.ScrollContainer minWidth={800}>
+        <Table verticalSpacing="sm">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>ISIN</Table.Th>
+              <Table.Th>CIN</Table.Th>
+              <Table.Th>BSE</Table.Th>
+              <Table.Th>NSE</Table.Th>
+              <Table.Th>Face Value</Table.Th>
+              <Table.Th>Created On</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{
+            (companyMasters ? companyMasters.companyMaster : []).map((item) => <CompanyMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} />)
+          }</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </ErrorBoundary>
   );
 }
 

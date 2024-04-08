@@ -1,14 +1,15 @@
 import { FC, useState } from "react"
-import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover, Center, Pagination, LoadingOverlay, Box } from '@mantine/core';
+import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover } from '@mantine/core';
 import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { UserQueryType } from "../../utils/types";
 import { useSearchParams } from "react-router-dom";
 import dayjs from 'dayjs';
-import { DrawerProps } from "../../pages/users";
+import { UserDrawerProps } from "../../pages/users";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useToast } from "../../hooks/useToast";
 import { AxiosError } from "axios";
 import { useDeleteUser, useUsers } from "../../hooks/data/users";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
 const roleColors: Record<string, string> = {
   admin: 'blue',
@@ -20,7 +21,7 @@ const statusColors: Record<string, string> = {
   blocked: 'red',
 };
 
-const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: DrawerProps) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer}) => {
+const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const deleteUser = useDeleteUser(id)
@@ -103,38 +104,30 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: DrawerProps) => voi
   )
 }
 
-const UserTable:FC<{toggleDrawer: (value: DrawerProps) => void}> = (props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const {data:users, isFetching, isLoading} = useUsers({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) => {
+  const [searchParams] = useSearchParams();
+  const {data:users, isFetching, isLoading, status, error, refetch} = useUsers({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''});
+  
   return (
-    <Box pos="relative">
-      <LoadingOverlay visible={isLoading || isFetching} zIndex={30} overlayProps={{ radius: "sm", blur: 2 }} />
-      {(users && users.user.length>0) ? <>
-        <Table.ScrollContainer minWidth={800}>
-          <Table verticalSpacing="sm">
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Name</Table.Th>
-                <Table.Th>Email</Table.Th>
-                <Table.Th>Role</Table.Th>
-                <Table.Th>Status</Table.Th>
-                <Table.Th>Created On</Table.Th>
-                <Table.Th />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{
-              (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
-            }</Table.Tbody>
-          </Table>
-        </Table.ScrollContainer>
-        <Center mt="md" pb="sm">
-          <Pagination value={users?.current_page || 10} total={users?.last_page || 10} onChange={(page) => setSearchParams(page ? {page: page.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''} : {})} />
-        </Center>
-      </>:
-      <Center mt="md" pb="sm" pt="sm">
-        <Text>No data found</Text>
-      </Center>}
-    </Box>
+    <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
+      <Table.ScrollContainer minWidth={800}>
+        <Table verticalSpacing="sm">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Email</Table.Th>
+              <Table.Th>Role</Table.Th>
+              <Table.Th>Status</Table.Th>
+              <Table.Th>Created On</Table.Th>
+              <Table.Th />
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>{
+            (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
+          }</Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </ErrorBoundary>
   );
 }
 

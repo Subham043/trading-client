@@ -5,6 +5,17 @@ export type ChildrenType = {
   children: ReactNode;
 };
 
+export type CommonDrawerProps =
+  | {
+      status: boolean;
+      type: "Create";
+    }
+  | {
+      status: boolean;
+      type: "Edit";
+      id: number;
+    };
+
 export type UserType = {
   access_token: string;
   id: string;
@@ -99,10 +110,12 @@ export type UserQueryType = {
   createdAt: Date;
 };
 
-export type PaginationType<T> = T & {
+export type PaginationMainType = {
   total: number;
   current_page: number;
   per_page: number;
   first_page: number;
   last_page: number;
 };
+
+export type PaginationType<T> = T & PaginationMainType;

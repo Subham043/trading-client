@@ -1,15 +1,13 @@
-import { Button, Group, Paper, TextInput, rem } from "@mantine/core";
+import { Paper } from "@mantine/core";
 import { FC, useState } from "react";
 import classes from './nameChangeMasters.module.css';
-import { IconSearch } from "@tabler/icons-react";
-import { useParams, useSearchParams } from "react-router-dom";
-import debounce from "lodash.debounce";
-import { QueryInitialPageParam, QueryTotalCount } from "../../../utils/constant";
+import { useParams } from "react-router-dom";
 import NameChangeMasterTable from "../../../components/NameChangeMasters/table";
 import NameChangeMasterModal from "../../../components/NameChangeMasters/modal";
 import NameChangeMasterDrawer from "../../../components/NameChangeMasters/drawer";
+import SearchButtonHeader from "../../../components/Layout/SearchButtonHeader";
 
-export type ModalProps = {
+export type NameChangeMastersListModalProps = {
     status: boolean;
     type: "Create",
     companyId: number;
@@ -19,7 +17,7 @@ export type ModalProps = {
     id: number;
 }
 
-export type DrawerProps = {
+export type NameChangeMastersListDrawerProps = {
     drawerStatus: false;
 } | {
     drawerStatus: true;
@@ -28,27 +26,14 @@ export type DrawerProps = {
 
 const NameChangeMastersListPage:FC = () => {
     const param = useParams<{companyId: string}>()
-    const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
-    const [modal, setModal] = useState<ModalProps>({status: false, type: 'Create', companyId: Number(param.companyId)});
-    const toggleModal = (value:ModalProps) => setModal(value);
-    const [drawerStatus, setDrawerStatus] = useState<DrawerProps>({drawerStatus: false});
-    const toggleDrawer = (value:DrawerProps) => setDrawerStatus(value);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const searchHandler = debounce((value: string) => setSearchParams({page: searchParams.get('page') || QueryInitialPageParam.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: value}), 500)
+    const [modal, setModal] = useState<NameChangeMastersListModalProps>({status: false, type: 'Create', companyId: Number(param.companyId)});
+    const toggleModal = (value:NameChangeMastersListModalProps) => setModal(value);
+    const [drawerStatus, setDrawerStatus] = useState<NameChangeMastersListDrawerProps>({drawerStatus: false});
+    const toggleDrawer = (value:NameChangeMastersListDrawerProps) => setDrawerStatus(value);
 
     return (
         <div>
-            <Group justify="space-between" mb="lg">
-                <Button type='submit' variant="filled" color='blue' onClick={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})}>
-                    Change
-                </Button>
-                <TextInput
-                    rightSectionPointerEvents="none"
-                    rightSection={icon}
-                    placeholder="Search"
-                    onChange={(event) => searchHandler(event.target.value)}
-                />
-            </Group>
+            <SearchButtonHeader hasButton={true} buttonText="Change" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <NameChangeMasterTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} companyId={Number(param.companyId)} />
             </Paper>

@@ -1,17 +1,17 @@
 import { FC } from "react"
-import { Table, Group, Text, LoadingOverlay, Box, Button, Paper, SimpleGrid } from '@mantine/core';
+import { Table, Group, Text, Box, Button, Paper, SimpleGrid } from '@mantine/core';
 import { useParams } from "react-router-dom";
-import { ModalProps } from "../../pages/companyMasters/detail";
+import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detail";
 import classes from '../../pages/companyMasters/detail/companyMasters.module.css'
 import { useCompanyMaster } from "../../hooks/data/company_masters";
 import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
+import ErrorBoundary from "../Layout/ErrorBoundary";
 
-const CompanyMasterDetail:FC<{toggleModal: (value: ModalProps) => void}> = (props) => {
+const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProps) => void}> = (props) => {
   const param = useParams<{companyId: string}>();
-  const {data, isFetching, isLoading} = useCompanyMaster(Number(param.companyId), true);
+  const {data, isFetching, isLoading, status, error, refetch} = useCompanyMaster(Number(param.companyId), true);
   return (
-    <Box pos="relative" bg="transparent">
-        <LoadingOverlay visible={isLoading || isFetching} zIndex={30} overlayProps={{ radius: "sm", blur: 2 }} />
+    <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         <Group justify="space-between" mb="lg" align="center">
             <Text size="xl" fw={700}>Company Master Detail</Text>
             <Button type='submit' variant="filled" color='blue' onClick={() => props.toggleModal({status: true, type: 'Edit', id: Number(param.companyId)})}>
@@ -132,7 +132,7 @@ const CompanyMasterDetail:FC<{toggleModal: (value: ModalProps) => void}> = (prop
             </div>
             <NameChangeMastersListPage />
         </Box>
-    </Box>
+    </ErrorBoundary>
   );
 }
 
