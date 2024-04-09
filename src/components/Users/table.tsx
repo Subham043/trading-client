@@ -33,7 +33,7 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
           </Group>
       </Table.Td>
       <Table.Td>
-          <Anchor component="button" size="sm">
+          <Anchor href={`mailto:${email}`} component="a" size="sm">
           {email}
           </Anchor>
       </Table.Td>

@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Table, Group, Text, ActionIcon, rem } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Anchor } from '@mantine/core';
 import { IconEye } from '@tabler/icons-react';
 import { NameChangeMasterType } from "../../utils/types";
 import { Link } from "react-router-dom";
@@ -18,9 +18,11 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
   return (
     <Table.Tr>
       <Table.Td>
-          <Text fz="sm" fw={500}>
-              {ISIN}
-          </Text>
+          <Link to={`${page_routes.companyMasters.list}/${companyId}`}>
+            <Anchor component="button" size="sm">
+            {ISIN}
+            </Anchor>
+          </Link>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>

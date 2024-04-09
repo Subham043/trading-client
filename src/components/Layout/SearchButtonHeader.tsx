@@ -26,7 +26,7 @@ const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...prop
     const {searchHandler} = useSearchQueryParam();
 
     return (
-        <Group justify={(!props.hasButton && hasSearch) ? "flex-end" : "space-between"} mb="lg">
+        <Group justify={(!props.hasButton && !props.hasExport && hasSearch) ? "flex-end" : "space-between"} mb="lg">
             <Group align="center" gap={"xs"}>
                 {props.hasButton && <Button type='submit' variant="filled" color='blue' onClick={props.buttonClickHandler}>
                     {props.buttonText}

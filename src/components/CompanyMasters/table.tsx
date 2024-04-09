@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Anchor } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { CompanyMasterType } from "../../utils/types";
 import { Link } from "react-router-dom";
@@ -20,6 +20,13 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
   return (
     <Table.Tr>
       <Table.Td>
+          <Link to={`${page_routes.companyMasters.list}/${id}`}>
+            <Anchor component="button" size="sm">
+            {ISIN}
+            </Anchor>
+          </Link>
+      </Table.Td>
+      <Table.Td>
           <Text fz="sm" fw={500}>
               {newName}
           </Text>
@@ -27,11 +34,6 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
       <Table.Td>
           <Text fz="sm" fw={500}>
               {currentName}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {ISIN}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -103,9 +105,9 @@ const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => v
         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
           <Table.Thead bg="blue">
             <Table.Tr>
+              <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
               <Table.Th style={{color: 'white'}}>Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
               <Table.Th style={{color: 'white'}}>CIN</Table.Th>
               <Table.Th style={{color: 'white'}}>BSE</Table.Th>
               <Table.Th style={{color: 'white'}}>NSE</Table.Th>
