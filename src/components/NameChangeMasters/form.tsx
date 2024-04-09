@@ -46,12 +46,12 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                 newName: data.newName ? data.newName : undefined,
                 previousName: data.previousName ? data.previousName : undefined,
                 dateNameChange: data.dateNameChange ? data.dateNameChange : undefined,
-                newRTA: data.newRTA ? data.newRTA : undefined,
-                previousRTA: data.previousRTA ? data.previousRTA : undefined,
-                dateRTAChange: data.dateRTAChange ? data.dateRTAChange : undefined,
-                newSecuritySymbol: data.newSecuritySymbol ? data.newSecuritySymbol : undefined,
-                oldSecuritySymbol: data.oldSecuritySymbol ? data.oldSecuritySymbol : undefined,
-                dateSecurityChange: data.dateSecurityChange ? data.dateSecurityChange : undefined,
+                // newRTA: data.newRTA ? data.newRTA : undefined,
+                // previousRTA: data.previousRTA ? data.previousRTA : undefined,
+                // dateRTAChange: data.dateRTAChange ? data.dateRTAChange : undefined,
+                // newSecuritySymbol: data.newSecuritySymbol ? data.newSecuritySymbol : undefined,
+                // oldSecuritySymbol: data.oldSecuritySymbol ? data.oldSecuritySymbol : undefined,
+                // dateSecurityChange: data.dateSecurityChange ? data.dateSecurityChange : undefined,
             });
         }else if(props.type === "Create" && newData && props.status){
             form.setValues({
@@ -59,10 +59,10 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                 NSE: newData.NSE ? newData.NSE : undefined,
                 previousName: newData.newName ? newData.newName : undefined,
                 dateNameChange: newData.dateNameChange ? newData.dateNameChange : undefined,
-                previousRTA: newData.newRTA ? newData.newRTA : undefined,
-                dateRTAChange: newData.dateRTAChange ? newData.dateRTAChange : undefined,
-                oldSecuritySymbol: newData.newSecuritySymbol ? newData.newSecuritySymbol : undefined,
-                dateSecurityChange: newData.dateSecurityChange ? newData.dateSecurityChange : undefined,
+                // previousRTA: newData.newRTA ? newData.newRTA : undefined,
+                // dateRTAChange: newData.dateRTAChange ? newData.dateRTAChange : undefined,
+                // oldSecuritySymbol: newData.newSecuritySymbol ? newData.newSecuritySymbol : undefined,
+                // dateSecurityChange: newData.dateSecurityChange ? newData.dateSecurityChange : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,11 +120,17 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     <TextInput label="NSE" {...form.getInputProps('NSE')} />
                     <TextInput label="BSE" {...form.getInputProps('BSE')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="New Name" {...form.getInputProps('newName')} />
                     <TextInput label="Previous Name" {...form.getInputProps('previousName')} />
+                    <DateInput
+                        value={form.values.dateNameChange ? new Date(form.values.dateNameChange) : undefined}
+                        onChange={(value) => form.setFieldValue('dateNameChange', value?.toISOString())}
+                        label="Date of Name Change"
+                        placeholder="Date of Name Change"
+                    />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                {/* <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="New RTA" {...form.getInputProps('newRTA')} />
                     <TextInput label="Previous RTA" {...form.getInputProps('previousRTA')} />
                 </SimpleGrid>
@@ -151,7 +157,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                         label="Date of Security Change"
                         placeholder="Date of Security Change"
                     />
-                </SimpleGrid>
+                </SimpleGrid> */}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} data-disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending}>
                     {props.type === "Create" ? "Change" : "Update"}
                 </Button>

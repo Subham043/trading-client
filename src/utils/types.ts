@@ -29,6 +29,7 @@ export type UserType = {
 export type CompanyMasterType = {
   id: number;
   newName?: string | undefined;
+  currentName?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
   CIN?: string | undefined;
@@ -59,14 +60,14 @@ export type NameChangeMasterType = {
   newName?: string | undefined;
   previousName?: string | undefined;
   dateNameChange?: string | undefined;
-  newRTA?: string | undefined;
-  previousRTA?: string | undefined;
-  dateRTAChange?: string | undefined;
+  // newRTA?: string | undefined;
+  // previousRTA?: string | undefined;
+  // dateRTAChange?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
-  oldSecuritySymbol?: string | undefined;
-  newSecuritySymbol?: string | undefined;
-  dateSecurityChange?: string | undefined;
+  // oldSecuritySymbol?: string | undefined;
+  // newSecuritySymbol?: string | undefined;
+  // dateSecurityChange?: string | undefined;
   companyId: number;
   createdAt: string;
 };

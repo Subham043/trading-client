@@ -10,6 +10,7 @@ export type SchemaType = {
   fax?: string | undefined;
   telephone?: string | undefined;
   newName?: string | undefined;
+  currentName?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
   CIN?: string | undefined;
@@ -27,6 +28,7 @@ export const initialValues: SchemaType = {
   ISIN: "",
   CIN: undefined,
   newName: undefined,
+  currentName: undefined,
   BSE: undefined,
   NSE: undefined,
   faceValue: 0.0,
@@ -75,6 +77,10 @@ export const transformValues = (values: SchemaType) => {
     CIN: values.CIN && values.CIN.length > 0 ? values.CIN : undefined,
     newName:
       values.newName && values.newName.length > 0 ? values.newName : undefined,
+    currentName:
+      values.currentName && values.currentName.length > 0
+        ? values.currentName
+        : undefined,
     BSE: values.BSE && values.BSE.length > 0 ? values.BSE : undefined,
     NSE: values.NSE && values.NSE.length > 0 ? values.NSE : undefined,
     city: values.city && values.city.length > 0 ? values.city : undefined,
@@ -136,6 +142,10 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .string()
     .typeError("Name must be a string")
     .required("Name is required"),
+  currentName: yup
+    .string()
+    .typeError("Current Name must be a string")
+    .required("Current Name is required"),
   ISIN: yup
     .string()
     .typeError("ISIN must be a string")

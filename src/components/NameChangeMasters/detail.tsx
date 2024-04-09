@@ -32,7 +32,7 @@ const NameChangeMasterDetail:FC<NameChangeMastersListDrawerProps> = (props) => {
                         <Table.Th>Date of Name Change</Table.Th>
                         <Table.Td>{data.dateNameChange && dayjs(data.dateNameChange.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
                     </Table.Tr>
-                    <Table.Tr>
+                    {/* <Table.Tr>
                         <Table.Th>New RTA</Table.Th>
                         <Table.Td>{data.newRTA}</Table.Td>
                     </Table.Tr>
@@ -55,7 +55,7 @@ const NameChangeMasterDetail:FC<NameChangeMastersListDrawerProps> = (props) => {
                     <Table.Tr>
                         <Table.Th>Date of Security Change</Table.Th>
                         <Table.Td>{data.dateSecurityChange && dayjs(data.dateSecurityChange.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
-                    </Table.Tr>
+                    </Table.Tr> */}
                 </Table.Thead>
             </Table>
         </Table.ScrollContainer>}

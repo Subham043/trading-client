@@ -13,7 +13,7 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
     CIN?: string | null | undefined;
     ISIN?: string | null | undefined;
     faceValue?: number | null | undefined;
-  }> = ({ISIN, CIN, faceValue, newName, BSE, NSE, newSecuritySymbol, companyId, createdAt}) => {
+  }> = ({ISIN, CIN, faceValue, newName, previousName, BSE, NSE, companyId, createdAt}) => {
   
   return (
     <Table.Tr>
@@ -25,6 +25,11 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
       <Table.Td>
           <Text fz="sm" fw={500}>
               {newName}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {previousName}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -45,11 +50,6 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
       <Table.Td>
           <Text fz="sm" fw={500}>
               {NSE}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {newSecuritySymbol}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -80,11 +80,11 @@ const NameChangeMasterMainTable:FC = () => {
             <Table.Tr>
               <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
               <Table.Th style={{color: 'white'}}>New Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Previous Name</Table.Th>
               <Table.Th style={{color: 'white'}}>CIN</Table.Th>
               <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
               <Table.Th style={{color: 'white'}}>BSE</Table.Th>
               <Table.Th style={{color: 'white'}}>NSE</Table.Th>
-              <Table.Th style={{color: 'white'}}>New Security Symbol</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
