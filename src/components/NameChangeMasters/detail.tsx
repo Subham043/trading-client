@@ -10,7 +10,7 @@ const NameChangeMasterDetail:FC<NameChangeMastersListDrawerProps> = (props) => {
   return (
     <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         {(data) && <Table.ScrollContainer minWidth={'100%'}>
-            <Table verticalSpacing="sm">
+            <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>NSE</Table.Th>

@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, Suspense, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
@@ -7,6 +7,7 @@ import { Container, Grid } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import AccountModal from "../../components/AccountModal";
 import { useMediaQuery } from '@mantine/hooks';
+import PageLoader from "../../components/PageLoader";
 
 
 const DashboardLayout:FC = () => {
@@ -31,7 +32,9 @@ const DashboardLayout:FC = () => {
                 <Grid maw='100%' w='100%' overflow="hidden" pb={90} pt={90}>
                     <Grid.Col span={opened ? 10 : 12} offset={opened ? 2 : 0} px={0}>
                         <Container size='98%'>
-                            <Outlet />
+                            <Suspense fallback={<PageLoader />}>
+                                <Outlet />
+                            </Suspense>
                         </Container>
                         <AccountModal opened={accountModalOpened} close={accountModalToggle.close} />
                     </Grid.Col>

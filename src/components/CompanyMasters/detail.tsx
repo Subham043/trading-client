@@ -22,18 +22,20 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
             <Paper shadow="sm" className={classes.paper_background}>
                 {(data) && <>
                     <Table.ScrollContainer minWidth={800}>
-                        <Table verticalSpacing="sm">
-                            <Table.Thead>
+                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                            <Table.Thead bg="blue">
                                 <Table.Tr>
-                                    <Table.Th>Name</Table.Th>
-                                    <Table.Th>ISIN</Table.Th>
-                                    <Table.Th>CIN</Table.Th>
-                                    <Table.Th>BSE</Table.Th>
-                                    <Table.Th>NSE</Table.Th>
-                                    <Table.Th>Face Value</Table.Th>
-                                    <Table.Th>Closing Price in NSE</Table.Th>
-                                    <Table.Th>Closing Price in BSE</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>Name</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>CIN</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>BSE</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>NSE</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>Closing Price in NSE</Table.Th>
+                                    <Table.Th style={{color: 'white'}}>Closing Price in BSE</Table.Th>
                                 </Table.Tr>
+                            </Table.Thead>
+                            <Table.Tbody>
                                 <Table.Tr>
                                     <Table.Td>{data.newName}</Table.Td>
                                     <Table.Td>{data.ISIN}</Table.Td>
@@ -44,19 +46,21 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                                     <Table.Td>{data.closingPriceNSE}</Table.Td>
                                     <Table.Td>{data.closingPriceBSE}</Table.Td>
                                 </Table.Tr>
-                            </Table.Thead>
+                            </Table.Tbody>
                         </Table>
                     </Table.ScrollContainer>
                 </>}
             </Paper>
         </Box>
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Box pos="relative">
+            <Box pos="relative" className={classes.paper_background}>
                 <Paper shadow="sm" className={classes.paper_background}>
-                    <Text size="lg" fw={700} p="sm">Address</Text>
+                    <div style={{textAlign: 'center'}}>
+                        <Text size="lg" fw={700} p="sm" bg="blue" color="white">Address</Text>
+                    </div>
                     {(data) && <>
                         <Table.ScrollContainer minWidth={'100%'}>
-                            <Table verticalSpacing="sm">
+                            <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                                 <Table.Thead>
                                     <Table.Tr>
                                         <Table.Th>Registered Office</Table.Th>
@@ -90,10 +94,12 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
             </Box>
             <Box pos="relative">
                 <Paper shadow="sm" className={classes.paper_background}>
-                    <Text size="lg" fw={700} p="sm">Contact</Text>
+                    <div style={{textAlign: 'center'}}>
+                        <Text size="lg" fw={700} p="sm" bg="blue" color="white">Contact</Text>
+                    </div>
                     {(data) && <>
                         <Table.ScrollContainer minWidth={'100%'}>
-                            <Table verticalSpacing="sm">
+                            <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                                 <Table.Thead>
                                     <Table.Tr>
                                         <Table.Th>Email</Table.Th>

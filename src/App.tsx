@@ -1,25 +1,25 @@
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/auth/login"
 import { page_routes } from "./utils/page_routes"
-import ForgotPasswordPage from "./pages/auth/forgot_password";
-import AuthLayout from "./layouts/auth";
-import ResetPasswordPage from "./pages/auth/reset_password";
-import DashboardLayout from "./layouts/dashboard";
-import DashboardPage from "./pages/dashboard";
-import { Suspense } from "react";
-import PageLoader from "./components/PageLoader";
-import PageNotFound from "./pages/pageNotFound";
-import UserProvider from "./contexts/userProvider";
-import AxiosProvider from "./contexts/axiosProvider";
-import PersistLayout from "./layouts/persist/persistLayout";
-import ProtectedLayout from "./layouts/protected/protectedLayout";
-import GuestLayout from "./layouts/guest/guestLayout";
-import UsersPage from "./pages/users";
+import { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QueryClientOptions } from "./utils/constant";
-import CompanyMastersPage from "./pages/companyMasters/list";
-import CompanyMastersDetailPage from "./pages/companyMasters/detail";
-import NameChangeMastersMainPage from "./pages/nameChangeMasters/main";
+import UserProvider from "./contexts/userProvider";
+import AxiosProvider from "./contexts/axiosProvider";
+import PageLoader from "./components/PageLoader";
+import PersistLayout from "./layouts/persist/persistLayout";
+const AuthLayout = lazy(()=>import("./layouts/auth"));
+const ProtectedLayout = lazy(()=>import("./layouts/protected/protectedLayout"));
+const GuestLayout = lazy(()=>import("./layouts/guest/guestLayout"));
+const DashboardLayout = lazy(()=>import("./layouts/dashboard"));
+const ForgotPasswordPage = lazy(()=>import("./pages/auth/forgot_password"));
+const ResetPasswordPage = lazy(()=>import("./pages/auth/reset_password"));
+const DashboardPage = lazy(()=>import("./pages/dashboard"));
+const PageNotFound = lazy(()=>import("./pages/pageNotFound"));
+const UsersPage = lazy(()=>import("./pages/users"));
+const CompanyMastersPage = lazy(()=>import("./pages/companyMasters/list"));
+const CompanyMastersDetailPage = lazy(()=>import("./pages/companyMasters/detail"));
+const NameChangeMastersMainPage = lazy(()=>import("./pages/nameChangeMasters/main"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);

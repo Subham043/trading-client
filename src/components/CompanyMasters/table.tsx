@@ -95,16 +95,16 @@ const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => v
   return (
     <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm">
-          <Table.Thead>
+        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+          <Table.Thead bg="blue">
             <Table.Tr>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>ISIN</Table.Th>
-              <Table.Th>CIN</Table.Th>
-              <Table.Th>BSE</Table.Th>
-              <Table.Th>NSE</Table.Th>
-              <Table.Th>Face Value</Table.Th>
-              <Table.Th>Created On</Table.Th>
+              <Table.Th style={{color: 'white'}}>Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
+              <Table.Th style={{color: 'white'}}>CIN</Table.Th>
+              <Table.Th style={{color: 'white'}}>BSE</Table.Th>
+              <Table.Th style={{color: 'white'}}>NSE</Table.Th>
+              <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
+              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

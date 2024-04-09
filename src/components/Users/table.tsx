@@ -89,14 +89,14 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) =
   return (
     <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm">
-          <Table.Thead>
+        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+          <Table.Thead bg="blue">
             <Table.Tr>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>Role</Table.Th>
-              <Table.Th>Status</Table.Th>
-              <Table.Th>Created On</Table.Th>
+              <Table.Th style={{color: 'white'}}>Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Email</Table.Th>
+              <Table.Th style={{color: 'white'}}>Role</Table.Th>
+              <Table.Th style={{color: 'white'}}>Status</Table.Th>
+              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
