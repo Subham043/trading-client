@@ -3,7 +3,15 @@ import { FC } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { useSearchQueryParam } from "../../hooks/useSearchQueryParam";
 
-type SearchButtonHeaderProps = {
+type ExportButtonType = {
+    hasExport: true;
+    excelLoading?: boolean;
+    exportClickHandler: () => void;
+} | {
+    hasExport: false;
+}
+
+type SearchButtonHeaderProps = ({
     hasButton: false;
     hasSearch?: boolean;
 } | {
@@ -11,7 +19,7 @@ type SearchButtonHeaderProps = {
     hasSearch?: boolean;
     buttonClickHandler: () => void;
     buttonText: string;
-}
+}) & ExportButtonType
 
 const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...props}) => {
     const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
@@ -19,9 +27,14 @@ const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...prop
 
     return (
         <Group justify={(!props.hasButton && hasSearch) ? "flex-end" : "space-between"} mb="lg">
-            {props.hasButton && <Button type='submit' variant="filled" color='blue' onClick={props.buttonClickHandler}>
-                {props.buttonText}
-            </Button>}
+            <Group align="center" gap={"xs"}>
+                {props.hasButton && <Button type='submit' variant="filled" color='blue' onClick={props.buttonClickHandler}>
+                    {props.buttonText}
+                </Button>}
+                {props.hasExport && <Button type='submit' variant="filled" color='violet' disabled={props.excelLoading} loading={props.excelLoading} onClick={props.exportClickHandler}>
+                    Export
+                </Button>}
+            </Group>
             {hasSearch && <TextInput
                 rightSectionPointerEvents="none"
                 rightSection={icon}

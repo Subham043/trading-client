@@ -43,7 +43,8 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             form.setValues({
                 BSE: data.BSE ? data.BSE : undefined,
                 NSE: data.NSE ? data.NSE : undefined,
-                newName: data.newName ? data.newName : undefined,
+                // newName: data.newName ? data.newName : undefined,
+                currentName: data.currentName ? data.currentName : undefined,
                 previousName: data.previousName ? data.previousName : undefined,
                 dateNameChange: data.dateNameChange ? data.dateNameChange : undefined,
                 // newRTA: data.newRTA ? data.newRTA : undefined,
@@ -57,7 +58,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             form.setValues({
                 BSE: newData.BSE ? newData.BSE : undefined,
                 NSE: newData.NSE ? newData.NSE : undefined,
-                previousName: newData.newName ? newData.newName : undefined,
+                previousName: newData.currentName ? newData.currentName : undefined,
                 dateNameChange: newData.dateNameChange ? newData.dateNameChange : undefined,
                 // previousRTA: newData.newRTA ? newData.newRTA : undefined,
                 // dateRTAChange: newData.dateRTAChange ? newData.dateRTAChange : undefined,
@@ -77,7 +78,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     updateCompanyMaster(data ? data.companyId : 0, {
                         BSE: form.getTransformedValues().BSE,
                         NSE: form.getTransformedValues().NSE,
-                        newName: form.getTransformedValues().newName,
+                        currentName: form.getTransformedValues().currentName,
                         id: data ? data.companyId : 0,
                         nameChangeMasterId: data ? data.id : 0,
                         createdAt: new Date().toISOString(),
@@ -86,7 +87,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     updateCompanyMaster(newData ? newData.companyId : 0, {
                         BSE: form.getTransformedValues().BSE,
                         NSE: form.getTransformedValues().NSE,
-                        newName: form.getTransformedValues().newName,
+                        currentName: form.getTransformedValues().currentName,
                         id: newData ? newData.companyId : 0,
                         nameChangeMasterId: newData ? newData.id : 0,
                         createdAt: new Date().toISOString(),
@@ -121,7 +122,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                     <TextInput label="BSE" {...form.getInputProps('BSE')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="New Name" {...form.getInputProps('newName')} />
+                    <TextInput label="New Name" {...form.getInputProps('currentName')} />
                     <TextInput label="Previous Name" {...form.getInputProps('previousName')} />
                     <DateInput
                         value={form.values.dateNameChange ? new Date(form.values.dateNameChange) : undefined}

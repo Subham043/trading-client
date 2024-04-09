@@ -8,7 +8,7 @@ import { useDeleteNameChangeMasterMutation, useNameChangeMastersQuery } from "..
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void,}> = ({id, companyId, newName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
+const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void,}> = ({id, companyId, currentName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteNameChangeMaster = useDeleteNameChangeMasterMutation(id, companyId)
   const onDelete = async () => {
@@ -18,7 +18,7 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: N
     <Table.Tr>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {newName}
+              {currentName}
           </Text>
       </Table.Td>
       <Table.Td>

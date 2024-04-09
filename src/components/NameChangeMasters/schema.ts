@@ -1,7 +1,8 @@
 import * as yup from "yup";
 
 export type SchemaType = {
-  newName?: string | undefined;
+  // newName?: string | undefined;
+  currentName?: string | undefined;
   previousName?: string | undefined;
   dateNameChange?: string | undefined;
   // newRTA?: string | undefined;
@@ -15,7 +16,8 @@ export type SchemaType = {
 };
 
 export const initialValues: SchemaType = {
-  newName: undefined,
+  // newName: undefined,
+  currentName: undefined,
   previousName: undefined,
   dateNameChange: undefined,
   // newRTA: undefined,
@@ -32,8 +34,12 @@ export const transformValues = (values: SchemaType) => {
   return {
     BSE: values.BSE && values.BSE.length > 0 ? values.BSE : undefined,
     NSE: values.NSE && values.NSE.length > 0 ? values.NSE : undefined,
-    newName:
-      values.newName && values.newName.length > 0 ? values.newName : undefined,
+    // newName:
+    //   values.newName && values.newName.length > 0 ? values.newName : undefined,
+    currentName:
+      values.currentName && values.currentName.length > 0
+        ? values.currentName
+        : undefined,
     previousName:
       values.previousName && values.previousName.length > 0
         ? values.previousName
@@ -70,7 +76,8 @@ export const transformValues = (values: SchemaType) => {
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   BSE: yup.string().typeError("BSE must be a string").optional(),
   NSE: yup.string().typeError("NSE must be a string").optional(),
-  newName: yup.string().typeError("New Name must be a string").optional(),
+  // newName: yup.string().typeError("New Name must be a string").optional(),
+  currentName: yup.string().typeError("New Name must be a string").optional(),
   previousName: yup
     .string()
     .typeError("Previous Name must be a string")

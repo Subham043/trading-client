@@ -65,7 +65,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 if(props.type === "Edit"){
                     updateNameChangeMasters((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0, data ? data.id : 0, {
                         id: (data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0,
-                        newName: form.getTransformedValues().newName,
+                        currentName: form.getTransformedValues().currentName,
                         BSE: form.getTransformedValues().BSE,
                         NSE: form.getTransformedValues().NSE,
                         companyId: (data && data.id) ? data.id : 0,

@@ -13,7 +13,7 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
     CIN?: string | null | undefined;
     ISIN?: string | null | undefined;
     faceValue?: number | null | undefined;
-  }> = ({ISIN, CIN, faceValue, newName, previousName, BSE, NSE, companyId, createdAt}) => {
+  }> = ({ISIN, CIN, faceValue, currentName, previousName, BSE, NSE, companyId, createdAt}) => {
   
   return (
     <Table.Tr>
@@ -24,7 +24,7 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {newName}
+              {currentName}
           </Text>
       </Table.Td>
       <Table.Td>

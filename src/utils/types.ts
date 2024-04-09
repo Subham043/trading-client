@@ -57,7 +57,8 @@ export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;
 
 export type NameChangeMasterType = {
   id: number;
-  newName?: string | undefined;
+  // newName?: string | undefined;
+  currentName?: string | undefined;
   previousName?: string | undefined;
   dateNameChange?: string | undefined;
   // newRTA?: string | undefined;

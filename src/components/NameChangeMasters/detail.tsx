@@ -22,7 +22,7 @@ const NameChangeMasterDetail:FC<NameChangeMastersListDrawerProps> = (props) => {
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>New Name</Table.Th>
-                        <Table.Td>{data.newName}</Table.Td>
+                        <Table.Td>{data.currentName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Previous Name</Table.Th>
