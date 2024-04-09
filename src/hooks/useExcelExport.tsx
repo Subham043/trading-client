@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAxios } from './useAxios';
 import { useToast } from './useToast';
+import { useSearchParams } from 'react-router-dom';
 
 /*
   * Toast Hook Type
@@ -18,10 +19,12 @@ export const useExcelExport:ExcelExportHookType = () => {
 
     const { axios } = useAxios();
     const {toastError, toastSuccess} = useToast();
+    const [searchParams] = useSearchParams();
     const [excelLoading, setExcelLoading] = useState<boolean>(false);
     const exportExcel = async (excel_url: string, excel_file_name: string) => {
         try {
-            const response = await axios.get(excel_url, {responseType: 'blob'});
+            const search = searchParams.get("search") || "";
+            const response = await axios.get(`${excel_url}?search=${search}`, {responseType: 'blob'});
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
