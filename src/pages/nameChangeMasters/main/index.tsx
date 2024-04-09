@@ -8,7 +8,7 @@ import { api_routes } from "../../../utils/api_routes";
 
 const NameChangeMastersMainPage:FC = () => {
     const { exportExcel, excelLoading } = useExcelExport();
-    const exportExcelHandler = async () => await exportExcel(api_routes.nameChangeMasters + '/export', 'name_change_masters.xlsx');
+    const exportExcelHandler = async () => await exportExcel(api_routes.nameChangeMasters + '/company/export', 'name_change_masters.xlsx');
 
     return (
         <div>

@@ -29,7 +29,7 @@ export type NameChangeMastersListDrawerProps = {
 const NameChangeMastersListPage:FC = () => {
     const param = useParams<{companyId: string}>()
     const { exportExcel, excelLoading } = useExcelExport();
-    const exportExcelHandler = async () => await exportExcel(api_routes.nameChangeMasters + '/export', 'name_change_masters.xlsx');
+    const exportExcelHandler = async () => await exportExcel(api_routes.nameChangeMasters + `/list/export/${param.companyId}`, 'name_change_masters.xlsx');
     const [modal, setModal] = useState<NameChangeMastersListModalProps>({status: false, type: 'Create', companyId: Number(param.companyId)});
     const toggleModal = (value:NameChangeMastersListModalProps) => setModal(value);
     const [drawerStatus, setDrawerStatus] = useState<NameChangeMastersListDrawerProps>({drawerStatus: false});
