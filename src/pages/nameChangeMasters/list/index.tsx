@@ -37,7 +37,7 @@ const NameChangeMastersListPage:FC = () => {
 
     return (
         <div>
-            <SearchButtonHeader hasButton={true} buttonText="Change" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} />
+            <SearchButtonHeader hasButton={true} buttonText="Change" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <NameChangeMasterTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} companyId={Number(param.companyId)} />
             </Paper>
