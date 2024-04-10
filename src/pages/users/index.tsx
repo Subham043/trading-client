@@ -32,7 +32,7 @@ const UsersPage:FC = () => {
                 <UserTable toggleDrawer={toggleDrawer} />
             </Paper>
             <UserDrawer {...drawer} toggleDrawer={toggleDrawer} />
-            <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Import Users" />
+            <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Users" uploadUrl={`${api_routes.users}/import`} />
         </div>
     )
 }

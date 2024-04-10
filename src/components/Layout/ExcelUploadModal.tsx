@@ -5,7 +5,6 @@ import { yupResolver } from "mantine-form-yup-resolver";
 import { FC, useState } from "react";
 import * as yup from "yup";
 import { useAxios } from "../../hooks/useAxios";
-import { api_routes } from "../../utils/api_routes";
 import { useToast } from "../../hooks/useToast";
 import { isAxiosError } from "axios";
 import { AxiosErrorResponseType } from "../../utils/types";
@@ -14,6 +13,7 @@ type ExcelUploadModalProps = {
     status: boolean;
     toggleModal: () => void;
     title: string;
+    uploadUrl: string;
 
 }
 const schema = yup
@@ -24,7 +24,7 @@ const schema = yup
   })
   .required();
 
-const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title}) => {
+const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title, uploadUrl}) => {
 
     const { axios } = useAxios();
     const [loading, setLoading] = useState<boolean>(false);
@@ -39,8 +39,8 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title}
             const fileData = form.values.file as File;
             const formData = new FormData();
             formData.append('file', fileData as File, fileData.name);
-            await axios.post(`${api_routes.users}/import`, formData);
-            toastSuccess(title+' imported successfully');
+            await axios.post(uploadUrl, formData);
+            toastSuccess(title+' imported successfully. Please refresh the page to see the changes.');
             form.reset();
             toggleModal();
         }catch(error){
@@ -59,7 +59,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title}
     }
 
     return (
-        <Modal opened={status} onClose={()=>{toggleModal(); form.reset()}} centered size="sm" withCloseButton={true}  title={title} overlayProps={{
+        <Modal opened={status} onClose={()=>{toggleModal(); form.reset()}} centered size="sm" withCloseButton={true}  title={'Import '+ title} overlayProps={{
             backgroundOpacity: 0.55,
             blur: 3,
         }}>

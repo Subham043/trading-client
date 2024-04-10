@@ -87,25 +87,27 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) =
   const {data:users, isFetching, isLoading, status, error, refetch} = useUsersQuery();
   
   return (
-    <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
-      <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-          <Table.Thead bg="blue">
-            <Table.Tr>
-              <Table.Th style={{color: 'white'}}>Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>Email</Table.Th>
-              <Table.Th style={{color: 'white'}}>Role</Table.Th>
-              <Table.Th style={{color: 'white'}}>Status</Table.Th>
-              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{
-            (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
-          }</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
+        <Table.ScrollContainer minWidth={800}>
+          <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+            <Table.Thead bg="blue">
+              <Table.Tr>
+                <Table.Th style={{color: 'white'}}>Name</Table.Th>
+                <Table.Th style={{color: 'white'}}>Email</Table.Th>
+                <Table.Th style={{color: 'white'}}>Role</Table.Th>
+                <Table.Th style={{color: 'white'}}>Status</Table.Th>
+                <Table.Th style={{color: 'white'}}>Created On</Table.Th>
+                <Table.Th />
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{
+              (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
+            }</Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+      </ErrorBoundary>
+    </>
   );
 }
 

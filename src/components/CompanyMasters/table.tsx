@@ -100,28 +100,30 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
 const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
   const {data:companyMasters, isFetching, isLoading, status, error, refetch} = useCompanyMastersQuery();
   return (
-    <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
-      <Table.ScrollContainer minWidth={800}>
-        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-          <Table.Thead bg="blue">
-            <Table.Tr>
-              <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
-              <Table.Th style={{color: 'white'}}>Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>CIN</Table.Th>
-              <Table.Th style={{color: 'white'}}>BSE</Table.Th>
-              <Table.Th style={{color: 'white'}}>NSE</Table.Th>
-              <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
-              <Table.Th />
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{
-            (companyMasters ? companyMasters.companyMaster : []).map((item) => <CompanyMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} />)
-          }</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
+        <Table.ScrollContainer minWidth={800}>
+          <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+            <Table.Thead bg="blue">
+              <Table.Tr>
+                <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
+                <Table.Th style={{color: 'white'}}>Name</Table.Th>
+                <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
+                <Table.Th style={{color: 'white'}}>CIN</Table.Th>
+                <Table.Th style={{color: 'white'}}>BSE</Table.Th>
+                <Table.Th style={{color: 'white'}}>NSE</Table.Th>
+                <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
+                <Table.Th style={{color: 'white'}}>Created On</Table.Th>
+                <Table.Th />
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{
+              (companyMasters ? companyMasters.companyMaster : []).map((item) => <CompanyMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} />)
+            }</Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+      </ErrorBoundary>
+    </>
   );
 }
 

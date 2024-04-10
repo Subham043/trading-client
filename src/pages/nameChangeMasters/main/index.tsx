@@ -19,7 +19,7 @@ const NameChangeMastersMainPage:FC = () => {
             <Paper shadow="sm" className={classes.paper_background}>
                 <NameChangeMasterMainTable />
             </Paper>
-            <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Import Name Change Masters" />
+            <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Name Change Masters" uploadUrl={`${api_routes.nameChangeMasters}/import`} />
         </div>
     )
 }
