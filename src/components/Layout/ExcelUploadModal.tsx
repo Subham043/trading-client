@@ -1,4 +1,4 @@
-import { Button, FileInput, Modal } from "@mantine/core";
+import { Anchor, Button, FileInput, Modal, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconFileSpreadsheet } from "@tabler/icons-react";
 import { yupResolver } from "mantine-form-yup-resolver";
@@ -14,6 +14,7 @@ type ExcelUploadModalProps = {
     toggleModal: () => void;
     title: string;
     uploadUrl: string;
+    sampleUrl: string;
 
 }
 const schema = yup
@@ -24,7 +25,7 @@ const schema = yup
   })
   .required();
 
-const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title, uploadUrl}) => {
+const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title, uploadUrl, sampleUrl}) => {
 
     const { axios } = useAxios();
     const [loading, setLoading] = useState<boolean>(false);
@@ -65,7 +66,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title,
         }}>
             <form onSubmit={form.onSubmit(onSubmitHandler)}>
                 <FileInput
-                    label="Select Excel File"
+                    label={<Text size="sm">Select Excel File (<Anchor href={sampleUrl} download={true}>Download Sample Excel</Anchor>)</Text>}
                     placeholder="Excel file"
                     clearable
                     accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
