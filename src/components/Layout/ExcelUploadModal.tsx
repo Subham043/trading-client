@@ -2,8 +2,13 @@ import { Button, FileInput, Modal } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconFileSpreadsheet } from "@tabler/icons-react";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { FC } from "react";
+import { FC, useState } from "react";
 import * as yup from "yup";
+import { useAxios } from "../../hooks/useAxios";
+import { api_routes } from "../../utils/api_routes";
+import { useToast } from "../../hooks/useToast";
+import { isAxiosError } from "axios";
+import { AxiosErrorResponseType } from "../../utils/types";
 
 type ExcelUploadModalProps = {
     status: boolean;
@@ -21,12 +26,36 @@ const schema = yup
 
 const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title}) => {
 
+    const { axios } = useAxios();
+    const [loading, setLoading] = useState<boolean>(false);
+    const {toastSuccess, toastError} = useToast();
     const form = useForm({
         validate: yupResolver(schema),
     });
 
-    const onSubmitHandler = () => {
-        console.log(form.values.file);
+    const onSubmitHandler = async () => {
+        setLoading(true);
+        try {
+            const fileData = form.values.file as File;
+            const formData = new FormData();
+            formData.append('file', fileData as File, fileData.name);
+            await axios.post(`${api_routes.users}/import`, formData);
+            toastSuccess(title+' imported successfully');
+            form.reset();
+            toggleModal();
+        }catch(error){
+            if(isAxiosError<AxiosErrorResponseType>(error)){
+                if(error.response?.data.formErrors){
+                    form.setFieldError("file", error.response?.data.formErrors.file[0]);
+                }else if(error.response?.data.message){
+                    toastError(error.response.data.message);
+                }
+            }else{
+                toastError('Something went wrong. Please try again later.');
+            }
+        }finally{
+            setLoading(false);
+        }
     }
 
     return (
@@ -42,8 +71,9 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title}
                     accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     leftSection={<IconFileSpreadsheet size={16} />}
                     {...form.getInputProps('file')}
+                    disabled={loading}
                 />
-                <Button type='submit' variant="filled" color='blue' mt="lg">
+                <Button type='submit' variant="filled" color='blue' mt="lg" disabled={loading} loading={loading} aria-disabled={loading}>
                     Upload
                 </Button>
             </form>
