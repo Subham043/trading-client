@@ -77,11 +77,14 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   BSE: yup.string().typeError("BSE must be a string").optional(),
   NSE: yup.string().typeError("NSE must be a string").optional(),
   // newName: yup.string().typeError("New Name must be a string").optional(),
-  currentName: yup.string().typeError("New Name must be a string").optional(),
+  currentName: yup
+    .string()
+    .typeError("New Name must be a string")
+    .required("New Name is required"),
   previousName: yup
     .string()
     .typeError("Previous Name must be a string")
-    .optional(),
+    .required("Previous Name is required"),
   dateNameChange: yup
     .string()
     .typeError("Date of Name Change must be a string")
