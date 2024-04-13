@@ -47,6 +47,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title,
             formData.append('file', fileData as File, fileData.name);
             const resp = await axios.post<AxiosSuccessResponseType<{successCount: number, errorCount: number, fileName: string | null}>>(uploadUrl, formData);
             setResult(resp.data.data || null);
+            form.reset();
             toastSuccess(title+' excel uploaded successfully. Please refresh the page to see the changes.');
         }catch(error){
             console.log(error);
@@ -68,6 +69,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title,
         if(result?.fileName){
             await exportExcel(`${api_routes.excel.failed}/${result?.fileName}`, result?.fileName);
             if(!excelLoading){
+                form.reset();
                 setResult(null);
                 toggleModal();
             }
@@ -75,7 +77,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title,
     }
 
     return (
-        <Modal opened={status} onClose={()=>{toggleModal(); form.reset(); setResult(null)}} centered size="sm" withCloseButton={true}  title={'Import '+ title} overlayProps={{
+        <Modal opened={status} onClose={()=>{form.reset(); setResult(null); toggleModal();}} centered size="sm" withCloseButton={true}  title={'Import '+ title} overlayProps={{
             backgroundOpacity: 0.55,
             blur: 3,
         }}>
