@@ -9,6 +9,9 @@ export const page_routes = {
     list: "/company-masters",
     view: "/company-masters/:companyId",
   },
+  registrarMasters: {
+    list: "/registrar-masters",
+  },
   nameChangeMasters: {
     main: "/name-change-masters",
   },

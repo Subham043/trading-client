@@ -78,6 +78,38 @@ export type NameChangeMasterFormType = Omit<
   "id" | "createdAt" | "companyId"
 >;
 
+export type RegistrarMasterType = {
+  id: number;
+  newName?: string;
+  currentName?: string;
+  registrar_name: string;
+  sebi_regn_id: string;
+  address?: string | undefined;
+  city?: string | undefined;
+  state?: string | undefined;
+  pincode?: string | undefined;
+  telephone1?: string | undefined;
+  telephone2?: string | undefined;
+  email?: string | undefined;
+  website?: string | undefined;
+  nameContactPerson?: string | undefined;
+  designationContactPerson?: string | undefined;
+  emailContactPerson?: string | undefined;
+  phoneContactPerson?: string | undefined;
+  officerAssigned?: string | undefined;
+  branch?: string | undefined;
+  createdAt?: Date;
+  companyId?: number | undefined;
+};
+
+export interface RegistrarMasterFormType
+  extends Omit<
+    RegistrarMasterType,
+    "id" | "createdAt" | "newName" | "currentName" | "pincode"
+  > {
+  pincode?: number | undefined;
+}
+
 export type AxiosSuccessResponseType<T> = {
   message: string;
   code: number;

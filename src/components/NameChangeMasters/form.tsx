@@ -117,7 +117,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): (newData ? true : false)} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (isNewLoading || isNewFetching)} status={props.status && props.type==="Edit" ? status : newStatus} error={props.status && props.type==="Edit" ? error : newError} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : newRefetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <TextInput label="NSE" {...form.getInputProps('NSE')} />
                     <TextInput label="BSE" {...form.getInputProps('BSE')} />
                 </SimpleGrid>

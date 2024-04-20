@@ -1,5 +1,4 @@
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import LoginPage from "./pages/auth/login"
 import { page_routes } from "./utils/page_routes"
 import { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -12,6 +11,7 @@ const AuthLayout = lazy(()=>import("./layouts/auth"));
 const ProtectedLayout = lazy(()=>import("./layouts/protected/protectedLayout"));
 const GuestLayout = lazy(()=>import("./layouts/guest/guestLayout"));
 const DashboardLayout = lazy(()=>import("./layouts/dashboard"));
+const LoginPage = lazy(()=>import("./pages/auth/login"));
 const ForgotPasswordPage = lazy(()=>import("./pages/auth/forgot_password"));
 const ResetPasswordPage = lazy(()=>import("./pages/auth/reset_password"));
 const DashboardPage = lazy(()=>import("./pages/dashboard"));
@@ -20,6 +20,7 @@ const UsersPage = lazy(()=>import("./pages/users"));
 const CompanyMastersPage = lazy(()=>import("./pages/companyMasters/list"));
 const CompanyMastersDetailPage = lazy(()=>import("./pages/companyMasters/detail"));
 const NameChangeMastersMainPage = lazy(()=>import("./pages/nameChangeMasters/main"));
+const RegistrarMastersPage = lazy(()=>import("./pages/registrarMasters/list"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -41,6 +42,7 @@ function App() {
                       <Route path={page_routes.companyMasters.list} element={<CompanyMastersPage />} />
                       <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
                       <Route path={page_routes.nameChangeMasters.main} element={<NameChangeMastersMainPage />} />
+                      <Route path={page_routes.registrarMasters.list} element={<RegistrarMastersPage />} />
                     </Route>
                   </Route>
 

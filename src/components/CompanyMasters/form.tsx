@@ -96,7 +96,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <TextInput withAsterisk label="Name of the Company (as per certificate)" {...form.getInputProps('newName')} />
                     <TextInput withAsterisk label="Current Name of the Company" {...form.getInputProps('currentName')} />
                 </SimpleGrid>

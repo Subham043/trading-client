@@ -17,6 +17,7 @@ export const api_routes = {
   users: "/users",
   companyMasters: "/company-masters",
   nameChangeMasters: "/name-change-masters",
+  registrarMasters: "/registrar-masters",
   excel: {
     failed: "/excel/failed",
   },

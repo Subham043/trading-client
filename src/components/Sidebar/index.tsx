@@ -6,6 +6,7 @@ import {
   IconUserCircle,
   IconBuilding,
   IconWriting,
+  IconRegistered,
 } from '@tabler/icons-react';
 import { Logo } from './Logo';
 import classes from './sidebar.module.css';
@@ -23,6 +24,7 @@ const mockdata = [
   { label: 'Users', icon: IconUserCircle, link: page_routes.users },
   { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters.list },
   { label: 'Name Change Masters', icon: IconWriting, link: page_routes.nameChangeMasters.main },
+  { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
   // {
   //   label: 'Market news',
   //   icon: IconNotes,

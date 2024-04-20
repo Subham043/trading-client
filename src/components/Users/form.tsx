@@ -62,7 +62,7 @@ const UserForm:FC<UserFormProps & {toggleDrawer: (value: UserDrawerProps) => voi
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false) : true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <TextInput withAsterisk data-autofocus label="Name" placeholder="mantine dev" {...form.getInputProps('name')} mt="md" />
+                <TextInput withAsterisk data-autofocus label="Name" placeholder="mantine dev" {...form.getInputProps('name')} />
                 <TextInput withAsterisk label="Email" placeholder="you@mantine.dev" {...form.getInputProps('email')} mt="md" />
                 {
                     props.type === "Create" && <>
