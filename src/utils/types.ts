@@ -110,6 +110,13 @@ export interface RegistrarMasterFormType
   pincode?: number | undefined;
 }
 
+export type FailedExcelType = {
+  id: number;
+  file_name: string;
+  file_of: string;
+  createdAt?: Date;
+};
+
 export type AxiosSuccessResponseType<T> = {
   message: string;
   code: number;

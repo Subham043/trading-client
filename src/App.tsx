@@ -21,6 +21,7 @@ const CompanyMastersPage = lazy(()=>import("./pages/companyMasters/list"));
 const CompanyMastersDetailPage = lazy(()=>import("./pages/companyMasters/detail"));
 const NameChangeMastersMainPage = lazy(()=>import("./pages/nameChangeMasters/main"));
 const RegistrarMastersPage = lazy(()=>import("./pages/registrarMasters/list"));
+const FailedExcelsPage = lazy(()=>import("./pages/failedExcels/list"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -43,6 +44,7 @@ function App() {
                       <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
                       <Route path={page_routes.nameChangeMasters.main} element={<NameChangeMastersMainPage />} />
                       <Route path={page_routes.registrarMasters.list} element={<RegistrarMastersPage />} />
+                      <Route path={page_routes.failed_excel} element={<FailedExcelsPage />} />
                     </Route>
                   </Route>
 

@@ -5,6 +5,7 @@
 export const page_routes = {
   dashboard: "/",
   users: "/users",
+  failed_excel: "/failed-excel",
   companyMasters: {
     list: "/company-masters",
     view: "/company-masters/:companyId",

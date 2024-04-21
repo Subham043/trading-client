@@ -7,6 +7,7 @@ import {
   IconBuilding,
   IconWriting,
   IconRegistered,
+  IconSettings,
 } from '@tabler/icons-react';
 import { Logo } from './Logo';
 import classes from './sidebar.module.css';
@@ -25,17 +26,14 @@ const mockdata = [
   { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters.list },
   { label: 'Name Change Masters', icon: IconWriting, link: page_routes.nameChangeMasters.main },
   { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
-  // {
-  //   label: 'Market news',
-  //   icon: IconNotes,
-  //   initiallyOpened: false,
-  //   links: [
-  //     { label: 'Overview', link: '/' },
-  //     { label: 'Forecasts', link: '/' },
-  //     { label: 'Outlook', link: '/' },
-  //     { label: 'Real time', link: '/' },
-  //   ],
-  // },
+  {
+    label: 'Settings',
+    icon: IconSettings,
+    initiallyOpened: false,
+    links: [
+      { label: 'Failed Excel', link: page_routes.failed_excel },
+    ],
+  },
 ];
 
 function LinkContainer({ icon: Icon, label }: LinksGroupProps) {

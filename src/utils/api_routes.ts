@@ -18,7 +18,11 @@ export const api_routes = {
   companyMasters: "/company-masters",
   nameChangeMasters: "/name-change-masters",
   registrarMasters: "/registrar-masters",
-  excel: {
-    failed: "/excel/failed",
+  upload: {
+    failed_excel: {
+      download_via_name: "/upload/failed-excel/download-via-name",
+      download_via_id: "/upload/failed-excel/download-via-id",
+      list: "/upload/failed-excel/list",
+    },
   },
 } as const;

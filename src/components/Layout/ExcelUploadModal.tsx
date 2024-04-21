@@ -67,7 +67,7 @@ const ExcelUploadModal:FC<ExcelUploadModalProps> = ({status, toggleModal, title,
 
     const downloadFailedExcel = async () => {
         if(result?.fileName){
-            await exportExcel(`${api_routes.excel.failed}/${result?.fileName}`, result?.fileName);
+            await exportExcel(`${api_routes.upload.failed_excel.download_via_name}/${result?.fileName}`, result?.fileName);
             if(!excelLoading){
                 form.reset();
                 setResult(null);
