@@ -82,7 +82,7 @@ const LoginPage:FC = () => {
                     <Group justify="space-between" mt="lg">
                         <Checkbox label="Remember me" />
                         <Link to={page_routes.auth.forgot_password}>
-                            <Anchor component="button" size="sm">
+                            <Anchor component="button" size="sm" type='button'>
                                 Forgot password?
                             </Anchor>
                         </Link>
