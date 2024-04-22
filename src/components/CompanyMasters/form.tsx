@@ -1,8 +1,8 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, SimpleGrid, TextInput } from "@mantine/core";
+import { Button, Select, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddCompanyMasterMutation, useUpdateCompanyMasterMutation, useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import { MutateOptions } from "@tanstack/react-query";
@@ -11,6 +11,8 @@ import { useNameChangeMastersQuerySetData } from "../../hooks/data/name_change_m
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
 import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { usePincodesSelectQuery } from "../../hooks/data/pincodes";
+import debounce from "lodash.debounce";
 
 type CompanyMasterFormProps = CompanyMastersModalProps;
 type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, CompanyMasterFormType, unknown>;
@@ -18,10 +20,13 @@ type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, Co
 const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
 
     const {toastError} = useToast();
+    const [search, setSearch] = useState<string>("");
     const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const {data:pincodes, isFetching:isPincodeFetching, isLoading:isPincodeLoading} = usePincodesSelectQuery({search: search, enabled:props.status});
     const addCompanyMaster = useAddCompanyMasterMutation()
     const updateCompanyMaster = useUpdateCompanyMasterMutation(props.type === "Edit" ? props.id : 0)
     const { updateNameChangeMasters } = useNameChangeMastersQuerySetData();
+    const searchHandler = debounce((value: string) => setSearch(value), 500);
     const form = useForm<SchemaType>({
         initialValues,
         transformValues,
@@ -30,6 +35,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
+            setSearch(data.pincode ? data.pincode.toString() : "");
             form.setValues({
                 ISIN: data.ISIN ? data.ISIN : undefined,
                 CIN: data.CIN ? data.CIN : undefined,
@@ -93,6 +99,16 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
         }
     };
 
+    const onSelectHandler = (value: string | null) => {
+        form.setFieldValue('pincode', value ? Number(value) : undefined)
+        if(pincodes){
+            const pincodeSelectedData = pincodes.find((pincode) => pincode.pincode === value);
+            if(pincodeSelectedData){
+                form.setFieldValue('state', pincodeSelectedData.state_name);
+            }
+        }
+    }
+
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
@@ -114,14 +130,29 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                     <TextInput withAsterisk label="Closing Price in BSE" {...form.getInputProps('closingPriceBSE')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="Registered Office" {...form.getInputProps('registeredOffice')} />
-                    <TextInput label="City" {...form.getInputProps('city')} />
-                    <TextInput label="State" {...form.getInputProps('state')} />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="Pincode" {...form.getInputProps('pincode')} />
                     <TextInput label="Telephone" {...form.getInputProps('telephone')} />
                     <TextInput label="Fax" {...form.getInputProps('fax')} />
+                    <TextInput label="Registered Office" {...form.getInputProps('registeredOffice')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <Select
+                        withAsterisk
+                        data-autofocus
+                        label="Pincode"
+                        placeholder="Type to search for pincode"
+                        maxDropdownHeight={200}
+                        data={pincodes ? pincodes.map((item) => ({label: item.pincode ? item.pincode : "", value: item.pincode ? item.pincode : ""})) : []}
+                        searchable
+                        clearable
+                        nothingFoundMessage="Nothing found..."
+                        disabled={isPincodeFetching || isPincodeLoading}
+                        error={form.errors.pincode}
+                        value={form.values.pincode ? form.values.pincode.toString() : undefined}
+                        onChange={onSelectHandler}
+                        onSearchChange={searchHandler}
+                    />
+                    <TextInput label="State" {...form.getInputProps('state')} />
+                    <TextInput label="City" {...form.getInputProps('city')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Email" {...form.getInputProps('email')} />

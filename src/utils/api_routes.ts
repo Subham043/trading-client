@@ -14,6 +14,7 @@ export const api_routes = {
     profile: "/account/profile",
     password: "/account/password",
   },
+  pincodes: "/pincodes",
   users: "/users",
   companyMasters: "/company-masters",
   nameChangeMasters: "/name-change-masters",

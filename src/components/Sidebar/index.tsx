@@ -31,6 +31,7 @@ const mockdata = [
     icon: IconSettings,
     initiallyOpened: false,
     links: [
+      { label: 'Pincodes', link: page_routes.pincodes },
       { label: 'Failed Excel', link: page_routes.failed_excel },
     ],
   },

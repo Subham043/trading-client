@@ -151,6 +151,21 @@ export type UserQueryType = {
   createdAt: Date;
 };
 
+export type PincodeQueryType = {
+  id: number;
+  circle_name: string;
+  region_name: string;
+  division_name: string;
+  office_name: string;
+  pincode: string;
+  office_type: string;
+  district: string;
+  state_name: string;
+  createdAt: Date;
+};
+
+export type PincodeQueryFormType = Omit<PincodeQueryType, "id" | "createdAt">;
+
 export type PaginationMainType = {
   total: number;
   current_page: number;
