@@ -25,7 +25,6 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                             <Table.Thead bg="blue">
                                 <Table.Tr>
-                                    <Table.Th style={{color: 'white'}}>Name</Table.Th>
                                     <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
                                     <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
                                     <Table.Th style={{color: 'white'}}>CIN</Table.Th>
@@ -38,7 +37,6 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                             </Table.Thead>
                             <Table.Tbody>
                                 <Table.Tr>
-                                    <Table.Td>{data.newName}</Table.Td>
                                     <Table.Td>{data.currentName}</Table.Td>
                                     <Table.Td>{data.ISIN}</Table.Td>
                                     <Table.Td>{data.CIN}</Table.Td>

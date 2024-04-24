@@ -10,7 +10,7 @@ import { page_routes } from "../../utils/page_routes";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: CompanyMastersModalProps) => void}> = ({id, newName, currentName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal}) => {
+const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: CompanyMastersModalProps) => void}> = ({id, currentName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteCompanyMaster = useDeleteCompanyMasterMutation(id)
 
@@ -25,11 +25,6 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
             {ISIN}
             </Anchor>
           </Link>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {newName}
-          </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
@@ -101,13 +96,12 @@ const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => v
   const {data:companyMasters, isFetching, isLoading, status, error, refetch} = useCompanyMastersQuery();
   return (
     <>
-      <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
+      <ErrorBoundary hasData={companyMasters ? companyMasters.companyMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={companyMasters?.total} current_page={companyMasters?.current_page} last_page={companyMasters?.last_page} refetch={refetch}>
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">
               <Table.Tr>
                 <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
-                <Table.Th style={{color: 'white'}}>Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>CIN</Table.Th>
                 <Table.Th style={{color: 'white'}}>BSE</Table.Th>

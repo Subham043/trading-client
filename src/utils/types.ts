@@ -28,7 +28,6 @@ export type UserType = {
 
 export type CompanyMasterType = {
   id: number;
-  newName?: string | undefined;
   currentName?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
@@ -57,18 +56,11 @@ export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;
 
 export type NameChangeMasterType = {
   id: number;
-  // newName?: string | undefined;
   currentName?: string | undefined;
   previousName?: string | undefined;
   dateNameChange?: string | undefined;
-  // newRTA?: string | undefined;
-  // previousRTA?: string | undefined;
-  // dateRTAChange?: string | undefined;
   BSE?: string | undefined;
   NSE?: string | undefined;
-  // oldSecuritySymbol?: string | undefined;
-  // newSecuritySymbol?: string | undefined;
-  // dateSecurityChange?: string | undefined;
   companyId: number;
   createdAt: string;
 };
@@ -80,7 +72,6 @@ export type NameChangeMasterFormType = Omit<
 
 export type RegistrarMasterType = {
   id: number;
-  newName?: string;
   currentName?: string;
   registrar_name: string;
   sebi_regn_id: string;
@@ -105,7 +96,7 @@ export type RegistrarMasterType = {
 export interface RegistrarMasterFormType
   extends Omit<
     RegistrarMasterType,
-    "id" | "createdAt" | "newName" | "currentName" | "pincode"
+    "id" | "createdAt" | "currentName" | "pincode"
   > {
   pincode?: number | undefined;
 }

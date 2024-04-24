@@ -263,7 +263,6 @@ export const useCompanyMastersSelectQuery: ({
 }) => UseQueryResult<
   PaginationType<
     {
-      newName: string | null;
       currentName: string | null;
       companyID: number | null;
     }[]
@@ -277,7 +276,6 @@ export const useCompanyMastersSelectQuery: ({
       const response = await axios.get<{
         data: PaginationType<{
           data: {
-            newName: string | null;
             currentName: string | null;
             companyID: number | null;
           }[];

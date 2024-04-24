@@ -88,7 +88,7 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) =
   
   return (
     <>
-      <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
+      <ErrorBoundary hasData={users ? users.user.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={users?.total} current_page={users?.current_page} last_page={users?.last_page} refetch={refetch}>
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">

@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Center, LoadingOverlay, Pagination, Text } from "@mantine/core";
+import { Alert, Badge, Box, Button, Center, Group, LoadingOverlay, Pagination, Text } from "@mantine/core";
 import { FC, ReactNode } from "react";
 import { ChildrenType } from "../../utils/types";
 import { AxiosError } from "axios";
@@ -10,6 +10,7 @@ type ErrorBoundaryPaginationType = {
     hasPagination: boolean;
     current_page?: number;
     last_page?: number;
+    total?: number;
 }
 type ErrorBoundaryProps = ErrorBoundaryPaginationType & {
     isLoading: boolean;
@@ -45,9 +46,12 @@ const ErrorBoundary:FC<ErrorBoundaryProps> = ({isLoading, status, children, erro
         return (
             <ErrorBoundaryContainer isLoading={isLoading}>
                 {children}
-                {hasPagination && <Center mt="md" pb="sm">
-                    <Pagination value={hasPagination ? props.current_page : 10} total={props.last_page || 10} onChange={(page) => setSearchParams(page ? {page: page.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''} : {})} />
-                </Center>}
+                {hasPagination && <>
+                    <Group mt="md" pb="sm" justify="center" align="center" gap={10}>
+                        <Badge variant="dot" color="teal" size="lg">{props.total || 10}</Badge>
+                        <Pagination value={hasPagination ? props.current_page : 10} total={props.last_page || 10} siblings={2} boundaries={1} onChange={(page) => setSearchParams(page ? {page: page.toString(), limit: searchParams.get('limit') || QueryTotalCount.toString(), search: searchParams.get('search') || ''} : {})} />
+                    </Group>
+                </>}
             </ErrorBoundaryContainer>
         )   
     }

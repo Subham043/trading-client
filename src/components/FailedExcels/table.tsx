@@ -54,7 +54,7 @@ const FailedExcelTable:FC = () => {
   const {data:failedExcels, isFetching, isLoading, status, error, refetch} = useFailedExcelsQuery();
   return (
     <>
-      <ErrorBoundary hasData={failedExcels ? failedExcels.failedExcel.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={failedExcels?.current_page} last_page={failedExcels?.last_page} refetch={refetch}>
+      <ErrorBoundary hasData={failedExcels ? failedExcels.failedExcel.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={failedExcels?.total} current_page={failedExcels?.current_page} last_page={failedExcels?.last_page} refetch={refetch}>
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">

@@ -8,7 +8,7 @@ import { useDeleteRegistrarMasterMutation, useRegistrarMastersQuery } from "../.
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void}> = ({id, newName, registrar_name, sebi_regn_id, branch, email, website, createdAt, toggleModal, toggleDrawer}) => {
+const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void}> = ({id, currentName, registrar_name, sebi_regn_id, branch, email, website, createdAt, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteRegistrarMaster = useDeleteRegistrarMasterMutation(id)
 
@@ -19,7 +19,7 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
     <Table.Tr>
       <Table.Td>
           <Anchor component="button" size="sm" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-            {newName}
+            {currentName}
           </Anchor>
       </Table.Td>
       <Table.Td>
@@ -90,7 +90,7 @@ const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) 
   const {data:registrarMasters, isFetching, isLoading, status, error, refetch} = useRegistrarMastersQuery();
   return (
     <>
-      <ErrorBoundary hasData={registrarMasters ? registrarMasters.registrarMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={registrarMasters?.current_page} last_page={registrarMasters?.last_page} refetch={refetch}>
+      <ErrorBoundary hasData={registrarMasters ? registrarMasters.registrarMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={registrarMasters?.total} current_page={registrarMasters?.current_page} last_page={registrarMasters?.last_page} refetch={refetch}>
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">

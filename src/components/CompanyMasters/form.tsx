@@ -39,7 +39,6 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
             form.setValues({
                 ISIN: data.ISIN ? data.ISIN : undefined,
                 CIN: data.CIN ? data.CIN : undefined,
-                newName: data.newName ? data.newName : undefined,
                 currentName: data.currentName ? data.currentName : undefined,
                 BSE: data.BSE ? data.BSE : undefined,
                 NSE: data.NSE ? data.NSE : undefined,
@@ -112,11 +111,8 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <TextInput withAsterisk label="Name of the Company (as per certificate)" {...form.getInputProps('newName')} />
+                <SimpleGrid cols={{ base: 1, sm: 3 }}>
                     <TextInput withAsterisk label="Current Name of the Company" {...form.getInputProps('currentName')} />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="NSE" {...form.getInputProps('NSE')} />
                     <TextInput label="BSE" {...form.getInputProps('BSE')} />
                 </SimpleGrid>

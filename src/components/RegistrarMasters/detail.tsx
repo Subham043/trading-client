@@ -13,7 +13,7 @@ const RegistrarMasterDetail:FC<RegistrarMastersListDrawerProps> = (props) => {
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Company</Table.Th>
-                        <Table.Td>{data.newName}</Table.Td>
+                        <Table.Td>{data.currentName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Registrar Name</Table.Th>

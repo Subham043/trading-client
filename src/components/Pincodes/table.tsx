@@ -90,7 +90,7 @@ const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void}> = (p
   
   return (
     <>
-      <ErrorBoundary hasData={pincodes ? pincodes.pincode.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} current_page={pincodes?.current_page} last_page={pincodes?.last_page} refetch={refetch}>
+      <ErrorBoundary hasData={pincodes ? pincodes.pincode.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={pincodes?.total} current_page={pincodes?.current_page} last_page={pincodes?.last_page} refetch={refetch}>
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">

@@ -43,16 +43,9 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             form.setValues({
                 BSE: data.BSE ? data.BSE : undefined,
                 NSE: data.NSE ? data.NSE : undefined,
-                // newName: data.newName ? data.newName : undefined,
                 currentName: data.currentName ? data.currentName : undefined,
                 previousName: data.previousName ? data.previousName : undefined,
                 dateNameChange: data.dateNameChange ? data.dateNameChange : undefined,
-                // newRTA: data.newRTA ? data.newRTA : undefined,
-                // previousRTA: data.previousRTA ? data.previousRTA : undefined,
-                // dateRTAChange: data.dateRTAChange ? data.dateRTAChange : undefined,
-                // newSecuritySymbol: data.newSecuritySymbol ? data.newSecuritySymbol : undefined,
-                // oldSecuritySymbol: data.oldSecuritySymbol ? data.oldSecuritySymbol : undefined,
-                // dateSecurityChange: data.dateSecurityChange ? data.dateSecurityChange : undefined,
             });
         }else if(props.type === "Create" && newData && props.status){
             form.setValues({
@@ -60,10 +53,6 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                 NSE: newData.NSE ? newData.NSE : undefined,
                 previousName: newData.currentName ? newData.currentName : undefined,
                 dateNameChange: newData.dateNameChange ? newData.dateNameChange : undefined,
-                // previousRTA: newData.newRTA ? newData.newRTA : undefined,
-                // dateRTAChange: newData.dateRTAChange ? newData.dateRTAChange : undefined,
-                // oldSecuritySymbol: newData.newSecuritySymbol ? newData.newSecuritySymbol : undefined,
-                // dateSecurityChange: newData.dateSecurityChange ? newData.dateSecurityChange : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,34 +120,6 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                         placeholder="Date of Name Change"
                     />
                 </SimpleGrid>
-                {/* <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                    <TextInput label="New RTA" {...form.getInputProps('newRTA')} />
-                    <TextInput label="Previous RTA" {...form.getInputProps('previousRTA')} />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                    <TextInput label="New Security Symbol" {...form.getInputProps('newSecuritySymbol')} />
-                    <TextInput label="Old Security Symbol" {...form.getInputProps('oldSecuritySymbol')} />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <DateInput
-                        value={form.values.dateNameChange ? new Date(form.values.dateNameChange) : undefined}
-                        onChange={(value) => form.setFieldValue('dateNameChange', value?.toISOString())}
-                        label="Date of Name Change"
-                        placeholder="Date of Name Change"
-                    />
-                    <DateInput
-                        value={form.values.dateRTAChange ? new Date(form.values.dateRTAChange) : undefined}
-                        onChange={(value) => form.setFieldValue('dateRTAChange', value?.toISOString())}
-                        label="Date of RTA Change"
-                        placeholder="Date of RTA Change"
-                    />
-                    <DateInput
-                        value={form.values.dateSecurityChange ? new Date(form.values.dateSecurityChange) : undefined}
-                        onChange={(value) => form.setFieldValue('dateSecurityChange', value?.toISOString())}
-                        label="Date of Security Change"
-                        placeholder="Date of Security Change"
-                    />
-                </SimpleGrid> */}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} data-disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending}>
                     {props.type === "Create" ? "Change" : "Update"}
                 </Button>

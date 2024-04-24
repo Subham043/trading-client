@@ -104,7 +104,7 @@ const RegistrarMasterForm:FC<RegistrarMasterFormProps & {toggleModal: (value: Re
                         label="Company Name"
                         placeholder="Pick Company"
                         maxDropdownHeight={200}
-                        data={companyMastersSelect ? companyMastersSelect.map((item) => ({label: item.newName ? item.newName : "", value: item.companyID ? item.companyID.toString() : ""})) : []}
+                        data={companyMastersSelect ? companyMastersSelect.map((item) => ({label: item.currentName ? item.currentName : "", value: item.companyID ? item.companyID.toString() : ""})) : []}
                         searchable
                         clearable
                         nothingFoundMessage="Nothing found..."
