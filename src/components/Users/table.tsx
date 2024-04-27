@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover } from '@mantine/core';
+import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { UserQueryType } from "../../utils/types";
 import dayjs from 'dayjs';
@@ -17,13 +17,20 @@ const statusColors: Record<string, string> = {
   blocked: 'red',
 };
 
-const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer}) => {
+const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, name, email, role, status, createdAt, toggleDrawer, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteUser = useDeleteUserMutation(id);
   const initials = name.split(' ').map((name) => name[0]).join('').toUpperCase();
   const onDelete = async () => await deleteUser.mutateAsync();
   return (
     <Table.Tr>
+      <Table.Td>
+        <Checkbox
+          checked={selectedData.includes(id)}
+          onChange={() => setSelectedData(selectedData.includes(id) ? selectedData.filter((value) => value !== id) : [...selectedData, id])}
+          color="gray"
+        />
+      </Table.Td>
       <Table.Td>
           <Group gap="sm">
           <Avatar size={30} radius={30}>{initials}</Avatar>
@@ -83,8 +90,10 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
   )
 }
 
-const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) => {
+const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:users, isFetching, isLoading, status, error, refetch} = useUsersQuery();
+  const allChecked = (users ? users.user : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (users ? users.user : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   
   return (
     <>
@@ -93,6 +102,14 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) =
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">
               <Table.Tr>
+                <Table.Th style={{color: 'white'}}>
+                  <Checkbox
+                    color="gray"
+                    checked={allChecked}
+                    indeterminate={indeterminate}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (users ? users.user.map((value) => value.id) : []))}
+                  />
+                </Table.Th>
                 <Table.Th style={{color: 'white'}}>Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Email</Table.Th>
                 <Table.Th style={{color: 'white'}}>Role</Table.Th>
@@ -102,7 +119,7 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void}> = (props) =
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{
-              (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
+              (users ? users.user : []).map((item) => <UserTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
             }</Table.Tbody>
           </Table>
         </Table.ScrollContainer>

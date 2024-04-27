@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Anchor } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Anchor, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { RegistrarMasterType } from "../../utils/types";
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { useDeleteRegistrarMasterMutation, useRegistrarMastersQuery } from "../.
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void}> = ({id, currentName, registrar_name, sebi_regn_id, branch, email, website, createdAt, toggleModal, toggleDrawer}) => {
+const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, currentName, registrar_name, sebi_regn_id, branch, email, website, createdAt, toggleModal, toggleDrawer, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteRegistrarMaster = useDeleteRegistrarMasterMutation(id)
 
@@ -17,6 +17,13 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
   }
   return (
     <Table.Tr>
+      <Table.Td>
+        <Checkbox
+          checked={selectedData.includes(id)}
+          onChange={() => setSelectedData(selectedData.includes(id) ? selectedData.filter((value) => value !== id) : [...selectedData, id])}
+          color="gray"
+        />
+      </Table.Td>
       <Table.Td>
           <Anchor component="button" size="sm" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
             {currentName}
@@ -86,8 +93,10 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
   )
 }
 
-const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void}> = (props) => {
+const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:registrarMasters, isFetching, isLoading, status, error, refetch} = useRegistrarMastersQuery();
+  const allChecked = (registrarMasters ? registrarMasters.registrarMaster : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (registrarMasters ? registrarMasters.registrarMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
     <>
       <ErrorBoundary hasData={registrarMasters ? registrarMasters.registrarMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={registrarMasters?.total} current_page={registrarMasters?.current_page} last_page={registrarMasters?.last_page} refetch={refetch}>
@@ -95,6 +104,14 @@ const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) 
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">
               <Table.Tr>
+                <Table.Th style={{color: 'white'}}>
+                  <Checkbox
+                    color="gray"
+                    checked={allChecked}
+                    indeterminate={indeterminate}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (registrarMasters ? registrarMasters.registrarMaster.map((value) => value.id) : []))}
+                  />
+                </Table.Th>
                 <Table.Th style={{color: 'white'}}>Company</Table.Th>
                 <Table.Th style={{color: 'white'}}>Registrar Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>SEBI Regn. ID</Table.Th>
@@ -106,7 +123,7 @@ const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) 
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{
-              (registrarMasters ? registrarMasters.registrarMaster : []).map((item) => <RegistrarMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} />)
+              (registrarMasters ? registrarMasters.registrarMaster : []).map((item) => <RegistrarMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
             }</Table.Tbody>
           </Table>
         </Table.ScrollContainer>

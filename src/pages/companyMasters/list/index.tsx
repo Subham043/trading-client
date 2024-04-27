@@ -7,6 +7,8 @@ import SearchButtonHeader from "../../../components/Layout/SearchButtonHeader";
 import { useExcelExport } from "../../../hooks/useExcelExport";
 import { api_routes } from "../../../utils/api_routes";
 import ExcelUploadModal from "../../../components/Layout/ExcelUploadModal";
+import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
+import { CompanyMastersQueryKey } from "../../../hooks/data/company_masters";
 
 export type CompanyMastersModalProps = {
     status: boolean;
@@ -19,17 +21,26 @@ export type CompanyMastersModalProps = {
 
 const CompanyMastersPage:FC = () => {
     const { exportExcel, excelLoading } = useExcelExport();
+    const { deleteMultiple, deleteLoading } = useDeleteMultiple();
+    const [selectedData, setSelectedData] = useState<number[]>([]);
     const [modal, setModal] = useState<CompanyMastersModalProps>({status: false, type: 'Create'});
     const toggleModal = (value:CompanyMastersModalProps) => setModal(value);
     const exportExcelHandler = async () => await exportExcel(api_routes.companyMasters + '/export', 'company_masters.xlsx');
     const [excelModal, setExcelModal] = useState<boolean>(false);
     const toggleExcelModal = () => setExcelModal(prev => !prev);
 
+    const deleteMultipleHandler = async () => {
+        if(selectedData.length > 0) {
+            await deleteMultiple(`${api_routes.companyMasters}/delete-multiple`, 'Company Masters', CompanyMastersQueryKey, selectedData);
+            setSelectedData([]);
+        }
+    }
+
     return (
         <div>
-            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create'})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} />
+            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create'})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <CompanyMasterTable toggleModal={toggleModal} />
+                <CompanyMasterTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
             <CompanyMasterModal {...modal} toggleModal={toggleModal} />
             <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Company Masters" uploadUrl={`${api_routes.companyMasters}/import`} sampleUrl="/Sample_Company_Masters.xlsx" />

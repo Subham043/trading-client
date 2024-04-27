@@ -8,6 +8,8 @@ import NameChangeMasterDrawer from "../../../components/NameChangeMasters/drawer
 import SearchButtonHeader from "../../../components/Layout/SearchButtonHeader";
 import { useExcelExport } from "../../../hooks/useExcelExport";
 import { api_routes } from "../../../utils/api_routes";
+import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
+import { NameChangeMastersQueryKey } from "../../../hooks/data/name_change_masters";
 
 export type NameChangeMastersListModalProps = {
     status: boolean;
@@ -28,18 +30,27 @@ export type NameChangeMastersListDrawerProps = {
 
 const NameChangeMastersListPage:FC = () => {
     const param = useParams<{companyId: string}>()
+    const [selectedData, setSelectedData] = useState<number[]>([]);
     const { exportExcel, excelLoading } = useExcelExport();
+    const { deleteMultiple, deleteLoading } = useDeleteMultiple();
     const exportExcelHandler = async () => await exportExcel(api_routes.nameChangeMasters + `/list/export/${param.companyId}`, 'name_change_masters.xlsx');
     const [modal, setModal] = useState<NameChangeMastersListModalProps>({status: false, type: 'Create', companyId: Number(param.companyId)});
     const toggleModal = (value:NameChangeMastersListModalProps) => setModal(value);
     const [drawerStatus, setDrawerStatus] = useState<NameChangeMastersListDrawerProps>({drawerStatus: false});
     const toggleDrawer = (value:NameChangeMastersListDrawerProps) => setDrawerStatus(value);
 
+    const deleteMultipleHandler = async () => {
+        if(selectedData.length > 0) {
+            await deleteMultiple(`${api_routes.nameChangeMasters}/delete-multiple/${param.companyId}`, 'Name Change Masters', [NameChangeMastersQueryKey, param.companyId ? Number(param.companyId) : ''], selectedData);
+            setSelectedData([]);
+        }
+    }
+
     return (
         <div>
-            <SearchButtonHeader hasButton={true} buttonText="Change" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} />
+            <SearchButtonHeader hasButton={true} buttonText="Change" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <NameChangeMasterTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} companyId={Number(param.companyId)} />
+                <NameChangeMasterTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} companyId={Number(param.companyId)} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
             <NameChangeMasterModal {...modal} mainCompanyId={Number(param.companyId)} toggleModal={toggleModal} />
             <NameChangeMasterDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />

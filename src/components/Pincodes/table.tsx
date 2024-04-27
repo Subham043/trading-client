@@ -1,17 +1,24 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { PincodeQueryType } from "../../utils/types";
 import { PincodesDrawerProps } from "../../pages/pincodes";
 import { useDeletePincodeMutation, usePincodesQuery } from "../../hooks/data/pincodes";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
-const PincodeTableRow:FC<PincodeQueryType & {toggleDrawer: (value: PincodesDrawerProps) => void}> = ({id, state_name, circle_name, region_name, division_name, office_name, pincode, office_type, district, toggleDrawer}) => {
+const PincodeTableRow:FC<PincodeQueryType & {toggleDrawer: (value: PincodesDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, state_name, circle_name, region_name, division_name, office_name, pincode, office_type, district, toggleDrawer, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deletePincode = useDeletePincodeMutation(id);
   const onDelete = async () => await deletePincode.mutateAsync();
   return (
     <Table.Tr>
+      <Table.Td>
+        <Checkbox
+          checked={selectedData.includes(id)}
+          onChange={() => setSelectedData(selectedData.includes(id) ? selectedData.filter((value) => value !== id) : [...selectedData, id])}
+          color="gray"
+        />
+      </Table.Td>
       <Table.Td>
           <Group gap="sm">
           <Text fz="sm" fw={500}>
@@ -85,9 +92,10 @@ const PincodeTableRow:FC<PincodeQueryType & {toggleDrawer: (value: PincodesDrawe
   )
 }
 
-const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void}> = (props) => {
+const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:pincodes, isFetching, isLoading, status, error, refetch} = usePincodesQuery();
-  
+  const allChecked = (pincodes ? pincodes.pincode : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (pincodes ? pincodes.pincode : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
     <>
       <ErrorBoundary hasData={pincodes ? pincodes.pincode.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={pincodes?.total} current_page={pincodes?.current_page} last_page={pincodes?.last_page} refetch={refetch}>
@@ -95,6 +103,14 @@ const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void}> = (p
           <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
             <Table.Thead bg="blue">
               <Table.Tr>
+                <Table.Th style={{color: 'white'}}>
+                  <Checkbox
+                    color="gray"
+                    checked={allChecked}
+                    indeterminate={indeterminate}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (pincodes ? pincodes.pincode.map((value) => value.id) : []))}
+                  />
+                </Table.Th>
                 <Table.Th style={{color: 'white'}}>State Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Circle Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Region Name</Table.Th>
@@ -107,7 +123,7 @@ const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void}> = (p
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{
-              (pincodes ? pincodes.pincode : []).map((item) => <PincodeTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} />)
+              (pincodes ? pincodes.pincode : []).map((item) => <PincodeTableRow key={item.id} {...item} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
             }</Table.Tbody>
           </Table>
         </Table.ScrollContainer>

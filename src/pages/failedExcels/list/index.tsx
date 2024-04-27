@@ -8,7 +8,7 @@ const FailedExcelsPage:FC = () => {
 
     return (
         <div>
-            <SearchButtonHeader hasButton={false} hasExport={false} hasImport={false} />
+            <SearchButtonHeader hasButton={false} hasExport={false} hasImport={false} hasDelete={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <FailedExcelTable />
             </Paper>

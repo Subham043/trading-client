@@ -18,6 +18,14 @@ type ImportButtonType = {
     hasImport: false;
 }
 
+type DeleteButtonType = {
+    hasDelete: true;
+    deleteClickHandler: () => void;
+    deleteLoading: boolean;
+} | {
+    hasDelete: false;
+}
+
 type SearchButtonHeaderProps = ({
     hasButton: false;
     hasSearch?: boolean;
@@ -26,14 +34,14 @@ type SearchButtonHeaderProps = ({
     hasSearch?: boolean;
     buttonClickHandler: () => void;
     buttonText: string;
-}) & ExportButtonType & ImportButtonType
+}) & ExportButtonType & ImportButtonType & DeleteButtonType
 
 const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...props}) => {
     const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
     const {searchHandler} = useSearchQueryParam();
 
     return (
-        <Group justify={(!props.hasButton && !props.hasExport && !props.hasImport && hasSearch) ? "flex-end" : "space-between"} mb="lg">
+        <Group justify={(!props.hasButton && !props.hasExport && !props.hasImport && !props.hasDelete && hasSearch) ? "flex-end" : "space-between"} mb="lg">
             <Group align="center" gap={"xs"}>
                 {props.hasButton && <Button type='submit' variant="filled" color='blue' onClick={props.buttonClickHandler}>
                     {props.buttonText}
@@ -43,6 +51,9 @@ const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...prop
                 </Button>}
                 {props.hasImport && <Button type='submit' variant="filled" color='grape' onClick={props.importClickHandler}>
                     Import
+                </Button>}
+                {props.hasDelete && <Button type='submit' variant="filled" color='dark' onClick={props.deleteClickHandler} loading={props.deleteLoading} disabled={props.deleteLoading}>
+                    Delete
                 </Button>}
             </Group>
             {hasSearch && <TextInput

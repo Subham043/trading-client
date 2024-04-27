@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconTrash, IconX } from '@tabler/icons-react';
 import { NameChangeMasterType } from "../../utils/types";
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { useDeleteNameChangeMasterMutation, useNameChangeMastersQuery } from "..
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void,}> = ({id, companyId, currentName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer}) => {
+const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, companyId, currentName, BSE, NSE, previousName, dateNameChange, createdAt, toggleDrawer, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteNameChangeMaster = useDeleteNameChangeMasterMutation(id, companyId)
   const onDelete = async () => {
@@ -16,6 +16,13 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: N
   }
   return (
     <Table.Tr>
+      <Table.Td>
+        <Checkbox
+          checked={selectedData.includes(id)}
+          onChange={() => setSelectedData(selectedData.includes(id) ? selectedData.filter((value) => value !== id) : [...selectedData, id])}
+          color="gray"
+        />
+      </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
               {currentName}
@@ -80,14 +87,24 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: N
   )
 }
 
-const NameChangeMasterTable:FC<{toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void, companyId: number}> = (props) => {
+const NameChangeMasterTable:FC<{toggleModal: (value: NameChangeMastersListModalProps) => void, toggleDrawer: (value: NameChangeMastersListDrawerProps) => void, companyId: number, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:nameChangeMasters, isFetching, isLoading, status, error, refetch} = useNameChangeMastersQuery({companyId: props.companyId});
+  const allChecked = (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
     <ErrorBoundary hasData={nameChangeMasters ? nameChangeMasters.nameChangeMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={nameChangeMasters?.total} current_page={nameChangeMasters?.current_page} last_page={nameChangeMasters?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
           <Table.Thead bg="blue">
             <Table.Tr>
+              <Table.Th style={{color: 'white'}}>
+                  <Checkbox
+                    color="gray"
+                    checked={allChecked}
+                    indeterminate={indeterminate}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (nameChangeMasters ? nameChangeMasters.nameChangeMaster.map((value) => value.id) : []))}
+                  />
+                </Table.Th>
               <Table.Th style={{color: 'white'}}>New Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Previous Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Date of Name Change</Table.Th>
@@ -98,7 +115,7 @@ const NameChangeMasterTable:FC<{toggleModal: (value: NameChangeMastersListModalP
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} />)
+            (nameChangeMasters ? nameChangeMasters.nameChangeMaster : []).map((item) => <NameChangeMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
