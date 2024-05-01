@@ -21,6 +21,7 @@ const CompanyMastersPage = lazy(()=>import("./pages/companyMasters/list"));
 const CompanyMastersDetailPage = lazy(()=>import("./pages/companyMasters/detail"));
 const NameChangeMastersMainPage = lazy(()=>import("./pages/nameChangeMasters/main"));
 const RegistrarMastersPage = lazy(()=>import("./pages/registrarMasters/list"));
+const RegistrarMastersDetailPage = lazy(()=>import("./pages/registrarMasters/detail"));
 const FailedExcelsPage = lazy(()=>import("./pages/failedExcels/list"));
 const PincodesPage = lazy(()=>import("./pages/pincodes"));
 
@@ -46,6 +47,7 @@ function App() {
                       <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
                       <Route path={page_routes.nameChangeMasters.main} element={<NameChangeMastersMainPage />} />
                       <Route path={page_routes.registrarMasters.list} element={<RegistrarMastersPage />} />
+                      <Route path={page_routes.registrarMasters.view} element={<RegistrarMastersDetailPage />} />
                       <Route path={page_routes.failed_excel} element={<FailedExcelsPage />} />
                     </Route>
                   </Route>

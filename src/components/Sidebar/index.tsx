@@ -23,9 +23,9 @@ interface SidebarProps {
 const mockdata = [
   { label: 'Dashboard', icon: IconGauge, link: page_routes.dashboard },
   { label: 'Users', icon: IconUserCircle, link: page_routes.users },
+  { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
   { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters.list },
   { label: 'Name Change Masters', icon: IconWriting, link: page_routes.nameChangeMasters.main },
-  { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
   {
     label: 'Settings',
     icon: IconSettings,

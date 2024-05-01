@@ -1,8 +1,7 @@
 import { FC } from "react"
-import { Table, Group, Text, Box, Button, Paper, SimpleGrid } from '@mantine/core';
+import { Table, Group, Text, Box, Button, SimpleGrid } from '@mantine/core';
 import { useParams } from "react-router-dom";
 import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detail";
-import classes from '../../pages/companyMasters/detail/companyMasters.module.css'
 import { useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -18,119 +17,148 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                 Edit
             </Button>
         </Group>
-        <Box pos="relative" mb="sm">
-            <Paper shadow="sm" className={classes.paper_background}>
+        {(data) && <>
+            <Table.ScrollContainer minWidth={800}>
+                <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                    <Table.Thead bg="blue">
+                        <Table.Tr>
+                            <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
+                            <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
+                            <Table.Th style={{color: 'white'}}>CIN</Table.Th>
+                            <Table.Th style={{color: 'white'}}>BSE</Table.Th>
+                            <Table.Th style={{color: 'white'}}>NSE</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Closing Price in NSE</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Closing Price in BSE</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                        <Table.Tr>
+                            <Table.Td>{data.currentName}</Table.Td>
+                            <Table.Td>{data.ISIN}</Table.Td>
+                            <Table.Td>{data.CIN}</Table.Td>
+                            <Table.Td>{data.BSE}</Table.Td>
+                            <Table.Td>{data.NSE}</Table.Td>
+                            <Table.Td>{data.faceValue}</Table.Td>
+                            <Table.Td>{data.closingPriceNSE}</Table.Td>
+                            <Table.Td>{data.closingPriceBSE}</Table.Td>
+                        </Table.Tr>
+                    </Table.Tbody>
+                </Table>
+            </Table.ScrollContainer>
+        </>}
+        <SimpleGrid cols={{ base: 1, sm: 3 }}>
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Registrar Master</Text>
+                </div>
                 {(data) && <>
-                    <Table.ScrollContainer minWidth={800}>
+                    <Table.ScrollContainer minWidth={'100%'}>
                         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-                            <Table.Thead bg="blue">
+                            <Table.Thead>
                                 <Table.Tr>
-                                    <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>CIN</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>BSE</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>NSE</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>Closing Price in NSE</Table.Th>
-                                    <Table.Th style={{color: 'white'}}>Closing Price in BSE</Table.Th>
+                                    <Table.Th>Registrar Name</Table.Th>
+                                    <Table.Td>{data.registrar_name}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>SEBI Regn. ID</Table.Th>
+                                    <Table.Td>{data.sebi_regn_id}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Branch</Table.Th>
+                                    <Table.Td>{data.registrar_branch}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar City</Table.Th>
+                                    <Table.Td>{data.registrar_city}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar State</Table.Th>
+                                    <Table.Td>{data.registrar_state}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Pincode</Table.Th>
+                                    <Table.Td>{data.registrar_pincodes}</Table.Td>
                                 </Table.Tr>
                             </Table.Thead>
-                            <Table.Tbody>
-                                <Table.Tr>
-                                    <Table.Td>{data.currentName}</Table.Td>
-                                    <Table.Td>{data.ISIN}</Table.Td>
-                                    <Table.Td>{data.CIN}</Table.Td>
-                                    <Table.Td>{data.BSE}</Table.Td>
-                                    <Table.Td>{data.NSE}</Table.Td>
-                                    <Table.Td>{data.faceValue}</Table.Td>
-                                    <Table.Td>{data.closingPriceNSE}</Table.Td>
-                                    <Table.Td>{data.closingPriceBSE}</Table.Td>
-                                </Table.Tr>
-                            </Table.Tbody>
                         </Table>
                     </Table.ScrollContainer>
                 </>}
-            </Paper>
-        </Box>
-        <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Box pos="relative" className={classes.paper_background}>
-                <Paper shadow="sm" className={classes.paper_background}>
-                    <div style={{textAlign: 'center'}}>
-                        <Text size="lg" fw={700} p="sm" bg="blue" color="white">Address</Text>
-                    </div>
-                    {(data) && <>
-                        <Table.ScrollContainer minWidth={'100%'}>
-                            <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-                                <Table.Thead>
-                                    <Table.Tr>
-                                        <Table.Th>Registered Office</Table.Th>
-                                        <Table.Td>{data.registeredOffice}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>City</Table.Th>
-                                        <Table.Td>{data.city}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>State</Table.Th>
-                                        <Table.Td>{data.state}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Pincode</Table.Th>
-                                        <Table.Td>{data.pincode}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Telephone</Table.Th>
-                                        <Table.Td>{data.telephone}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Fax</Table.Th>
-                                        <Table.Td>{data.fax}</Table.Td>
-                                    </Table.Tr>
-                                </Table.Thead>
-                            </Table>
-                        </Table.ScrollContainer>
-                    </>}
-                </Paper>
-            </Box>
-            <Box pos="relative">
-                <Paper shadow="sm" className={classes.paper_background}>
-                    <div style={{textAlign: 'center'}}>
-                        <Text size="lg" fw={700} p="sm" bg="blue" color="white">Contact</Text>
-                    </div>
-                    {(data) && <>
-                        <Table.ScrollContainer minWidth={'100%'}>
-                            <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-                                <Table.Thead>
-                                    <Table.Tr>
-                                        <Table.Th>Email</Table.Th>
-                                        <Table.Td>{data.email}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Website</Table.Th>
-                                        <Table.Td>{data.website}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Name of Contact Person</Table.Th>
-                                        <Table.Td>{data.nameContactPerson}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Designation of Contact Person</Table.Th>
-                                        <Table.Td>{data.designationContactPerson}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Email of Contact Person</Table.Th>
-                                        <Table.Td>{data.emailContactPerson}</Table.Td>
-                                    </Table.Tr>
-                                    <Table.Tr>
-                                        <Table.Th>Phone of Contact Person</Table.Th>
-                                        <Table.Td>{data.phoneContactPerson}</Table.Td>
-                                    </Table.Tr>
-                                </Table.Thead>
-                            </Table>
-                        </Table.ScrollContainer>
-                    </>}
-                </Paper>
-            </Box>
+            </div>
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Address</Text>
+                </div>
+                {(data) && <>
+                    <Table.ScrollContainer minWidth={'100%'}>
+                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th>Registered Office</Table.Th>
+                                    <Table.Td>{data.registeredOffice}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>City</Table.Th>
+                                    <Table.Td>{data.city}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>State</Table.Th>
+                                    <Table.Td>{data.state}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Pincode</Table.Th>
+                                    <Table.Td>{data.pincode}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Telephone</Table.Th>
+                                    <Table.Td>{data.telephone}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Fax</Table.Th>
+                                    <Table.Td>{data.fax}</Table.Td>
+                                </Table.Tr>
+                            </Table.Thead>
+                        </Table>
+                    </Table.ScrollContainer>
+                </>}
+            </div>
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Contact</Text>
+                </div>
+                {(data) && <>
+                    <Table.ScrollContainer minWidth={'100%'}>
+                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th>Email</Table.Th>
+                                    <Table.Td>{data.email}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Website</Table.Th>
+                                    <Table.Td>{data.website}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Name of Contact Person</Table.Th>
+                                    <Table.Td>{data.nameContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Designation of Contact Person</Table.Th>
+                                    <Table.Td>{data.designationContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Email of Contact Person</Table.Th>
+                                    <Table.Td>{data.emailContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Phone of Contact Person</Table.Th>
+                                    <Table.Td>{data.phoneContactPerson}</Table.Td>
+                                </Table.Tr>
+                            </Table.Thead>
+                        </Table>
+                    </Table.ScrollContainer>
+                </>}
+            </div>
         </SimpleGrid>
         <Box bg="transparent" mt="md">
             <div style={{textAlign: 'center'}}>

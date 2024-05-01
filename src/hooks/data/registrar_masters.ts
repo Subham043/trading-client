@@ -20,10 +20,12 @@ export const RegistrarMasterKey = "registrar_master";
 export const RegistrarMastersQueryKey = "registrar_masters";
 export const CompanyMastersSelectKey = "company_master_select";
 
-export const useRegistrarMastersQuery: () => UseQueryResult<
+export const useRegistrarMastersQuery: (
+  enabled?: boolean
+) => UseQueryResult<
   PaginationType<{ registrarMaster: RegistrarMasterType[] }>,
   unknown
-> = () => {
+> = (enabled = true) => {
   const { axios } = useAxios();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || QueryInitialPageParam.toString();
@@ -40,6 +42,7 @@ export const useRegistrarMastersQuery: () => UseQueryResult<
       );
       return response.data.data;
     },
+    enabled,
   });
 };
 
@@ -81,6 +84,9 @@ export const useRegistrarMastersQuerySetData = () => {
         if (prev) {
           return {
             ...prev,
+            last_page: prev.last_page + 1,
+            total: prev.total + 1,
+            current_page: prev.current_page + 1,
             registrarMaster: [newRegistrarMasterVal, ...prev.registrarMaster],
           };
         }

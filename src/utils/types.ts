@@ -50,9 +50,28 @@ export type CompanyMasterType = {
   phoneContactPerson?: string | undefined;
   createdAt: string;
   nameChangeMasterId?: number | undefined;
+  registrar_branch?: string | undefined;
+  registrar_city?: string | undefined;
+  registrar_pincodes?: string | undefined;
+  registrar_state?: string | undefined;
+  registrarMasterBranchId?: number | undefined;
+  registrarMasterId?: number | undefined;
+  registrar_name?: string | undefined;
+  sebi_regn_id?: string | undefined;
 };
 
-export type CompanyMasterFormType = Omit<CompanyMasterType, "id" | "createdAt">;
+export type CompanyMasterFormType = Omit<
+  CompanyMasterType,
+  | "id"
+  | "createdAt"
+  | "registrar_branch"
+  | "registrar_pincodes"
+  | "registrar_state"
+  | "registrar_city"
+  | "registrarMasterId"
+  | "registrar_name"
+  | "sebi_regn_id"
+>;
 
 export type NameChangeMasterType = {
   id: number;
@@ -72,7 +91,16 @@ export type NameChangeMasterFormType = Omit<
 
 export type RegistrarMasterType = {
   id: number;
-  currentName?: string;
+  registrar_name: string;
+  sebi_regn_id: string;
+  createdAt?: Date;
+};
+
+export interface RegistrarMasterFormType
+  extends Omit<RegistrarMasterType, "id" | "createdAt"> {}
+
+export type RegistrarMasterBranchType = {
+  id: number;
   registrar_name: string;
   sebi_regn_id: string;
   address?: string | undefined;
@@ -88,15 +116,20 @@ export type RegistrarMasterType = {
   emailContactPerson?: string | undefined;
   phoneContactPerson?: string | undefined;
   officerAssigned?: string | undefined;
-  branch?: string | undefined;
-  createdAt?: Date;
-  companyId?: number | undefined;
+  branch: string;
+  createdAt: Date;
+  registrarMasterId?: number | undefined;
 };
 
-export interface RegistrarMasterFormType
+export interface RegistrarMasterBranchFormType
   extends Omit<
-    RegistrarMasterType,
-    "id" | "createdAt" | "currentName" | "pincode"
+    RegistrarMasterBranchType,
+    | "id"
+    | "createdAt"
+    | "registrarMasterId"
+    | "registrar_name"
+    | "sebi_regn_id"
+    | "pincode"
   > {
   pincode?: number | undefined;
 }

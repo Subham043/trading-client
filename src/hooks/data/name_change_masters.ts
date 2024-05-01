@@ -135,6 +135,9 @@ export const useNameChangeMastersQuerySetData = () => {
         if (prev) {
           return {
             ...prev,
+            last_page: prev.last_page + 1,
+            total: prev.total + 1,
+            current_page: prev.current_page + 1,
             nameChangeMaster: [
               newNameChangeMasterVal,
               ...prev.nameChangeMaster,

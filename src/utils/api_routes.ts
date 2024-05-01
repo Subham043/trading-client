@@ -19,6 +19,7 @@ export const api_routes = {
   companyMasters: "/company-masters",
   nameChangeMasters: "/name-change-masters",
   registrarMasters: "/registrar-masters",
+  registrarMasterBranches: "/registrar-master-branches",
   upload: {
     failed_excel: {
       download_via_name: "/upload/failed-excel/download-via-name",

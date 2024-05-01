@@ -13,6 +13,7 @@ import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { usePincodesSelectQuery } from "../../hooks/data/pincodes";
 import debounce from "lodash.debounce";
+import { useRegistrarMasterBranchesSelectQuery } from "../../hooks/data/registrar_master_branches";
 
 type CompanyMasterFormProps = CompanyMastersModalProps;
 type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, CompanyMasterFormType, unknown>;
@@ -21,12 +22,15 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
 
     const {toastError} = useToast();
     const [search, setSearch] = useState<string>("");
+    const [searchRegistrarMasterBranch, setSearchRegistrarMasterBranch] = useState<string>("");
     const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const {data:pincodes, isFetching:isPincodeFetching, isLoading:isPincodeLoading} = usePincodesSelectQuery({search: search, enabled:props.status});
+    const {data:branches, isFetching:isBranchFetching, isLoading:isBranchLoading} = useRegistrarMasterBranchesSelectQuery({search: searchRegistrarMasterBranch, enabled:props.status});
     const addCompanyMaster = useAddCompanyMasterMutation()
     const updateCompanyMaster = useUpdateCompanyMasterMutation(props.type === "Edit" ? props.id : 0)
     const { updateNameChangeMasters } = useNameChangeMastersQuerySetData();
     const searchHandler = debounce((value: string) => setSearch(value), 500);
+    const searchRegistrarMasterBranchHandler = debounce((value: string) => setSearchRegistrarMasterBranch(value), 500);
     const form = useForm<SchemaType>({
         initialValues,
         transformValues,
@@ -36,6 +40,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             setSearch(data.pincode ? data.pincode.toString() : "");
+            setSearchRegistrarMasterBranch(data.registrar_branch ? data.registrar_branch.toString() : "");
             form.setValues({
                 ISIN: data.ISIN ? data.ISIN : undefined,
                 CIN: data.CIN ? data.CIN : undefined,
@@ -49,6 +54,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 city: data.city ? data.city : undefined,
                 state: data.state ? data.state : undefined,
                 pincode: data.pincode ? data.pincode : undefined,
+                registrarMasterBranchId: data.registrarMasterBranchId ? data.registrarMasterBranchId : undefined,
                 telephone: data.telephone ? data.telephone : undefined,
                 fax: data.fax ? data.fax : undefined,
                 email: data.email ? data.email : undefined,
@@ -107,6 +113,8 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
             }
         }
     }
+    
+    const onBranchSelectHandler = (value: string | null) => form.setFieldValue('registrarMasterBranchId', value ? Number(value) : undefined)
 
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={isLoading || isFetching} status={props.status && props.type==="Edit" ? status : "success"} error={error} hasPagination={false} refetch={refetch}>
@@ -116,9 +124,24 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                     <TextInput label="NSE" {...form.getInputProps('NSE')} />
                     <TextInput label="BSE" {...form.getInputProps('BSE')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput withAsterisk data-autofocus label="ISIN" {...form.getInputProps('ISIN')} />
                     <TextInput label="CIN" {...form.getInputProps('CIN')} />
+                    <Select
+                        label="Registrar Master"
+                        placeholder="Type to search for registrar master"
+                        maxDropdownHeight={200}
+                        data={(branches && branches.registrarMasterBranch.length > 0) ? branches.registrarMasterBranch.map((item) => ({label: `${item.registrar_name} - ${item.branch}`, value: item.id ? item.id.toString() : ""})) : []}
+                        searchable
+                        clearable
+                        nothingFoundMessage="Nothing found..."
+                        disabled={isBranchFetching || isBranchLoading}
+                        error={form.errors.registrarMasterBranchId}
+                        value={form.values.registrarMasterBranchId ? form.values.registrarMasterBranchId.toString() : undefined}
+                        onChange={onBranchSelectHandler}
+                        onSearchChange={searchRegistrarMasterBranchHandler}
+                    />
+
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput withAsterisk label="Face Value" {...form.getInputProps('faceValue')} />
@@ -132,8 +155,6 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <Select
-                        withAsterisk
-                        data-autofocus
                         label="Pincode"
                         placeholder="Type to search for pincode"
                         maxDropdownHeight={200}

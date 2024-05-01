@@ -13,6 +13,7 @@ export const page_routes = {
   },
   registrarMasters: {
     list: "/registrar-masters",
+    view: "/registrar-masters/:registrarMasterId",
   },
   nameChangeMasters: {
     main: "/name-change-masters",

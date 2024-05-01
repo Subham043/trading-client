@@ -1,14 +1,16 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Anchor, Checkbox } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Anchor } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { RegistrarMasterType } from "../../utils/types";
 import dayjs from 'dayjs';
-import { RegistrarMastersListDrawerProps, RegistrarMastersModalProps } from "../../pages/registrarMasters/list";
+import { RegistrarMastersModalProps } from "../../pages/registrarMasters/list";
 import { useDeleteRegistrarMasterMutation, useRegistrarMastersQuery } from "../../hooks/data/registrar_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { Link } from "react-router-dom";
+import { page_routes } from "../../utils/page_routes";
 
 
-const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, currentName, registrar_name, sebi_regn_id, branch, email, website, createdAt, toggleModal, toggleDrawer, selectedData, setSelectedData}) => {
+const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: RegistrarMastersModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, registrar_name, sebi_regn_id, createdAt, toggleModal, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteRegistrarMaster = useDeleteRegistrarMasterMutation(id)
 
@@ -25,9 +27,11 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
         />
       </Table.Td>
       <Table.Td>
-          <Anchor component="button" size="sm" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-            {currentName}
-          </Anchor>
+          <Link to={`${page_routes.registrarMasters.list}/${id}`}>
+            <Anchor component="button" size="sm">
+            {id}
+            </Anchor>
+          </Link>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
@@ -41,29 +45,16 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {branch}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {email}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {website}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
               {dayjs(createdAt ? createdAt.toString() : undefined).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
           </Text>
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            <Link to={`${page_routes.registrarMasters.list}/${id}`}>
+              <ActionIcon  variant="subtle" color="gray">
+                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Link>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
@@ -93,7 +84,7 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
   )
 }
 
-const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) => void, toggleDrawer: (value: RegistrarMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:registrarMasters, isFetching, isLoading, status, error, refetch} = useRegistrarMastersQuery();
   const allChecked = (registrarMasters ? registrarMasters.registrarMaster : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (registrarMasters ? registrarMasters.registrarMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
@@ -112,18 +103,15 @@ const RegistrarMasterTable:FC<{toggleModal: (value: RegistrarMastersModalProps) 
                     onChange={() => props.setSelectedData(allChecked ? [] : (registrarMasters ? registrarMasters.registrarMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
-                <Table.Th style={{color: 'white'}}>Company</Table.Th>
+                <Table.Th style={{color: 'white'}}>ID</Table.Th>
                 <Table.Th style={{color: 'white'}}>Registrar Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>SEBI Regn. ID</Table.Th>
-                <Table.Th style={{color: 'white'}}>Branch</Table.Th>
-                <Table.Th style={{color: 'white'}}>Email</Table.Th>
-                <Table.Th style={{color: 'white'}}>Website</Table.Th>
                 <Table.Th style={{color: 'white'}}>Created On</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{
-              (registrarMasters ? registrarMasters.registrarMaster : []).map((item) => <RegistrarMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+              (registrarMasters ? registrarMasters.registrarMaster : []).map((item) => <RegistrarMasterTableRow key={item.id} {...item} toggleModal={props.toggleModal} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
             }</Table.Tbody>
           </Table>
         </Table.ScrollContainer>

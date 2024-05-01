@@ -21,6 +21,7 @@ export type SchemaType = {
   city?: string | undefined;
   state?: string | undefined;
   pincode?: number | undefined;
+  registrarMasterBranchId?: number | undefined;
 };
 
 export const initialValues: SchemaType = {
@@ -44,6 +45,7 @@ export const initialValues: SchemaType = {
   designationContactPerson: undefined,
   emailContactPerson: undefined,
   phoneContactPerson: undefined,
+  registrarMasterBranchId: undefined,
 };
 
 export const transformValues = (values: SchemaType) => {
@@ -86,6 +88,9 @@ export const transformValues = (values: SchemaType) => {
         ? values.registeredOffice
         : undefined,
     pincode: values.pincode ? Number(values.pincode) : undefined,
+    registrarMasterBranchId: values.registrarMasterBranchId
+      ? Number(values.registrarMasterBranchId)
+      : undefined,
     telephone:
       values.telephone && values.telephone.length > 0
         ? values.telephone
@@ -125,6 +130,10 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   fax: yup.string().typeError("Fax must be a string").optional(),
   telephone: yup.string().typeError("Telephone must be a string").optional(),
   pincode: yup.number().typeError("Pincode must be a number").optional(),
+  registrarMasterBranchId: yup
+    .number()
+    .typeError("Registrar Master Branch ID must be a number")
+    .optional(),
   state: yup.string().typeError("State must be a string").optional(),
   city: yup.string().typeError("City must be a string").optional(),
   registeredOffice: yup
