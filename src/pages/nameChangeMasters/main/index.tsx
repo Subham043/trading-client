@@ -15,7 +15,7 @@ const NameChangeMastersMainPage:FC = () => {
 
     return (
         <div>
-            <SearchButtonHeader hasButton={false} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={false} />
+            <SearchButtonHeader hasButton={false} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={false} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <NameChangeMasterMainTable />
             </Paper>

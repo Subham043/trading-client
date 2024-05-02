@@ -1,5 +1,5 @@
 import { Button, Group, TextInput, rem } from "@mantine/core";
-import { FC } from "react";
+import React, { FC } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { useSearchQueryParam } from "../../hooks/useSearchQueryParam";
 
@@ -18,6 +18,13 @@ type ImportButtonType = {
     hasImport: false;
 }
 
+type MultipleImportType = {
+    hasMultipleImport: true;
+    multipleButtons: React.ReactNode;
+} | {
+    hasMultipleImport: false;
+}
+
 type DeleteButtonType = {
     hasDelete: true;
     deleteClickHandler: () => void;
@@ -34,14 +41,14 @@ type SearchButtonHeaderProps = ({
     hasSearch?: boolean;
     buttonClickHandler: () => void;
     buttonText: string;
-}) & ExportButtonType & ImportButtonType & DeleteButtonType
+}) & ExportButtonType & ImportButtonType & DeleteButtonType & MultipleImportType
 
 const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...props}) => {
     const icon = <IconSearch style={{ width: rem(16), height: rem(16) }} />;
     const {searchHandler} = useSearchQueryParam();
 
     return (
-        <Group justify={(!props.hasButton && !props.hasExport && !props.hasImport && !props.hasDelete && hasSearch) ? "flex-end" : "space-between"} mb="lg">
+        <Group justify={(!props.hasButton && !props.hasExport && !props.hasImport && !props.hasMultipleImport && !props.hasDelete && hasSearch) ? "flex-end" : "space-between"} mb="lg">
             <Group align="center" gap={"xs"}>
                 {props.hasButton && <Button type='submit' variant="filled" color='blue' onClick={props.buttonClickHandler}>
                     {props.buttonText}
@@ -49,9 +56,12 @@ const SearchButtonHeader:FC<SearchButtonHeaderProps> = ({hasSearch=true, ...prop
                 {props.hasExport && <Button type='submit' variant="filled" color='violet' disabled={props.excelLoading} loading={props.excelLoading} onClick={props.exportClickHandler}>
                     Export
                 </Button>}
-                {props.hasImport && <Button type='submit' variant="filled" color='grape' onClick={props.importClickHandler}>
-                    Import
-                </Button>}
+                {
+                    props.hasMultipleImport ? <>{props.multipleButtons}</>: 
+                    (props.hasImport && <Button type='submit' variant="filled" color='grape' onClick={props.importClickHandler}>
+                        Import
+                    </Button>)
+                }
                 {props.hasDelete && <Button type='submit' variant="filled" color='dark' onClick={props.deleteClickHandler} loading={props.deleteLoading} disabled={props.deleteLoading}>
                     Delete
                 </Button>}

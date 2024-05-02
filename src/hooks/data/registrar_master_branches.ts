@@ -319,7 +319,7 @@ export const useDeleteRegistrarMasterBranchMutation = (
   return useMutation({
     mutationFn: async () => {
       const response = await axios.delete<{ data: RegistrarMasterBranchType }>(
-        api_routes.registrarMasterBranches + `/delete/${id}`
+        api_routes.registrarMasterBranches + `/${id}`
       );
       return response.data.data;
     },
