@@ -62,7 +62,7 @@ const CompanyMastersPage:FC = () => {
             </Paper>
             <CompanyMasterModal {...modal} toggleModal={toggleModal} />
             <ExcelUploadModal status={excelModal} toggleModal={toggleExcelModal} title="Company Masters Insert" uploadUrl={`${api_routes.companyMasters}/import`} sampleUrl="/Sample_Company_Masters.xlsx" />
-            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Company Masters Update" uploadUrl={`${api_routes.companyMasters}/import`} sampleUrl="/Sample_Company_Masters.xlsx" />
+            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Company Masters Update" uploadUrl={`${api_routes.companyMasters}/import-update`} sampleUrl="/Sample_Company_Masters_Update.xlsx" />
         </div>
     )
 }

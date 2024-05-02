@@ -9,6 +9,7 @@ import { api_routes } from "../../../utils/api_routes";
 import ExcelUploadModal from "../../../components/Layout/ExcelUploadModal";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { RegistrarMastersQueryKey } from "../../../hooks/data/registrar_masters";
+import { IconPlus } from "@tabler/icons-react";
 
 export type RegistrarMastersModalProps = {
     status: boolean;
@@ -47,11 +48,11 @@ const RegistrarMastersPage:FC = () => {
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                        <Menu.Item onClick={toggleExcelModal}>
+                        <Menu.Item onClick={toggleExcelModal} leftSection={<IconPlus size={14} />}>
                             Registrar Master
                         </Menu.Item>
-                        <Menu.Item onClick={toggleExcelModal2}>
-                            Registrar Master Branch
+                        <Menu.Item onClick={toggleExcelModal2} leftSection={<IconPlus size={14} />}>
+                            Registrar Branch
                         </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>
