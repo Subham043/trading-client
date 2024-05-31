@@ -7,7 +7,6 @@ import { Button, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddNameChangeMasterMutation, useNameChangeMasterQuery, useNameChangeMasterLatestQuery, useUpdateNameChangeMasterMutation } from "../../hooks/data/name_change_masters";
 import { MutateOptions } from "@tanstack/react-query";
-import { useCompanyMasterQuerySetData } from "../../hooks/data/company_masters";
 import { AxiosErrorResponseType, NameChangeMasterFormType, NameChangeMasterType } from "../../utils/types";
 import { NameChangeMastersListModalProps } from "../../pages/nameChangeMasters/list";
 import { SchemaType, initialValues, schema, transformValues } from "./schema";
@@ -31,7 +30,6 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
     const {data, isFetching, isLoading, status, error,  refetch} = useNameChangeMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const addNameChangeMaster = useAddNameChangeMasterMutation(props.mainCompanyId)
     const updateNameChangeMaster = useUpdateNameChangeMasterMutation(props.type === "Edit" ? props.id : 0, props.mainCompanyId)
-    const { updateCompanyMaster } = useCompanyMasterQuerySetData();
     const form = useForm<SchemaType>({
         initialValues,
         transformValues,
@@ -49,10 +47,10 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             });
         }else if(props.type === "Create" && newData && props.status){
             form.setValues({
-                BSE: newData.BSE ? newData.BSE : undefined,
-                NSE: newData.NSE ? newData.NSE : undefined,
-                previousName: newData.currentName ? newData.currentName : undefined,
-                dateNameChange: newData.dateNameChange ? newData.dateNameChange : undefined,
+                BSE: (newData && newData.currentNameChangeMasters && newData.currentNameChangeMasters.BSE) ? newData.currentNameChangeMasters.BSE : undefined,
+                NSE: (newData && newData.currentNameChangeMasters && newData.currentNameChangeMasters.NSE) ? newData.currentNameChangeMasters.NSE : undefined,
+                previousName: (newData && newData.currentNameChangeMasters && newData.currentNameChangeMasters.currentName) ? newData.currentNameChangeMasters.currentName : undefined,
+                dateNameChange: (newData && newData.currentNameChangeMasters && newData.currentNameChangeMasters.dateNameChange) ? newData.currentNameChangeMasters.dateNameChange.toString() as string : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,25 +61,6 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
             onSuccess: () => {
                 props.type==="Create" && form.reset();
                 props.toggleModal({status: false, type: "Create", companyId: props.mainCompanyId});
-                if(props.type === "Edit"){
-                    updateCompanyMaster(data ? data.companyId : 0, {
-                        BSE: form.getTransformedValues().BSE,
-                        NSE: form.getTransformedValues().NSE,
-                        currentName: form.getTransformedValues().currentName,
-                        id: data ? data.companyId : 0,
-                        nameChangeMasterId: data ? data.id : 0,
-                        createdAt: new Date().toISOString(),
-                    })
-                }else{
-                    updateCompanyMaster(newData ? newData.companyId : 0, {
-                        BSE: form.getTransformedValues().BSE,
-                        NSE: form.getTransformedValues().NSE,
-                        currentName: form.getTransformedValues().currentName,
-                        id: newData ? newData.companyId : 0,
-                        nameChangeMasterId: newData ? newData.id : 0,
-                        createdAt: new Date().toISOString(),
-                    })
-                }
             },
             onError: (error:Error) => {
                 if(isAxiosError<AxiosErrorResponseType>(error)){

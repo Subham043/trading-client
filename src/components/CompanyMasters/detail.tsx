@@ -34,11 +34,11 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                     </Table.Thead>
                     <Table.Tbody>
                         <Table.Tr>
-                            <Table.Td>{data.currentName}</Table.Td>
+                            <Table.Td>{data.currentNameChangeMasters?.currentName}</Table.Td>
                             <Table.Td>{data.ISIN}</Table.Td>
                             <Table.Td>{data.CIN}</Table.Td>
-                            <Table.Td>{data.BSE}</Table.Td>
-                            <Table.Td>{data.NSE}</Table.Td>
+                            <Table.Td>{data.currentNameChangeMasters?.BSE}</Table.Td>
+                            <Table.Td>{data.currentNameChangeMasters?.NSE}</Table.Td>
                             <Table.Td>{data.faceValue}</Table.Td>
                             <Table.Td>{data.closingPriceNSE}</Table.Td>
                             <Table.Td>{data.closingPriceBSE}</Table.Td>
@@ -58,27 +58,27 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                             <Table.Thead>
                                 <Table.Tr>
                                     <Table.Th>Registrar Name</Table.Th>
-                                    <Table.Td>{data.registrar_name}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.registrar_name}</Table.Td>
                                 </Table.Tr>
                                 <Table.Tr>
                                     <Table.Th>SEBI Regn. ID</Table.Th>
-                                    <Table.Td>{data.sebi_regn_id}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.sebi_regn_id}</Table.Td>
                                 </Table.Tr>
                                 <Table.Tr>
                                     <Table.Th>Registrar Branch</Table.Th>
-                                    <Table.Td>{data.registrar_branch}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.branch}</Table.Td>
                                 </Table.Tr>
                                 <Table.Tr>
                                     <Table.Th>Registrar City</Table.Th>
-                                    <Table.Td>{data.registrar_city}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.city}</Table.Td>
                                 </Table.Tr>
                                 <Table.Tr>
                                     <Table.Th>Registrar State</Table.Th>
-                                    <Table.Td>{data.registrar_state}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.state}</Table.Td>
                                 </Table.Tr>
                                 <Table.Tr>
                                     <Table.Th>Registrar Pincode</Table.Th>
-                                    <Table.Td>{data.registrar_pincodes}</Table.Td>
+                                    <Table.Td>{data.registrarMasterBranch?.pincode}</Table.Td>
                                 </Table.Tr>
                             </Table.Thead>
                         </Table>

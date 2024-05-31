@@ -1,7 +1,7 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Anchor, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
-import { CompanyMasterType } from "../../utils/types";
+import { CompanyMasterQueryType } from "../../utils/types";
 import { Link } from "react-router-dom";
 import dayjs from 'dayjs';
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
@@ -10,7 +10,7 @@ import { page_routes } from "../../utils/page_routes";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: CompanyMastersModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, currentName, BSE, NSE, ISIN, CIN, faceValue, createdAt, toggleModal, selectedData, setSelectedData}) => {
+const CompanyMasterTableRow:FC<CompanyMasterQueryType & {toggleModal: (value: CompanyMastersModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, currentNameChangeMasters, ISIN, CIN, faceValue, createdAt, toggleModal, selectedData, setSelectedData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteCompanyMaster = useDeleteCompanyMasterMutation(id)
   
@@ -35,7 +35,7 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {currentName}
+              {currentNameChangeMasters?.currentName}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -45,12 +45,12 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {BSE}
+              {currentNameChangeMasters?.BSE}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {NSE}
+              {currentNameChangeMasters?.NSE}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -60,7 +60,7 @@ const CompanyMasterTableRow:FC<CompanyMasterType & {toggleModal: (value: Company
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(createdAt.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
+              {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
           </Text>
       </Table.Td>
       <Table.Td>

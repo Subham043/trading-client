@@ -6,7 +6,7 @@ import { Button, Select, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddCompanyMasterMutation, useUpdateCompanyMasterMutation, useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import { MutateOptions } from "@tanstack/react-query";
-import { AxiosErrorResponseType, CompanyMasterFormType, CompanyMasterType } from "../../utils/types";
+import { AxiosErrorResponseType, CompanyMasterFormType, CompanyMasterQueryType } from "../../utils/types";
 import { useNameChangeMastersQuerySetData } from "../../hooks/data/name_change_masters";
 import { CompanyMastersModalProps } from "../../pages/companyMasters/list";
 import { SchemaType, initialValues, schema, transformValues } from "./schema";
@@ -16,7 +16,7 @@ import debounce from "lodash.debounce";
 import { useRegistrarMasterBranchesSelectQuery } from "../../hooks/data/registrar_master_branches";
 
 type CompanyMasterFormProps = CompanyMastersModalProps;
-type companyMasterMutateOptionsType = MutateOptions<CompanyMasterType, Error, CompanyMasterFormType, unknown>;
+type companyMasterMutateOptionsType = MutateOptions<CompanyMasterQueryType, Error, CompanyMasterFormType, unknown>;
 
 const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: CompanyMastersModalProps) => void}> = (props) => {
 
@@ -40,21 +40,21 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             setSearch(data.pincode ? data.pincode.toString() : "");
-            setSearchRegistrarMasterBranch(data.registrar_branch ? data.registrar_branch.toString() : "");
+            setSearchRegistrarMasterBranch((data && data.registrarMasterBranch && data.registrarMasterBranch.branch) ? data.registrarMasterBranch.branch.toString() : "");
             form.setValues({
                 ISIN: data.ISIN ? data.ISIN : undefined,
                 CIN: data.CIN ? data.CIN : undefined,
-                currentName: data.currentName ? data.currentName : undefined,
-                BSE: data.BSE ? data.BSE : undefined,
-                NSE: data.NSE ? data.NSE : undefined,
+                currentName: (data.currentNameChangeMasters && data.currentNameChangeMasters.currentName) ? data.currentNameChangeMasters.currentName : undefined,
+                BSE: (data.currentNameChangeMasters && data.currentNameChangeMasters.BSE) ? data.currentNameChangeMasters.BSE : undefined,
+                NSE: (data.currentNameChangeMasters && data.currentNameChangeMasters.NSE) ? data.currentNameChangeMasters.NSE : undefined,
                 faceValue: data.faceValue ? data.faceValue : 0.0,
                 closingPriceNSE: data.closingPriceNSE ? data.closingPriceNSE : 0.0,
                 closingPriceBSE: data.closingPriceBSE ? data.closingPriceBSE : 0.0,
                 registeredOffice: data.registeredOffice ? data.registeredOffice : undefined,
                 city: data.city ? data.city : undefined,
                 state: data.state ? data.state : undefined,
-                pincode: data.pincode ? data.pincode : undefined,
-                registrarMasterBranchId: data.registrarMasterBranchId ? data.registrarMasterBranchId : undefined,
+                pincode: data.pincode ? Number(data.pincode) : undefined,
+                registrarMasterBranchId: data.registrarMasterBranch ? data.registrarMasterBranch.id : undefined,
                 telephone: data.telephone ? data.telephone : undefined,
                 fax: data.fax ? data.fax : undefined,
                 email: data.email ? data.email : undefined,
@@ -74,8 +74,8 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                 props.type==="Create" && form.reset();
                 props.toggleModal({type: "Create", status: false});
                 if(props.type === "Edit"){
-                    updateNameChangeMasters((data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0, data ? data.id : 0, {
-                        id: (data && data.nameChangeMasterId) ? data.nameChangeMasterId : 0,
+                    updateNameChangeMasters((data && data.currentNameChangeMasters) ? data.currentNameChangeMasters.id : 0, data ? data.id : 0, {
+                        id: (data && data.currentNameChangeMasters) ? data.currentNameChangeMasters.id : 0,
                         currentName: form.getTransformedValues().currentName,
                         BSE: form.getTransformedValues().BSE,
                         NSE: form.getTransformedValues().NSE,
@@ -131,7 +131,7 @@ const CompanyMasterForm:FC<CompanyMasterFormProps & {toggleModal: (value: Compan
                         label="Registrar Master"
                         placeholder="Type to search for registrar master"
                         maxDropdownHeight={200}
-                        data={(branches && branches.registrarMasterBranch.length > 0) ? branches.registrarMasterBranch.map((item) => ({label: `${item.registrar_name} - ${item.branch}`, value: item.id ? item.id.toString() : ""})) : []}
+                        data={(branches && branches.registrarMasterBranch.length > 0) ? branches.registrarMasterBranch.map((item) => ({label: `${item.registrarMaster?.registrar_name} - ${item.branch}`, value: item.id ? item.id.toString() : ""})) : []}
                         searchable
                         clearable
                         nothingFoundMessage="Nothing found..."

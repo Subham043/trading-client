@@ -1,16 +1,16 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
-import { RegistrarMasterBranchType } from "../../utils/types";
+import { RegistrarMasterBranchQueryType } from "../../utils/types";
 import dayjs from 'dayjs';
 import { RegistrarMasterBranchesListDrawerProps, RegistrarMasterBranchesListModalProps } from "../../pages/registrarMasterBranches/list";
 import { useDeleteRegistrarMasterBranchMutation, useRegistrarMasterBranchesQuery } from "../../hooks/data/registrar_master_branches";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const RegistrarMasterBranchesTableRow:FC<RegistrarMasterBranchType & {toggleModal: (value: RegistrarMasterBranchesListModalProps) => void, toggleDrawer: (value: RegistrarMasterBranchesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, registrarMasterId, branch, city, state, pincode, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const RegistrarMasterBranchesTableRow:FC<RegistrarMasterBranchQueryType & {toggleModal: (value: RegistrarMasterBranchesListModalProps) => void, toggleDrawer: (value: RegistrarMasterBranchesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, registrarMasterID, branch, city, state, pincode, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteRegistrarMasterBranches = useDeleteRegistrarMasterBranchMutation(id, registrarMasterId||0)
+  const deleteRegistrarMasterBranches = useDeleteRegistrarMasterBranchMutation(id, registrarMasterID||0)
   const onDelete = async () => {
     await deleteRegistrarMasterBranches.mutateAsync(undefined)
   }
@@ -45,7 +45,7 @@ const RegistrarMasterBranchesTableRow:FC<RegistrarMasterBranchType & {toggleModa
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(createdAt.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
+              {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
           </Text>
       </Table.Td>
       <Table.Td>

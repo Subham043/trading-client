@@ -69,7 +69,7 @@ const RegistrarMasterBranchDetail:FC<RegistrarMasterBranchesListDrawerProps> = (
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Registrar Master ID</Table.Th>
-                        <Table.Td>{data.registrarMasterId}</Table.Td>
+                        <Table.Td>{data.registrarMasterID}</Table.Td>
                     </Table.Tr>
                 </Table.Thead>
             </Table>

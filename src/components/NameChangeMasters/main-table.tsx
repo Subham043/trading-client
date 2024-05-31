@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Table, Group, Text, ActionIcon, rem, Anchor } from '@mantine/core';
 import { IconEye } from '@tabler/icons-react';
-import { NameChangeMasterType } from "../../utils/types";
+import { NameChangeMasterQueryType } from "../../utils/types";
 import { Link } from "react-router-dom";
 import dayjs from 'dayjs';
 import { page_routes } from "../../utils/page_routes";
@@ -9,16 +9,12 @@ import { useNameChangeMastersMainQuery } from "../../hooks/data/name_change_mast
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
-    CIN?: string | null | undefined;
-    ISIN?: string | null | undefined;
-    faceValue?: number | null | undefined;
-  }> = ({ISIN, CIN, faceValue, currentName, previousName, BSE, NSE, companyId, createdAt}) => {
+const NameChangeMasterMainTableRow:FC<NameChangeMasterQueryType> = ({id, ISIN, CIN, faceValue, currentNameChangeMasters}) => {
   
   return (
     <Table.Tr>
       <Table.Td>
-          <Link to={`${page_routes.companyMasters.list}/${companyId}`}>
+          <Link to={`${page_routes.companyMasters.list}/${id}`}>
             <Anchor component="button" size="sm">
             {ISIN}
             </Anchor>
@@ -26,12 +22,12 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {currentName}
+              {currentNameChangeMasters?.currentName}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {previousName}
+              {currentNameChangeMasters?.previousName}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -46,22 +42,22 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterType & {
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {BSE}
+              {currentNameChangeMasters?.BSE}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {NSE}
+              {currentNameChangeMasters?.NSE}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(createdAt.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
+              {dayjs(currentNameChangeMasters?.dateNameChange?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.companyMasters.list}/${companyId}`}>
+            <Link to={`${page_routes.companyMasters.list}/${id}`}>
               <ActionIcon  variant="subtle" color="gray">
                   <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>
@@ -88,7 +84,7 @@ const NameChangeMasterMainTable:FC = () => {
                 <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
                 <Table.Th style={{color: 'white'}}>BSE</Table.Th>
                 <Table.Th style={{color: 'white'}}>NSE</Table.Th>
-                <Table.Th style={{color: 'white'}}>Created On</Table.Th>
+                <Table.Th style={{color: 'white'}}>Date of Name Change</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>

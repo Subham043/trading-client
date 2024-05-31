@@ -7,8 +7,8 @@ import {
 import { useAxios } from "../useAxios";
 import {
   PaginationType,
-  RegistrarMasterBranchType,
   RegistrarMasterBranchFormType,
+  RegistrarMasterBranchQueryType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -24,7 +24,7 @@ export const RegistrarMasterBranchesSelectQueryKey =
 export const useRegistrarMasterBranchesQuery: (params: {
   registrarMasterId: number;
 }) => UseQueryResult<
-  PaginationType<{ registrarMasterBranch: RegistrarMasterBranchType[] }>,
+  PaginationType<{ registrarMasterBranch: RegistrarMasterBranchQueryType[] }>,
   unknown
 > = ({ registrarMasterId }) => {
   const { axios } = useAxios();
@@ -44,7 +44,7 @@ export const useRegistrarMasterBranchesQuery: (params: {
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
-          registrarMasterBranch: RegistrarMasterBranchType[];
+          registrarMasterBranch: RegistrarMasterBranchQueryType[];
         }>;
       }>(
         api_routes.registrarMasterBranches +
@@ -59,7 +59,7 @@ export const useRegistrarMasterBranchesSelectQuery: (params: {
   search?: string;
   enabled?: boolean;
 }) => UseQueryResult<
-  PaginationType<{ registrarMasterBranch: RegistrarMasterBranchType[] }>,
+  PaginationType<{ registrarMasterBranch: RegistrarMasterBranchQueryType[] }>,
   unknown
 > = ({ search = "", enabled = true }) => {
   const { axios } = useAxios();
@@ -69,7 +69,7 @@ export const useRegistrarMasterBranchesSelectQuery: (params: {
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
-          registrarMasterBranch: RegistrarMasterBranchType[];
+          registrarMasterBranch: RegistrarMasterBranchQueryType[];
         }>;
       }>(
         api_routes.registrarMasterBranches +
@@ -84,14 +84,17 @@ export const useRegistrarMasterBranchesSelectQuery: (params: {
 export const useRegistrarMasterBranchQuery: (
   id: number,
   enabled: boolean
-) => UseQueryResult<RegistrarMasterBranchType, unknown> = (id, enabled) => {
+) => UseQueryResult<RegistrarMasterBranchQueryType, unknown> = (
+  id,
+  enabled
+) => {
   const { axios } = useAxios();
   return useQuery({
     queryKey: [RegistrarMasterBranchKey, id],
     queryFn: async () => {
-      const response = await axios.get<{ data: RegistrarMasterBranchType }>(
-        api_routes.registrarMasterBranches + `/${id}`
-      );
+      const response = await axios.get<{
+        data: RegistrarMasterBranchQueryType;
+      }>(api_routes.registrarMasterBranches + `/${id}`);
       return response.data.data;
     },
     enabled,
@@ -107,10 +110,12 @@ export const useRegistrarMasterBranchesQuerySetData = () => {
 
   const addRegistrarMasterBranches = (
     registrarMasterId: number,
-    newRegistrarMasterBranchVal: RegistrarMasterBranchType
+    newRegistrarMasterBranchVal: RegistrarMasterBranchQueryType
   ) => {
     queryClient.setQueryData<
-      PaginationType<{ registrarMasterBranch: RegistrarMasterBranchType[] }>
+      PaginationType<{
+        registrarMasterBranch: RegistrarMasterBranchQueryType[];
+      }>
     >(
       [
         RegistrarMasterBranchesQueryKey,
@@ -139,10 +144,12 @@ export const useRegistrarMasterBranchesQuerySetData = () => {
   const updateRegistrarMasterBranches = (
     id: number,
     registrarMasterId: number,
-    updateRegistrarMasterBranchVal: RegistrarMasterBranchType
+    updateRegistrarMasterBranchVal: RegistrarMasterBranchQueryType
   ) => {
     queryClient.setQueryData<
-      PaginationType<{ registrarMasterBranch: RegistrarMasterBranchType[] }>
+      PaginationType<{
+        registrarMasterBranch: RegistrarMasterBranchQueryType[];
+      }>
     >(
       [RegistrarMasterBranchesQueryKey, registrarMasterId, page, limit, search],
       (prev) => {
@@ -169,7 +176,9 @@ export const useRegistrarMasterBranchesQuerySetData = () => {
     registrarMasterId: number
   ) => {
     queryClient.setQueryData<
-      PaginationType<{ registrarMasterBranch: RegistrarMasterBranchType[] }>
+      PaginationType<{
+        registrarMasterBranch: RegistrarMasterBranchQueryType[];
+      }>
     >(
       [RegistrarMasterBranchesQueryKey, registrarMasterId, page, limit, search],
       (prev) => {
@@ -196,9 +205,9 @@ export const useRegistrarMasterBranchQuerySetData = () => {
   const queryClient = useQueryClient();
 
   const addRegistrarMasterBranch = (
-    newRegistrarMasterBranchVal: RegistrarMasterBranchType
+    newRegistrarMasterBranchVal: RegistrarMasterBranchQueryType
   ) => {
-    queryClient.setQueryData<RegistrarMasterBranchType>(
+    queryClient.setQueryData<RegistrarMasterBranchQueryType>(
       [RegistrarMasterBranchKey, newRegistrarMasterBranchVal.id],
       newRegistrarMasterBranchVal
     );
@@ -206,16 +215,16 @@ export const useRegistrarMasterBranchQuerySetData = () => {
 
   const updateRegistrarMasterBranch = (
     id: number,
-    updateRegistrarMasterBranchVal: RegistrarMasterBranchType
+    updateRegistrarMasterBranchVal: RegistrarMasterBranchQueryType
   ) => {
-    queryClient.setQueryData<RegistrarMasterBranchType>(
+    queryClient.setQueryData<RegistrarMasterBranchQueryType>(
       [RegistrarMasterBranchKey, id],
       updateRegistrarMasterBranchVal
     );
   };
 
   const deleteRegistrarMasterBranch = (id: number) => {
-    queryClient.setQueryData<RegistrarMasterBranchType>(
+    queryClient.setQueryData<RegistrarMasterBranchQueryType>(
       [RegistrarMasterBranchKey, id],
       undefined
     );
@@ -243,7 +252,9 @@ export const useUpdateRegistrarMasterBranchMutation = (
     mutationFn: async (
       updateRegistrarMasterBranchVal: RegistrarMasterBranchFormType
     ) => {
-      const response = await axios.put<{ data: RegistrarMasterBranchType }>(
+      const response = await axios.put<{
+        data: RegistrarMasterBranchQueryType;
+      }>(
         api_routes.registrarMasterBranches + `/${id}`,
         updateRegistrarMasterBranchVal
       );
@@ -281,7 +292,9 @@ export const useAddRegistrarMasterBranchMutation = (
     mutationFn: async (
       newRegistrarMasterBranchVal: RegistrarMasterBranchFormType
     ) => {
-      const response = await axios.post<{ data: RegistrarMasterBranchType }>(
+      const response = await axios.post<{
+        data: RegistrarMasterBranchQueryType;
+      }>(
         api_routes.registrarMasterBranches + `/create/${registrarMasterId}`,
         newRegistrarMasterBranchVal
       );
@@ -318,9 +331,9 @@ export const useDeleteRegistrarMasterBranchMutation = (
 
   return useMutation({
     mutationFn: async () => {
-      const response = await axios.delete<{ data: RegistrarMasterBranchType }>(
-        api_routes.registrarMasterBranches + `/${id}`
-      );
+      const response = await axios.delete<{
+        data: RegistrarMasterBranchQueryType;
+      }>(api_routes.registrarMasterBranches + `/${id}`);
       return response.data.data;
     },
     // 💡 response of the mutation is passed to onSuccess

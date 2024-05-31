@@ -26,6 +26,56 @@ export type UserType = {
   createdAt: string;
 };
 
+export type CompanyMasterQueryType = {
+  id: number;
+  registrarMasterBranch: {
+    branch: string | null;
+    city: string | null;
+    pincode: string | null;
+    state: string | null;
+    id: number;
+    registrarMaster: {
+      id: number;
+      registrar_name: string;
+      sebi_regn_id: string;
+    } | null;
+  } | null;
+  nameChangeMasters: {
+    id: number;
+    NSE: string | null;
+    BSE: string | null;
+    dateNameChange: Date | null;
+    currentName: string | null;
+    previousName: string | null;
+  }[];
+  currentNameChangeMasters: {
+    id: number;
+    NSE: string | null;
+    BSE: string | null;
+    dateNameChange: Date | null;
+    currentName: string | null;
+    previousName: string | null;
+  } | null;
+  CIN: string | null;
+  ISIN: string | null;
+  faceValue: number | null;
+  closingPriceNSE: number | null;
+  closingPriceBSE: number | null;
+  registeredOffice: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  telephone: string | null;
+  fax: string | null;
+  email: string | null;
+  website: string | null;
+  nameContactPerson: string | null;
+  designationContactPerson: string | null;
+  emailContactPerson: string | null;
+  phoneContactPerson: string | null;
+  createdAt: Date | null;
+};
+
 export type CompanyMasterType = {
   id: number;
   currentName?: string | undefined;
@@ -73,6 +123,56 @@ export type CompanyMasterFormType = Omit<
   | "sebi_regn_id"
 >;
 
+export type NameChangeMasterQueryType = {
+  id: number;
+  registrarMasterBranch: {
+    branch: string | null;
+    city: string | null;
+    pincode: string | null;
+    state: string | null;
+    id: number;
+    registrarMaster: {
+      id: number;
+      registrar_name: string;
+      sebi_regn_id: string;
+    } | null;
+  } | null;
+  nameChangeMasters: {
+    id: number;
+    NSE: string | null;
+    BSE: string | null;
+    dateNameChange: Date | null;
+    currentName: string | null;
+    previousName: string | null;
+  }[];
+  currentNameChangeMasters: {
+    id: number;
+    NSE: string | null;
+    BSE: string | null;
+    dateNameChange: Date | null;
+    currentName: string | null;
+    previousName: string | null;
+  } | null;
+  CIN: string | null;
+  ISIN: string | null;
+  faceValue: number | null;
+  closingPriceNSE: number | null;
+  closingPriceBSE: number | null;
+  registeredOffice: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  telephone: string | null;
+  fax: string | null;
+  email: string | null;
+  website: string | null;
+  nameContactPerson: string | null;
+  designationContactPerson: string | null;
+  emailContactPerson: string | null;
+  phoneContactPerson: string | null;
+  createdAt: Date | null;
+};
+
 export type NameChangeMasterType = {
   id: number;
   currentName?: string | undefined;
@@ -98,6 +198,30 @@ export type RegistrarMasterType = {
 
 export interface RegistrarMasterFormType
   extends Omit<RegistrarMasterType, "id" | "createdAt"> {}
+
+export type RegistrarMasterBranchQueryType = {
+  id: number;
+  address?: string | null | undefined;
+  city?: string | null | undefined;
+  state?: string | null | undefined;
+  pincode?: string | null | undefined;
+  telephone1?: string | null | undefined;
+  telephone2?: string | null | undefined;
+  email?: string | null | undefined;
+  website?: string | null | undefined;
+  nameContactPerson?: string | null | undefined;
+  designationContactPerson?: string | null | undefined;
+  emailContactPerson?: string | null | undefined;
+  phoneContactPerson?: string | null | undefined;
+  officerAssigned?: string | null | undefined;
+  branch: string | null | undefined;
+  createdAt?: Date | null;
+  registrarMasterID?: number | null | undefined;
+  registrarMaster: {
+    registrar_name: string;
+    sebi_regn_id: string;
+  } | null;
+};
 
 export type RegistrarMasterBranchType = {
   id: number;

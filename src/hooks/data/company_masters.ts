@@ -7,8 +7,8 @@ import {
 import { useAxios } from "../useAxios";
 import {
   PaginationType,
-  CompanyMasterType,
   CompanyMasterFormType,
+  CompanyMasterQueryType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -20,7 +20,7 @@ export const CompanyMasterKey = "company_master";
 export const CompanyMastersQueryKey = "company_masters";
 
 export const useCompanyMastersQuery: () => UseQueryResult<
-  PaginationType<{ companyMaster: CompanyMasterType[] }>,
+  PaginationType<{ companyMaster: CompanyMasterQueryType[] }>,
   unknown
 > = () => {
   const { axios } = useAxios();
@@ -32,7 +32,7 @@ export const useCompanyMastersQuery: () => UseQueryResult<
     queryKey: [CompanyMastersQueryKey, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
-        data: PaginationType<{ companyMaster: CompanyMasterType[] }>;
+        data: PaginationType<{ companyMaster: CompanyMasterQueryType[] }>;
       }>(
         api_routes.companyMasters +
           `?page=${page}&limit=${limit}&search=${search}`
@@ -45,12 +45,12 @@ export const useCompanyMastersQuery: () => UseQueryResult<
 export const useCompanyMasterQuery: (
   id: number,
   enabled: boolean
-) => UseQueryResult<CompanyMasterType, unknown> = (id, enabled) => {
+) => UseQueryResult<CompanyMasterQueryType, unknown> = (id, enabled) => {
   const { axios } = useAxios();
   return useQuery({
     queryKey: [CompanyMasterKey, id],
     queryFn: async () => {
-      const response = await axios.get<{ data: CompanyMasterType }>(
+      const response = await axios.get<{ data: CompanyMasterQueryType }>(
         api_routes.companyMasters + `/${id}`
       );
       return response.data.data;
@@ -66,9 +66,9 @@ export const useCompanyMastersQuerySetData = () => {
   const limit = searchParams.get("limit") || QueryTotalCount.toString();
   const search = searchParams.get("search") || "";
 
-  const addCompanyMasters = (newCompanyMasterVal: CompanyMasterType) => {
+  const addCompanyMasters = (newCompanyMasterVal: CompanyMasterQueryType) => {
     queryClient.setQueryData<
-      PaginationType<{ companyMaster: CompanyMasterType[] }>
+      PaginationType<{ companyMaster: CompanyMasterQueryType[] }>
     >(
       [CompanyMastersQueryKey, QueryInitialPageParam.toString(), limit, search],
       (prev) => {
@@ -87,10 +87,10 @@ export const useCompanyMastersQuerySetData = () => {
 
   const updateCompanyMasters = (
     id: number,
-    updateCompanyMasterVal: CompanyMasterType
+    updateCompanyMasterVal: CompanyMasterQueryType
   ) => {
     queryClient.setQueryData<
-      PaginationType<{ companyMaster: CompanyMasterType[] }>
+      PaginationType<{ companyMaster: CompanyMasterQueryType[] }>
     >([CompanyMastersQueryKey, page, limit, search], (prev) => {
       if (prev) {
         return {
@@ -105,7 +105,7 @@ export const useCompanyMastersQuerySetData = () => {
 
   const deleteCompanyMasters = (id: number) => {
     queryClient.setQueryData<
-      PaginationType<{ companyMaster: CompanyMasterType[] }>
+      PaginationType<{ companyMaster: CompanyMasterQueryType[] }>
     >([CompanyMastersQueryKey, page, limit, search], (prev) => {
       if (prev) {
         return {
@@ -128,8 +128,8 @@ export const useCompanyMastersQuerySetData = () => {
 export const useCompanyMasterQuerySetData = () => {
   const queryClient = useQueryClient();
 
-  const addCompanyMaster = (newCompanyMasterVal: CompanyMasterType) => {
-    queryClient.setQueryData<CompanyMasterType>(
+  const addCompanyMaster = (newCompanyMasterVal: CompanyMasterQueryType) => {
+    queryClient.setQueryData<CompanyMasterQueryType>(
       [CompanyMasterKey, newCompanyMasterVal.id],
       newCompanyMasterVal
     );
@@ -137,16 +137,16 @@ export const useCompanyMasterQuerySetData = () => {
 
   const updateCompanyMaster = (
     id: number,
-    updateCompanyMasterVal: CompanyMasterType
+    updateCompanyMasterVal: CompanyMasterQueryType
   ) => {
-    queryClient.setQueryData<CompanyMasterType>(
+    queryClient.setQueryData<CompanyMasterQueryType>(
       [CompanyMasterKey, id],
       (prev) => ({ ...prev, ...updateCompanyMasterVal })
     );
   };
 
   const deleteCompanyMaster = (id: number) => {
-    queryClient.setQueryData<CompanyMasterType>(
+    queryClient.setQueryData<CompanyMasterQueryType>(
       [CompanyMasterKey, id],
       undefined
     );
@@ -167,7 +167,7 @@ export const useUpdateCompanyMasterMutation = (id: number) => {
 
   return useMutation({
     mutationFn: async (updateCompanyMasterVal: CompanyMasterFormType) => {
-      const response = await axios.put<{ data: CompanyMasterType }>(
+      const response = await axios.put<{ data: CompanyMasterQueryType }>(
         api_routes.companyMasters + `/${id}`,
         updateCompanyMasterVal
       );
@@ -196,7 +196,7 @@ export const useAddCompanyMasterMutation = () => {
 
   return useMutation({
     mutationFn: async (newCompanyMasterVal: CompanyMasterFormType) => {
-      const response = await axios.post<{ data: CompanyMasterType }>(
+      const response = await axios.post<{ data: CompanyMasterQueryType }>(
         api_routes.companyMasters,
         newCompanyMasterVal
       );
@@ -225,7 +225,7 @@ export const useDeleteCompanyMasterMutation = (id: number) => {
 
   return useMutation({
     mutationFn: async () => {
-      const response = await axios.delete<{ data: CompanyMasterType }>(
+      const response = await axios.delete<{ data: CompanyMasterQueryType }>(
         api_routes.companyMasters + `/${id}`
       );
       return response.data.data;

@@ -9,6 +9,8 @@ import {
   PaginationType,
   NameChangeMasterType,
   NameChangeMasterFormType,
+  NameChangeMasterQueryType,
+  CompanyMasterQueryType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -22,11 +24,7 @@ export const NameChangeMastersCompanyQueryKey = "name_change_company_masters";
 
 export const useNameChangeMastersMainQuery: () => UseQueryResult<
   PaginationType<{
-    nameChangeMaster: (NameChangeMasterType & {
-      CIN?: string | null | undefined;
-      ISIN?: string | null | undefined;
-      faceValue?: number | null | undefined;
-    })[];
+    nameChangeMaster: NameChangeMasterQueryType[];
   }>,
   unknown
 > = () => {
@@ -96,13 +94,13 @@ export const useNameChangeMasterQuery: (
 export const useNameChangeMasterLatestQuery: (
   companyId: number,
   enabled: boolean
-) => UseQueryResult<NameChangeMasterType, unknown> = (companyId, enabled) => {
+) => UseQueryResult<CompanyMasterQueryType, unknown> = (companyId, enabled) => {
   const { axios } = useAxios();
   return useQuery({
     queryKey: [NameChangeMasterKey, companyId],
     queryFn: async () => {
-      const response = await axios.get<{ data: NameChangeMasterType }>(
-        api_routes.nameChangeMasters + `/company/${companyId}`
+      const response = await axios.get<{ data: CompanyMasterQueryType }>(
+        api_routes.companyMasters + `/${companyId}`
       );
       return response.data.data;
     },
