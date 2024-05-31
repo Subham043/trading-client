@@ -6,7 +6,7 @@ import { Button, Select, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddRegistrarMasterBranchMutation, useRegistrarMasterBranchQuery, useUpdateRegistrarMasterBranchMutation } from "../../hooks/data/registrar_master_branches";
 import { MutateOptions } from "@tanstack/react-query";
-import { AxiosErrorResponseType, RegistrarMasterBranchFormType, RegistrarMasterBranchType } from "../../utils/types";
+import { AxiosErrorResponseType, RegistrarMasterBranchFormType, RegistrarMasterBranchQueryType } from "../../utils/types";
 import { RegistrarMasterBranchesListModalProps } from "../../pages/registrarMasterBranches/list";
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -22,7 +22,7 @@ type RegistrarMasterBranchesFormProps = {
     type: "Edit";
     id: number;
 }
-type registrarMasterBranchesMutateOptionsType = MutateOptions<RegistrarMasterBranchType, Error, RegistrarMasterBranchFormType, unknown>;
+type registrarMasterBranchesMutateOptionsType = MutateOptions<RegistrarMasterBranchQueryType, Error, RegistrarMasterBranchFormType, unknown>;
 
 const RegistrarMasterBranchesForm:FC<RegistrarMasterBranchesFormProps & {mainRegistrarMasterId: number, toggleModal: (value: RegistrarMasterBranchesListModalProps) => void}> = (props) => {
 
