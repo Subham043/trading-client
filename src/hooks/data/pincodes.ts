@@ -251,7 +251,7 @@ export const usePincodesSelectQuery: ({
 > = ({ search = "", enabled = false }) => {
   const { axios } = useAxios();
   return useQuery({
-    queryKey: [PincodesQueryKey, search],
+    queryKey: [PincodesSelectQueryKey, search],
     queryFn: async () => {
       const response = await axios.get<{
         data: { id: number; pincode: string; state_name: string }[];

@@ -18,6 +18,9 @@ export const page_routes = {
   nameChangeMasters: {
     main: "/name-change-masters",
   },
+  securityTypeMasters: {
+    list: "/security-type-masters",
+  },
   auth: {
     login: "/login",
     forgot_password: "/forgot-password",

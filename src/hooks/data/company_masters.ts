@@ -18,6 +18,7 @@ import { isAxiosError } from "axios";
 
 export const CompanyMasterKey = "company_master";
 export const CompanyMastersQueryKey = "company_masters";
+export const CompanyMastersSelectQueryKey = "company_masters_select";
 
 export const useCompanyMastersQuery: () => UseQueryResult<
   PaginationType<{ companyMaster: CompanyMasterQueryType[] }>,
@@ -39,6 +40,34 @@ export const useCompanyMastersQuery: () => UseQueryResult<
       );
       return response.data.data;
     },
+  });
+};
+
+export const useCompanyMastersSelectQuery: ({
+  search,
+  enabled,
+}: {
+  search?: string;
+  enabled?: boolean;
+}) => UseQueryResult<
+  PaginationType<{ companyMaster: CompanyMasterQueryType[] }>,
+  unknown
+> = ({ search, enabled = true }) => {
+  const { axios } = useAxios();
+  const page = QueryInitialPageParam.toString();
+  const limit = QueryTotalCount.toString();
+  return useQuery({
+    queryKey: [CompanyMastersSelectQueryKey, page, limit, search],
+    queryFn: async () => {
+      const response = await axios.get<{
+        data: PaginationType<{ companyMaster: CompanyMasterQueryType[] }>;
+      }>(
+        api_routes.companyMasters +
+          `?page=${page}&limit=${limit}&search=${search || ""}`
+      );
+      return response.data.data;
+    },
+    enabled: enabled,
   });
 };
 

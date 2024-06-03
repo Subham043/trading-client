@@ -258,6 +258,40 @@ export interface RegistrarMasterBranchFormType
   pincode?: number | undefined;
 }
 
+export type SecurityTypeMasterType = {
+  id: number;
+  instrumentType:
+    | "InvIT"
+    | "IDR"
+    | "MFs"
+    | "PreferenceShares"
+    | "REiT"
+    | "Equity"
+    | "Warrant";
+  Symbol?: string | null;
+  Series?: string | null;
+  securityName?: string | null;
+  dateOfListing?: Date | null;
+  dateOfAllotment?: Date | null;
+  redemptionDate?: Date | null;
+  conversionDate?: Date | null;
+  paidUpValue: number | null;
+  faceValue: number | null;
+  dividend: number | null;
+  redemptionAmount: number | null;
+  conversionAmount: number | null;
+  marketLot?: string | null;
+  isinNumber?: string | null;
+  distinctiveNosFrom?: string | null;
+  distinctiveNosTo?: string | null;
+  companyMaster?: CompanyMasterQueryType | null;
+  companyID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface SecurityTypeMasterFormType
+  extends Omit<SecurityTypeMasterType, "id" | "createdAt" | "companyMaster"> {}
+
 export type FailedExcelType = {
   id: number;
   file_name: string;
