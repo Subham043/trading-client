@@ -9,6 +9,7 @@ import {
   IconRegistered,
   IconSettings,
   IconLockSquareRounded,
+  IconCloudLock,
 } from '@tabler/icons-react';
 import { Logo } from './Logo';
 import classes from './sidebar.module.css';
@@ -27,6 +28,7 @@ const mockdata = [
   { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
   { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters.list },
   { label: 'Name Change Masters', icon: IconWriting, link: page_routes.nameChangeMasters.main },
+  { label: 'Security Masters', icon: IconCloudLock, link: page_routes.securityMasters.list },
   { label: 'Security Type Masters', icon: IconLockSquareRounded, link: page_routes.securityTypeMasters.list },
   {
     label: 'Settings',

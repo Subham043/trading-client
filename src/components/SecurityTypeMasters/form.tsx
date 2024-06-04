@@ -56,6 +56,10 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                 isinNumber: data.isinNumber ? data.isinNumber : undefined,
                 distinctiveNosFrom: data.distinctiveNosFrom ? data.distinctiveNosFrom : undefined,
                 distinctiveNosTo: data.distinctiveNosTo ? data.distinctiveNosTo : undefined,
+                dateOfAllotment: (data  && data.dateOfAllotment) ? data.dateOfAllotment.toString() : undefined,
+                dateOfListing: (data  && data.dateOfListing) ? data.dateOfListing.toString() : undefined,
+                redemptionDate: (data  && data.redemptionDate) ? data.redemptionDate.toString() : undefined,
+                conversionDate: (data  && data.conversionDate) ? data.conversionDate.toString() : undefined,
                 companyID: data.companyID ? data.companyID : undefined,
             });
         }

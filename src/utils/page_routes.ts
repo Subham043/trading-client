@@ -21,6 +21,9 @@ export const page_routes = {
   securityTypeMasters: {
     list: "/security-type-masters",
   },
+  securityMasters: {
+    list: "/security-masters",
+  },
   auth: {
     login: "/login",
     forgot_password: "/forgot-password",
