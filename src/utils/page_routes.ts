@@ -21,8 +21,9 @@ export const page_routes = {
   securityTypeMasters: {
     list: "/security-type-masters",
   },
-  securityMasters: {
-    list: "/security-masters",
+  shareCertificateMasters: {
+    list: "/share-certificate-masters",
+    view: "/share-certificate-masters/:shareCertificateMasterId",
   },
   auth: {
     login: "/login",

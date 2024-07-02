@@ -1,18 +1,20 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
-import { SecurityMasterType } from "../../utils/types";
+import { ShareCertificateMasterType } from "../../utils/types";
 import dayjs from 'dayjs';
-import { SecurityMastersListDrawerProps, SecurityMastersListModalProps } from "../../pages/securityMasters/list";
-import { useDeleteSecurityMasterMutation, useSecurityMastersQuery } from "../../hooks/data/security_masters";
+import { ShareCertificateMastersListModalProps } from "../../pages/shareCertificateMasters/list";
+import { useDeleteShareCertificateMasterMutation, useShareCertificateMastersQuery } from "../../hooks/data/share_certificate_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { Link } from "react-router-dom";
+import { page_routes } from "../../utils/page_routes";
 
 
-const SecurityMastersTableRow:FC<SecurityMasterType & {toggleModal: (value: SecurityMastersListModalProps) => void, toggleDrawer: (value: SecurityMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, instrumentType, companyMaster, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, instrumentType, companyMaster, equityType, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteSecurityMasters = useDeleteSecurityMasterMutation(id)
+  const deleteShareCertificateMasters = useDeleteShareCertificateMasterMutation(id)
   const onDelete = async () => {
-    await deleteSecurityMasters.mutateAsync(undefined)
+    await deleteShareCertificateMasters.mutateAsync(undefined)
   }
   return (
     <Table.Tr>
@@ -40,29 +42,16 @@ const SecurityMastersTableRow:FC<SecurityMasterType & {toggleModal: (value: Secu
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {[shareholderName1, shareholderName2, shareholderName3].filter((value) => value).join(', ')}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {faceValue}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {noOfShares}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
               {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
           </Text>
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            <Link to={`${page_routes.shareCertificateMasters.list}/${id}`}>
+              <ActionIcon  variant="subtle" color="gray">
+                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Link>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
@@ -79,7 +68,7 @@ const SecurityMastersTableRow:FC<SecurityMasterType & {toggleModal: (value: Secu
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteSecurityMasters.isPending} disabled={deleteSecurityMasters.isPending}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteShareCertificateMasters.isPending} disabled={deleteShareCertificateMasters.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -92,12 +81,12 @@ const SecurityMastersTableRow:FC<SecurityMasterType & {toggleModal: (value: Secu
   )
 }
 
-const SecurityMastersTable:FC<{toggleModal: (value: SecurityMastersListModalProps) => void, toggleDrawer: (value: SecurityMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
-  const {data:securityMasters, isFetching, isLoading, status, error, refetch} = useSecurityMastersQuery();
-  const allChecked = (securityMasters ? securityMasters.securityMaster : []).every((value) => props.selectedData.includes(value.id));
-  const indeterminate = (securityMasters ? securityMasters.securityMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
+const ShareCertificateMastersTable:FC<{toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+  const {data:shareCertificateMasters, isFetching, isLoading, status, error, refetch} = useShareCertificateMastersQuery();
+  const allChecked = (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
-    <ErrorBoundary hasData={securityMasters ? securityMasters.securityMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={securityMasters?.total} current_page={securityMasters?.current_page} last_page={securityMasters?.last_page} refetch={refetch}>
+    <ErrorBoundary hasData={shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={shareCertificateMasters?.total} current_page={shareCertificateMasters?.current_page} last_page={shareCertificateMasters?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
           <Table.Thead bg="blue">
@@ -107,21 +96,18 @@ const SecurityMastersTable:FC<{toggleModal: (value: SecurityMastersListModalProp
                     color="gray"
                     checked={allChecked}
                     indeterminate={indeterminate}
-                    onChange={() => props.setSelectedData(allChecked ? [] : (securityMasters ? securityMasters.securityMaster.map((value) => value.id) : []))}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
               <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
-              <Table.Th style={{color: 'white'}}>Name of Shareholder(s)</Table.Th>
-              <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-              <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (securityMasters ? securityMasters.securityMaster : []).map((item) => <SecurityMastersTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).map((item) => <ShareCertificateMastersTableRow key={item.id} {...item} toggleModal={props.toggleModal} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
@@ -129,4 +115,4 @@ const SecurityMastersTable:FC<{toggleModal: (value: SecurityMastersListModalProp
   );
 }
 
-export default SecurityMastersTable
+export default ShareCertificateMastersTable

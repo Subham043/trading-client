@@ -27,7 +27,6 @@ export type SchemaType = {
   redemptionDate?: string | undefined;
   conversionDate?: string | undefined;
   paidUpValue: number | undefined;
-  faceValue: number | undefined;
   dividend: number | undefined;
   redemptionAmount: number | undefined;
   conversionAmount: number | undefined;
@@ -48,7 +47,6 @@ export const initialValues: SchemaType = {
   redemptionDate: undefined,
   conversionDate: undefined,
   paidUpValue: undefined,
-  faceValue: undefined,
   dividend: undefined,
   redemptionAmount: undefined,
   conversionAmount: undefined,
@@ -97,10 +95,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .typeError("Conversion Date must be a string")
     .optional(),
   paidUpValue: yup
-    .number()
-    .typeError("Paid Up value must be a number")
-    .optional(),
-  faceValue: yup
     .number()
     .typeError("Paid Up value must be a number")
     .optional(),

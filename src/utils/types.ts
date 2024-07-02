@@ -33,6 +33,9 @@ export type CompanyMasterQueryType = {
     city: string | null;
     pincode: string | null;
     state: string | null;
+    nameContactPerson: string | null;
+    emailContactPerson: string | null;
+    phoneContactPerson: string | null;
     id: number;
     registrarMaster: {
       id: number;
@@ -276,7 +279,6 @@ export type SecurityTypeMasterType = {
   redemptionDate?: Date | null;
   conversionDate?: Date | null;
   paidUpValue: number | null;
-  faceValue: number | null;
   dividend: number | null;
   redemptionAmount: number | null;
   conversionAmount: number | null;
@@ -292,7 +294,7 @@ export type SecurityTypeMasterType = {
 export interface SecurityTypeMasterFormType
   extends Omit<SecurityTypeMasterType, "id" | "createdAt" | "companyMaster"> {}
 
-export type SecurityMasterType = {
+export type ShareCertificateMasterType = {
   id: number;
   instrumentType:
     | "InvIT"
@@ -303,6 +305,25 @@ export type SecurityMasterType = {
     | "Equity"
     | "Warrant";
   equityType: "Bonus" | "Shares" | "Splits" | "Rights";
+  endorsement: "Yes" | "No";
+  endorsementFolio?: string | null;
+  endorsementDate?: Date | null;
+  endorsementShareholderName1?: string | null;
+  endorsementShareholderName2?: string | null;
+  endorsementShareholderName3?: string | null;
+  companyMaster?: CompanyMasterQueryType | null;
+  companyID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface ShareCertificateMasterFormType
+  extends Omit<
+    ShareCertificateMasterType,
+    "id" | "createdAt" | "companyMaster"
+  > {}
+
+export type FolioType = {
+  id: number;
   Folio?: string | null;
   certificateNumber?: string | null;
   certificateSerialNumber?: string | null;
@@ -315,19 +336,13 @@ export type SecurityMasterType = {
   faceValue: number | null;
   distinctiveNosFrom?: string | null;
   distinctiveNosTo?: string | null;
-  endorsement: "Yes" | "No";
-  endorsementFolio?: string | null;
-  endorsementDate?: Date | null;
-  endorsementShareholderName1?: string | null;
-  endorsementShareholderName2?: string | null;
-  endorsementShareholderName3?: string | null;
-  companyMaster?: CompanyMasterQueryType | null;
-  companyID?: number | null;
+  shareCertificateMaster?: ShareCertificateMasterType | null;
+  shareCertificateID?: number | null;
   createdAt?: Date | null;
 };
 
-export interface SecurityMasterFormType
-  extends Omit<SecurityMasterType, "id" | "createdAt" | "companyMaster"> {}
+export interface FolioFormType
+  extends Omit<FolioType, "id" | "createdAt" | "shareCertificateMaster"> {}
 
 export type FailedExcelType = {
   id: number;

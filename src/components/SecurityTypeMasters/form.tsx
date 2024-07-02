@@ -47,7 +47,6 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                 Symbol: data.Symbol ? data.Symbol : undefined,
                 Series: data.Series ? data.Series : undefined,
                 securityName: data.securityName ? data.securityName : undefined,
-                faceValue: data.faceValue ? data.faceValue : undefined,
                 paidUpValue: data.paidUpValue ? data.paidUpValue : undefined,
                 dividend: data.dividend ? data.dividend : undefined,
                 redemptionAmount: data.redemptionAmount ? data.redemptionAmount : undefined,
@@ -133,9 +132,8 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                     <TextInput label="Symbol" {...form.getInputProps('Symbol')} />
                     <TextInput label="Series" {...form.getInputProps('Series')} />
                 </SimpleGrid>
-                {form.values.instrumentType !== "Warrant" && <SimpleGrid cols={{ base: 1, sm: form.values.instrumentType !== "PreferenceShares" ? 3 : 2 }} mt="md">
+                {form.values.instrumentType !== "Warrant" && <SimpleGrid cols={{ base: 1, sm: form.values.instrumentType !== "PreferenceShares" ? 2 : 1 }} mt="md">
                     <TextInput label="Paid Up Value" {...form.getInputProps('paidUpValue')} />
-                    <TextInput label="Face Value" {...form.getInputProps('faceValue')} />
                     {form.values.instrumentType !== "PreferenceShares" && <TextInput label="ISIN Number" {...form.getInputProps('isinNumber')} />}
                 </SimpleGrid>}
                 <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">

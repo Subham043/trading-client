@@ -80,6 +80,18 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                                     <Table.Th>Registrar Pincode</Table.Th>
                                     <Table.Td>{data.registrarMasterBranch?.pincode}</Table.Td>
                                 </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Name</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.nameContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Email</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.emailContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Phone</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.phoneContactPerson}</Table.Td>
+                                </Table.Tr>
                             </Table.Thead>
                         </Table>
                     </Table.ScrollContainer>

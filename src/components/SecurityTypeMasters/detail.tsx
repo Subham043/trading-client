@@ -43,7 +43,7 @@ const SecurityTypeMasterDetail:FC<SecurityTypeMastersListDrawerProps> = (props) 
                         </Table.Tr>}
                         <Table.Tr>
                             <Table.Th>Face Value</Table.Th>
-                            <Table.Td>{data.faceValue}</Table.Td>
+                            <Table.Td>{data.companyMaster?.faceValue}</Table.Td>
                         </Table.Tr>
                     </>}
                     <Table.Tr>
