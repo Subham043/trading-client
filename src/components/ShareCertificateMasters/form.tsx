@@ -44,7 +44,6 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
             setSearch((data.companyMaster && data.companyMaster.currentNameChangeMasters && data.companyMaster.currentNameChangeMasters.currentName) ? data.companyMaster.currentNameChangeMasters.currentName.toString() : "");
             form.setValues({
                 instrumentType: data.instrumentType ? data.instrumentType : undefined,
-                equityType: data.equityType ? data.equityType : undefined,
                 endorsement: data.endorsement ? data.endorsement : undefined,
                 endorsementFolio: data.endorsementFolio ? data.endorsementFolio : undefined,
                 endorsementDate: (data  && data.endorsementDate) ? data.endorsementDate.toString() : undefined,
@@ -96,20 +95,13 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 3 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
                         label="Instrument Type"
                         withAsterisk
                         data={["InvIT" , "IDR" , "MFs" , "PreferenceShares" , "REiT" , "Equity" , "Warrant"]}
                         value={form.values.instrumentType ? form.values.instrumentType : null}
                         onChange={(value) => form.setFieldValue("instrumentType", value ? value as "InvIT" | "IDR" | "MFs" | "PreferenceShares" | "REiT" | "Equity" | "Warrant" : "InvIT")}
-                    />
-                    <Select
-                        label="Equity Type"
-                        withAsterisk
-                        data={["Bonus", "Shares", "Splits", "Rights"]}
-                        value={form.values.equityType ? form.values.equityType : null}
-                        onChange={(value) => form.setFieldValue("equityType", value ? value as "Bonus" | "Shares" | "Splits" | "Rights" : "Bonus")}
                     />
                     <Select
                         label="Company Name"

@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, SimpleGrid, TextInput } from "@mantine/core";
+import { Button, Select, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddFolioMutation, useFolioQuery, useUpdateFolioMutation } from "../../hooks/data/folios";
 import { MutateOptions } from "@tanstack/react-query";
@@ -37,6 +37,7 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, tog
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             form.setValues({
+                equityType: data.equityType ? data.equityType : undefined,
                 Folio: data.Folio ? data.Folio : "",
                 certificateNumber: data.certificateNumber ? data.certificateNumber : undefined,
                 certificateSerialNumber: data.certificateSerialNumber ? data.certificateSerialNumber : undefined,
@@ -61,6 +62,14 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, tog
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.status, form.values.noOfShares]);
+
+    useEffect(() => {
+        if(props.status && (form.values.distinctiveNosFrom && form.values.distinctiveNosFrom.length > 0) && (form.values.distinctiveNosTo && form.values.distinctiveNosTo.length > 0) && !isNaN(Number(form.values.distinctiveNosFrom)) && !isNaN(Number(form.values.distinctiveNosTo))){
+            const val = Number(form.values.distinctiveNosFrom) - Number(form.values.distinctiveNosTo);
+            form.setFieldValue('noOfShares', val.toString());
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.status, form.values.distinctiveNosFrom, form.values.distinctiveNosTo]);
     
     const onSubmit = async () => {
         const foliosMutateOptions:foliosMutateOptionsType = {
@@ -91,7 +100,14 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, tog
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 4 }} mt="md">
+                    <Select
+                        label="Equity Type"
+                        withAsterisk
+                        data={["Bonus", "Shares", "Splits", "Rights"]}
+                        value={form.values.equityType ? form.values.equityType : null}
+                        onChange={(value) => form.setFieldValue("equityType", value ? value as "Bonus" | "Shares" | "Splits" | "Rights" : "Bonus")}
+                    />
                     <TextInput label="Folio" {...form.getInputProps('Folio')} />
                     <TextInput label="Certificate Number" {...form.getInputProps('certificateNumber')} />
                     <TextInput label="Certificate Serial Number" {...form.getInputProps('certificateSerialNumber')} />

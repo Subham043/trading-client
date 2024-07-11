@@ -8,7 +8,7 @@ import { useDeleteFolioMutation, useFoliosQuery } from "../../hooks/data/folios"
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, shareCertificateID, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, shareCertificateID, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteFolios = useDeleteFolioMutation(id, shareCertificateID||0)
   const onDelete = async () => {
@@ -26,6 +26,11 @@ const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) 
       <Table.Td>
           <Text fz="sm" fw={500}>
               {[shareholderName1, shareholderName2, shareholderName3].filter((value) => value).join(', ')}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {equityType}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -96,6 +101,7 @@ const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggle
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name of Shareholder(s)</Table.Th>
+              <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
               <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>

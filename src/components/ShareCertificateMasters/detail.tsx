@@ -29,7 +29,6 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                             <Table.Th style={{color: 'white'}}>BSE</Table.Th>
                             <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
                             <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
-                            <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
                             <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
                             <Table.Th style={{color: 'white'}}>Created On</Table.Th>
                         </Table.Tr>
@@ -42,7 +41,6 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                             <Table.Td>{data.companyMaster?.currentNameChangeMasters?.BSE}</Table.Td>
                             <Table.Td>{data.companyMaster?.ISIN}</Table.Td>
                             <Table.Td>{data.instrumentType}</Table.Td>
-                            <Table.Td>{data.equityType}</Table.Td>
                             <Table.Td>{data.companyMaster?.faceValue}</Table.Td>
                             <Table.Td>
                                 <Text fz="sm" fw={500}>

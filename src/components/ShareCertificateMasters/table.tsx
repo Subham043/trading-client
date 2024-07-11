@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, instrumentType, companyMaster, equityType, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, instrumentType, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareCertificateMasters = useDeleteShareCertificateMasterMutation(id)
   const onDelete = async () => {
@@ -33,11 +33,6 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
       <Table.Td>
           <Text fz="sm" fw={500}>
               {instrumentType}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {equityType}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -101,7 +96,6 @@ const ShareCertificateMastersTable:FC<{toggleModal: (value: ShareCertificateMast
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
               <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
-              <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>

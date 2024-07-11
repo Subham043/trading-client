@@ -33,6 +33,7 @@ export type CompanyMasterQueryType = {
     city: string | null;
     pincode: string | null;
     state: string | null;
+    address: string | null;
     nameContactPerson: string | null;
     emailContactPerson: string | null;
     phoneContactPerson: string | null;
@@ -304,7 +305,6 @@ export type ShareCertificateMasterType = {
     | "REiT"
     | "Equity"
     | "Warrant";
-  equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   endorsement: "Yes" | "No";
   endorsementFolio?: string | null;
   endorsementDate?: Date | null;
@@ -324,6 +324,7 @@ export interface ShareCertificateMasterFormType
 
 export type FolioType = {
   id: number;
+  equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio?: string | null;
   certificateNumber?: string | null;
   certificateSerialNumber?: string | null;
@@ -343,6 +344,44 @@ export type FolioType = {
 
 export interface FolioFormType
   extends Omit<FolioType, "id" | "createdAt" | "shareCertificateMaster"> {}
+
+export type CorporateMasterType = {
+  id: number;
+  type:
+    | "Equity"
+    | "Bonus"
+    | "Splits"
+    | "RightsSubscribed"
+    | "RightsUnsubscribed"
+    | "ShareBought";
+  date: Date;
+  numerator?: string | null;
+  denominator?: string | null;
+  originalHolding?: string | null;
+  exchange?: string | null;
+  consolidatedHolding?: string | null;
+  companyID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface CorporateMasterFormType
+  extends Omit<
+    CorporateMasterType,
+    | "id"
+    | "date"
+    | "numerator"
+    | "denominator"
+    | "originalHolding"
+    | "createdAt"
+    | "exchange"
+    | "consolidatedHolding"
+    | "companyID"
+  > {
+  date: string;
+  numerator: number;
+  denominator: number;
+  originalHolding: number;
+}
 
 export type FailedExcelType = {
   id: number;

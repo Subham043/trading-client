@@ -37,6 +37,10 @@ const FolioDetail:FC<FoliosListDrawerProps> = (props) => {
                         <Table.Td>{data.shareholderName3}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
+                        <Table.Th>Equity Type</Table.Th>
+                        <Table.Td>{data.equityType}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
                         <Table.Th>Face Value</Table.Th>
                         <Table.Td>{data.faceValue}</Table.Td>
                     </Table.Tr>

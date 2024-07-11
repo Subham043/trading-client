@@ -1,6 +1,14 @@
 import * as yup from "yup";
 
+enum EquityType {
+  Bonus = "Bonus",
+  Shares = "Shares",
+  Splits = "Splits",
+  Rights = "Rights",
+}
+
 export type SchemaType = {
+  equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio: string;
   certificateNumber?: string | undefined;
   certificateSerialNumber?: string | undefined;
@@ -16,6 +24,7 @@ export type SchemaType = {
 };
 
 export const initialValues: SchemaType = {
+  equityType: "Bonus",
   Folio: "",
   certificateNumber: undefined,
   certificateSerialNumber: undefined,
@@ -31,6 +40,10 @@ export const initialValues: SchemaType = {
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
+  equityType: yup
+    .mixed<EquityType>()
+    .oneOf(Object.values(EquityType), "Invalid equity type")
+    .required("Equity Type is required"),
   Folio: yup
     .string()
     .typeError("Folio must be a string")

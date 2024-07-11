@@ -5,6 +5,7 @@ import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detai
 import { useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import CorporateMastersListPage from "../../pages/corporateMasters/list";
 
 const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProps) => void}> = (props) => {
   const param = useParams<{companyId: string}>();
@@ -47,59 +48,10 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                 </Table>
             </Table.ScrollContainer>
         </>}
-        <SimpleGrid cols={{ base: 1, sm: 3 }}>
+        <SimpleGrid cols={{ base: 1, sm: 2 }}>
             <div>
                 <div style={{textAlign: 'center'}}>
-                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Registrar Master</Text>
-                </div>
-                {(data) && <>
-                    <Table.ScrollContainer minWidth={'100%'}>
-                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
-                            <Table.Thead>
-                                <Table.Tr>
-                                    <Table.Th>Registrar Name</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.registrar_name}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>SEBI Regn. ID</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.sebi_regn_id}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Registrar Branch</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.branch}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Registrar City</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.city}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Registrar State</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.state}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Registrar Pincode</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.pincode}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Contact Person Name</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.nameContactPerson}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Contact Person Email</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.emailContactPerson}</Table.Td>
-                                </Table.Tr>
-                                <Table.Tr>
-                                    <Table.Th>Contact Person Phone</Table.Th>
-                                    <Table.Td>{data.registrarMasterBranch?.phoneContactPerson}</Table.Td>
-                                </Table.Tr>
-                            </Table.Thead>
-                        </Table>
-                    </Table.ScrollContainer>
-                </>}
-            </div>
-            <div>
-                <div style={{textAlign: 'center'}}>
-                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Address</Text>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Company Address</Text>
                 </div>
                 {(data) && <>
                     <Table.ScrollContainer minWidth={'100%'}>
@@ -136,7 +88,7 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
             </div>
             <div>
                 <div style={{textAlign: 'center'}}>
-                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Contact</Text>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Company Contact</Text>
                 </div>
                 {(data) && <>
                     <Table.ScrollContainer minWidth={'100%'}>
@@ -172,11 +124,85 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                 </>}
             </div>
         </SimpleGrid>
+        <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Registrar Master Address</Text>
+                </div>
+                {(data) && <>
+                    <Table.ScrollContainer minWidth={'100%'}>
+                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Branch</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.branch}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar City</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.city}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar State</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.state}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Pincode</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.pincode}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Address</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.address}</Table.Td>
+                                </Table.Tr>
+                            </Table.Thead>
+                        </Table>
+                    </Table.ScrollContainer>
+                </>}
+            </div>
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <Text size="lg" fw={700} p="sm" bg="blue" color="white">Registrar Master Contact</Text>
+                </div>
+                {(data) && <>
+                    <Table.ScrollContainer minWidth={'100%'}>
+                        <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
+                            <Table.Thead>
+                                <Table.Tr>
+                                    <Table.Th>Registrar Name</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.registrar_name}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>SEBI Regn. ID</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.registrarMaster?.sebi_regn_id}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Name</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.nameContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Email</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.emailContactPerson}</Table.Td>
+                                </Table.Tr>
+                                <Table.Tr>
+                                    <Table.Th>Contact Person Phone</Table.Th>
+                                    <Table.Td>{data.registrarMasterBranch?.phoneContactPerson}</Table.Td>
+                                </Table.Tr>
+                            </Table.Thead>
+                        </Table>
+                    </Table.ScrollContainer>
+                </>}
+            </div>
+        </SimpleGrid>
         <Box bg="transparent" mt="md">
             <div style={{textAlign: 'center'}}>
                 <Text size="xl" fw={700} p="sm" >Name Change Masters</Text>
             </div>
             <NameChangeMastersListPage />
+        </Box>
+        <Box bg="transparent" mt="md">
+            <div style={{textAlign: 'center'}}>
+                <Text size="xl" fw={700} p="sm" >Corporate Masters</Text>
+            </div>
+            <CorporateMastersListPage />
         </Box>
     </ErrorBoundary>
   );

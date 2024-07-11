@@ -20,6 +20,7 @@ export const api_routes = {
   nameChangeMasters: "/name-change-masters",
   registrarMasters: "/registrar-masters",
   registrarMasterBranches: "/registrar-master-branches",
+  corporateMasters: "/corporate-masters",
   shareCertificateMasters: "/share-certificate-masters",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",

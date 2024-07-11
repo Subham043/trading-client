@@ -10,13 +10,6 @@ enum InstrumentType {
   Warrant = "Warrant",
 }
 
-enum EquityType {
-  Bonus = "Bonus",
-  Shares = "Shares",
-  Splits = "Splits",
-  Rights = "Rights",
-}
-
 enum TruthyType {
   Yes = "Yes",
   No = "No",
@@ -31,7 +24,6 @@ export type SchemaType = {
     | "REiT"
     | "Equity"
     | "Warrant";
-  equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   endorsement: "Yes" | "No";
   endorsementFolio?: string | undefined;
   endorsementDate?: string | undefined;
@@ -43,7 +35,6 @@ export type SchemaType = {
 
 export const initialValues: SchemaType = {
   instrumentType: "InvIT",
-  equityType: "Bonus",
   endorsement: "No",
   endorsementFolio: undefined,
   endorsementDate: undefined,
@@ -58,10 +49,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .mixed<InstrumentType>()
     .oneOf(Object.values(InstrumentType), "Invalid instrument type")
     .required("Instrument Type is required"),
-  equityType: yup
-    .mixed<EquityType>()
-    .oneOf(Object.values(EquityType), "Invalid equity type")
-    .required("Equity Type is required"),
   endorsement: yup
     .mixed<TruthyType>()
     .oneOf(Object.values(TruthyType), "Invalid Endorsement")
