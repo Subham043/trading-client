@@ -16,6 +16,7 @@ export const api_routes = {
   },
   pincodes: "/pincodes",
   users: "/users",
+  projects: "/projects",
   companyMasters: "/company-masters",
   nameChangeMasters: "/name-change-masters",
   registrarMasters: "/registrar-masters",

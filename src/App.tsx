@@ -24,9 +24,13 @@ const RegistrarMastersPage = lazy(()=>import("./pages/registrarMasters/list"));
 const RegistrarMastersDetailPage = lazy(()=>import("./pages/registrarMasters/detail"));
 const ShareCertificateMastersListPage = lazy(()=>import("./pages/shareCertificateMasters/list"));
 const ShareCertificateMastersDetailPage = lazy(()=>import("./pages/shareCertificateMasters/detail"));
+const ProjectsListPage = lazy(()=>import("./pages/projects/list"));
+const ProjectsDetailPage = lazy(()=>import("./pages/projects/detail"));
 const SecurityTypeMastersListPage = lazy(()=>import("./pages/securityTypeMasters/list"));
 const FailedExcelsPage = lazy(()=>import("./pages/failedExcels/list"));
 const PincodesPage = lazy(()=>import("./pages/pincodes"));
+const NameChangeMastersListPage = lazy(()=>import("./pages/nameChangeMasters/list"));
+const CorporateMastersListPage = lazy(()=>import("./pages/corporateMasters/list"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -48,11 +52,19 @@ function App() {
                       <Route path={page_routes.pincodes} element={<PincodesPage />} />
                       <Route path={page_routes.companyMasters.list} element={<CompanyMastersPage />} />
                       <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
+                      <Route element={<CompanyMastersDetailPage />}>
+                        <Route path={page_routes.companyMasters.nameChangeMaster} element={<NameChangeMastersListPage />} />
+                        <Route path={page_routes.companyMasters.corporateMaster} element={<CorporateMastersListPage />} />
+                      </Route>
                       <Route path={page_routes.nameChangeMasters.main} element={<NameChangeMastersMainPage />} />
                       <Route path={page_routes.registrarMasters.list} element={<RegistrarMastersPage />} />
                       <Route path={page_routes.registrarMasters.view} element={<RegistrarMastersDetailPage />} />
                       <Route path={page_routes.securityTypeMasters.list} element={<SecurityTypeMastersListPage />} />
-                      <Route path={page_routes.shareCertificateMasters.list} element={<ShareCertificateMastersListPage />} />
+                      <Route path={page_routes.projects.list} element={<ProjectsListPage />} />
+                      <Route path={page_routes.projects.view} element={<ProjectsDetailPage />} />
+                      <Route element={<ProjectsDetailPage />}>
+                        <Route path={page_routes.projects.shareCertificateMaster} element={<ShareCertificateMastersListPage />} />
+                      </Route>
                       <Route path={page_routes.shareCertificateMasters.view} element={<ShareCertificateMastersDetailPage />} />
                       <Route path={page_routes.failed_excel} element={<FailedExcelsPage />} />
                     </Route>

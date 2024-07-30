@@ -42,7 +42,6 @@ const CorporateMastersForm:FC<CorporateMastersFormProps & {mainCompanyId: number
                 type: data.type ? data.type : "Bonus",
                 numerator: data.numerator ? Number(data.numerator) : 0,
                 denominator: data.denominator ? Number(data.denominator) : 0,
-                originalHolding: data.originalHolding ? Number(data.originalHolding) : 0,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,15 +86,14 @@ const CorporateMastersForm:FC<CorporateMastersFormProps & {mainCompanyId: number
                     <Select
                         label="Equity Type"
                         withAsterisk
-                        data={["Equity", "Bonus", "ShareBought", "RightsSubscribed", "RightsUnsubscribed", "Splits"]}
+                        data={["Equity", "Bonus", "ShareBought", "Rights", "Splits"]}
                         value={form.values.type ? form.values.type : null}
-                        onChange={(value) => form.setFieldValue("type", value ? value as "Equity" | "Bonus" | "ShareBought" | "RightsSubscribed" | "RightsUnsubscribed" | "Splits" : "Bonus")}
+                        onChange={(value) => form.setFieldValue("type", value ? value as "Equity" | "Bonus" | "ShareBought" | "Rights" | "Splits" : "Bonus")}
                     />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="Numrator" {...form.getInputProps('numerator')} />
                     <TextInput label="Denominator" {...form.getInputProps('denominator')} />
-                    <TextInput label="Original Holding" {...form.getInputProps('originalHolding')} />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addCorporateMasters.isPending : updateCorporateMasters.isPending} disabled={props.type === "Create" ? addCorporateMasters.isPending : updateCorporateMasters.isPending} data-disabled={props.type === "Create" ? addCorporateMasters.isPending : updateCorporateMasters.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}

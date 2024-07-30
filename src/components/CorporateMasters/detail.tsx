@@ -29,18 +29,6 @@ const CorporateMasterDetail:FC<CorporateMastersListDrawerProps> = (props) => {
                         <Table.Td>{data.denominator}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
-                        <Table.Th>Original Holding</Table.Th>
-                        <Table.Td>{data.originalHolding}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
-                        <Table.Th>City</Table.Th>
-                        <Table.Td>{data.exchange}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
-                        <Table.Th>Consolidated Holding</Table.Th>
-                        <Table.Td>{data.consolidatedHolding}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
                         <Table.Th>Company Master ID</Table.Th>
                         <Table.Td>{data.companyID}</Table.Td>
                     </Table.Tr>

@@ -4,24 +4,15 @@ enum CorporateActionType {
   Equity = "Equity",
   Bonus = "Bonus",
   Splits = "Splits",
-  RightsSubscribed = "RightsSubscribed",
-  RightsUnubscribed = "RightsUnsubscribed",
+  Rights = "Rights",
   ShareBought = "ShareBought",
 }
 
 export type SchemaType = {
   date: string;
-  type:
-    | "Equity"
-    | "Bonus"
-    | "Shares"
-    | "Splits"
-    | "RightsSubscribed"
-    | "RightsUnsubscribed"
-    | "ShareBought";
+  type: "Equity" | "Bonus" | "Shares" | "Splits" | "Rights" | "ShareBought";
   numerator: number;
   denominator: number;
-  originalHolding: number;
 };
 
 export const initialValues: SchemaType = {
@@ -29,7 +20,6 @@ export const initialValues: SchemaType = {
   type: "Equity",
   numerator: 0,
   denominator: 0,
-  originalHolding: 0,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -49,10 +39,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .number()
     .typeError("Denominator must be a number")
     .required("Denominator is required"),
-  originalHolding: yup
-    .number()
-    .typeError("Original Holding must be a number")
-    .required("Original Holding is required"),
 });
 
 export const transformValues = (values: SchemaType) => {
@@ -61,6 +47,5 @@ export const transformValues = (values: SchemaType) => {
     type: values.type,
     numerator: Number(values.numerator),
     denominator: Number(values.denominator),
-    originalHolding: Number(values.originalHolding),
   };
 };

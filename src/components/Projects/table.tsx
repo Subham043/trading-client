@@ -1,20 +1,20 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
-import { ShareCertificateMasterType } from "../../utils/types";
+import { ProjectType } from "../../utils/types";
 import dayjs from 'dayjs';
-import { ShareCertificateMastersListModalProps } from "../../pages/shareCertificateMasters/list";
-import { useDeleteShareCertificateMasterMutation, useShareCertificateMastersQuery } from "../../hooks/data/share_certificate_masters";
+import { ProjectsListModalProps } from "../../pages/projects/list";
+import { useDeleteProjectMutation, useProjectsQuery } from "../../hooks/data/projects";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, instrumentType, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ProjectsTableRow:FC<ProjectType & {toggleModal: (value: ProjectsListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, name, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteShareCertificateMasters = useDeleteShareCertificateMasterMutation(id, projectID?.toString() ?? '');
+  const deleteProjects = useDeleteProjectMutation(id)
   const onDelete = async () => {
-    await deleteShareCertificateMasters.mutateAsync(undefined)
+    await deleteProjects.mutateAsync(undefined)
   }
   return (
     <Table.Tr>
@@ -27,12 +27,12 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {companyMaster?.currentNameChangeMasters?.currentName}
+              {id}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {instrumentType}
+              {name}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -42,7 +42,7 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.shareCertificateMasters.list}/${id}`}>
+            <Link to={`${page_routes.projects.list}/${id}/share-certificate-masters`}>
               <ActionIcon  variant="subtle" color="gray">
                   <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>
@@ -63,7 +63,7 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteShareCertificateMasters.isPending} disabled={deleteShareCertificateMasters.isPending}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteProjects.isPending} disabled={deleteProjects.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -76,12 +76,12 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
   )
 }
 
-const ShareCertificateMastersTable:FC<{projectId: string, toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
-  const {data:shareCertificateMasters, isFetching, isLoading, status, error, refetch} = useShareCertificateMastersQuery(props.projectId);
-  const allChecked = (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).every((value) => props.selectedData.includes(value.id));
-  const indeterminate = (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
+const ProjectsTable:FC<{toggleModal: (value: ProjectsListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+  const {data:projects, isFetching, isLoading, status, error, refetch} = useProjectsQuery();
+  const allChecked = (projects ? projects.project : []).every((value) => props.selectedData.includes(value.id));
+  const indeterminate = (projects ? projects.project : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
-    <ErrorBoundary hasData={shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={shareCertificateMasters?.total} current_page={shareCertificateMasters?.current_page} last_page={shareCertificateMasters?.last_page} refetch={refetch}>
+    <ErrorBoundary hasData={projects ? projects.project.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={projects?.total} current_page={projects?.current_page} last_page={projects?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
         <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
           <Table.Thead bg="blue">
@@ -91,17 +91,17 @@ const ShareCertificateMastersTable:FC<{projectId: string, toggleModal: (value: S
                     color="gray"
                     checked={allChecked}
                     indeterminate={indeterminate}
-                    onChange={() => props.setSelectedData(allChecked ? [] : (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster.map((value) => value.id) : []))}
+                    onChange={() => props.setSelectedData(allChecked ? [] : (projects ? projects.project.map((value) => value.id) : []))}
                   />
                 </Table.Th>
-              <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
-              <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
+              <Table.Th style={{color: 'white'}}>Id</Table.Th>
+              <Table.Th style={{color: 'white'}}>Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (shareCertificateMasters ? shareCertificateMasters.shareCertificateMaster : []).map((item) => <ShareCertificateMastersTableRow key={item.id} {...item} toggleModal={props.toggleModal} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (projects ? projects.project : []).map((item) => <ProjectsTableRow key={item.id} {...item} toggleModal={props.toggleModal} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
@@ -109,4 +109,4 @@ const ShareCertificateMastersTable:FC<{projectId: string, toggleModal: (value: S
   );
 }
 
-export default ShareCertificateMastersTable
+export default ProjectsTable

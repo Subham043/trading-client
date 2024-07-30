@@ -1,14 +1,18 @@
 import { FC } from "react"
-import { Table, Group, Text, Box, Button, SimpleGrid } from '@mantine/core';
-import { useParams } from "react-router-dom";
+import { Table, Group, Text, Box, Button, SimpleGrid, Tabs, rem } from '@mantine/core';
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detail";
 import { useCompanyMasterQuery } from "../../hooks/data/company_masters";
-import NameChangeMastersListPage from "../../pages/nameChangeMasters/list";
 import ErrorBoundary from "../Layout/ErrorBoundary";
-import CorporateMastersListPage from "../../pages/corporateMasters/list";
+import { page_routes } from "../../utils/page_routes";
+import { IconBriefcase, IconWriting } from "@tabler/icons-react";
+
+const iconStyle = { width: rem(12), height: rem(12) };
 
 const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProps) => void}> = (props) => {
   const param = useParams<{companyId: string}>();
+  const location = useLocation();
+  const navigate = useNavigate();
   const {data, isFetching, isLoading, status, error, refetch} = useCompanyMasterQuery(Number(param.companyId), true);
   return (
     <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
@@ -193,16 +197,19 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
             </div>
         </SimpleGrid>
         <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Name Change Masters</Text>
-            </div>
-            <NameChangeMastersListPage />
-        </Box>
-        <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Corporate Masters</Text>
-            </div>
-            <CorporateMastersListPage />
+            <Tabs value={location.pathname} onChange={(value) =>  value ? navigate(value) : undefined}>
+                <Tabs.List justify="center">
+                    <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/name-change-masters`} leftSection={<IconWriting style={iconStyle} />}>
+                        Name Change Masters
+                    </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/corporate-masters`} leftSection={<IconBriefcase style={iconStyle} />}>
+                        Corporate Masters
+                    </Tabs.Tab>
+                </Tabs.List>
+            </Tabs>
+            <Box bg="transparent" mt="md">
+                <Outlet />
+            </Box>
         </Box>
     </ErrorBoundary>
   );

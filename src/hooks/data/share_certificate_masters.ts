@@ -20,18 +20,19 @@ export const ShareCertificateMasterKey = "share_certificate_master";
 export const ShareCertificateMastersQueryKey = "share_certificate_masters";
 
 export const useShareCertificateMastersQuery: (
+  projectId: string,
   enabled?: boolean
 ) => UseQueryResult<
   PaginationType<{ shareCertificateMaster: ShareCertificateMasterType[] }>,
   unknown
-> = (enabled = true) => {
+> = (projectId, enabled = true) => {
   const { axios } = useAxios();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || QueryInitialPageParam.toString();
   const limit = searchParams.get("limit") || QueryTotalCount.toString();
   const search = searchParams.get("search") || "";
   return useQuery({
-    queryKey: [ShareCertificateMastersQueryKey, page, limit, search],
+    queryKey: [ShareCertificateMastersQueryKey, page, limit, search, projectId],
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
@@ -39,7 +40,7 @@ export const useShareCertificateMastersQuery: (
         }>;
       }>(
         api_routes.shareCertificateMasters +
-          `?page=${page}&limit=${limit}&search=${search}`
+          `/list/${projectId}?page=${page}&limit=${limit}&search=${search}`
       );
       return response.data.data;
     },
@@ -72,7 +73,8 @@ export const useShareCertificateMastersQuerySetData = () => {
   const search = searchParams.get("search") || "";
 
   const addShareCertificateMasters = (
-    newShareCertificateMasterVal: ShareCertificateMasterType
+    newShareCertificateMasterVal: ShareCertificateMasterType,
+    projectId: string
   ) => {
     queryClient.setQueryData<
       PaginationType<{ shareCertificateMaster: ShareCertificateMasterType[] }>
@@ -82,6 +84,7 @@ export const useShareCertificateMastersQuerySetData = () => {
         QueryInitialPageParam.toString(),
         limit,
         search,
+        projectId,
       ],
       (prev) => {
         if (prev) {
@@ -102,38 +105,45 @@ export const useShareCertificateMastersQuerySetData = () => {
 
   const updateShareCertificateMasters = (
     id: number,
-    updateShareCertificateMasterVal: ShareCertificateMasterType
+    updateShareCertificateMasterVal: ShareCertificateMasterType,
+    projectId: string
   ) => {
     queryClient.setQueryData<
       PaginationType<{ shareCertificateMaster: ShareCertificateMasterType[] }>
-    >([ShareCertificateMastersQueryKey, page, limit, search], (prev) => {
-      if (prev) {
-        return {
-          ...prev,
-          shareCertificateMaster: prev.shareCertificateMaster.map(
-            (shareCertificateMaster) =>
-              shareCertificateMaster.id === id
-                ? updateShareCertificateMasterVal
-                : shareCertificateMaster
-          ),
-        };
+    >(
+      [ShareCertificateMastersQueryKey, page, limit, search, projectId],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            shareCertificateMaster: prev.shareCertificateMaster.map(
+              (shareCertificateMaster) =>
+                shareCertificateMaster.id === id
+                  ? updateShareCertificateMasterVal
+                  : shareCertificateMaster
+            ),
+          };
+        }
       }
-    });
+    );
   };
 
-  const deleteShareCertificateMasters = (id: number) => {
+  const deleteShareCertificateMasters = (id: number, projectId: string) => {
     queryClient.setQueryData<
       PaginationType<{ shareCertificateMaster: ShareCertificateMasterType[] }>
-    >([ShareCertificateMastersQueryKey, page, limit, search], (prev) => {
-      if (prev) {
-        return {
-          ...prev,
-          shareCertificateMaster: prev.shareCertificateMaster.filter(
-            (shareCertificateMaster) => shareCertificateMaster.id !== id
-          ),
-        };
+    >(
+      [ShareCertificateMastersQueryKey, page, limit, search, projectId],
+      (prev) => {
+        if (prev) {
+          return {
+            ...prev,
+            shareCertificateMaster: prev.shareCertificateMaster.filter(
+              (shareCertificateMaster) => shareCertificateMaster.id !== id
+            ),
+          };
+        }
       }
-    });
+    );
   };
 
   return {
@@ -179,7 +189,10 @@ export const useShareCertificateMasterQuerySetData = () => {
   };
 };
 
-export const useUpdateShareCertificateMasterMutation = (id: number) => {
+export const useUpdateShareCertificateMasterMutation = (
+  id: number,
+  projectId: string
+) => {
   const { axios } = useAxios();
   const { updateShareCertificateMasters } =
     useShareCertificateMastersQuerySetData();
@@ -201,7 +214,11 @@ export const useUpdateShareCertificateMasterMutation = (id: number) => {
     onSuccess: (updateShareCertificateMasterVal) => {
       // ✅ update detail view directly
       updateShareCertificateMaster(id, updateShareCertificateMasterVal);
-      updateShareCertificateMasters(id, updateShareCertificateMasterVal);
+      updateShareCertificateMasters(
+        id,
+        updateShareCertificateMasterVal,
+        projectId
+      );
       toastSuccess("Share Certificate Master updated successfully.");
     },
     onError: (error) => {
@@ -212,7 +229,7 @@ export const useUpdateShareCertificateMasterMutation = (id: number) => {
   });
 };
 
-export const useAddShareCertificateMasterMutation = () => {
+export const useAddShareCertificateMasterMutation = (projectId: string) => {
   const { axios } = useAxios();
   const { addShareCertificateMasters } =
     useShareCertificateMastersQuerySetData();
@@ -224,7 +241,7 @@ export const useAddShareCertificateMasterMutation = () => {
       newShareCertificateMasterVal: ShareCertificateMasterFormType
     ) => {
       const response = await axios.post<{ data: ShareCertificateMasterType }>(
-        api_routes.shareCertificateMasters,
+        api_routes.shareCertificateMasters + `/create/${projectId}`,
         newShareCertificateMasterVal
       );
       return response.data.data;
@@ -233,7 +250,7 @@ export const useAddShareCertificateMasterMutation = () => {
     onSuccess: (newShareCertificateMasterVal) => {
       // ✅ update detail view directly
       addShareCertificateMaster(newShareCertificateMasterVal);
-      addShareCertificateMasters(newShareCertificateMasterVal);
+      addShareCertificateMasters(newShareCertificateMasterVal, projectId);
       toastSuccess("Share Certificate Master created successfully.");
     },
     onError: (error) => {
@@ -244,7 +261,10 @@ export const useAddShareCertificateMasterMutation = () => {
   });
 };
 
-export const useDeleteShareCertificateMasterMutation = (id: number) => {
+export const useDeleteShareCertificateMasterMutation = (
+  id: number,
+  projectId: string
+) => {
   const { axios } = useAxios();
   const { deleteShareCertificateMasters } =
     useShareCertificateMastersQuerySetData();
@@ -263,7 +283,7 @@ export const useDeleteShareCertificateMasterMutation = (id: number) => {
     onSuccess: () => {
       // ✅ update detail view directly
       deleteShareCertificateMaster(id);
-      deleteShareCertificateMasters(id);
+      deleteShareCertificateMasters(id, projectId);
       toastSuccess("Share Certificate Master deleted successfully.");
     },
     onError: (error) => {

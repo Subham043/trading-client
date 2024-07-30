@@ -10,6 +10,13 @@ export const page_routes = {
   companyMasters: {
     list: "/company-masters",
     view: "/company-masters/:companyId",
+    nameChangeMaster: "/company-masters/:companyId/name-change-masters",
+    corporateMaster: "/company-masters/:companyId/corporate-masters",
+  },
+  projects: {
+    list: "/projects",
+    view: "/projects/:projectId",
+    shareCertificateMaster: "/projects/:projectId/share-certificate-masters",
   },
   registrarMasters: {
     list: "/registrar-masters",

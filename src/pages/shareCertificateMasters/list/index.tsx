@@ -9,10 +9,12 @@ import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { ShareCertificateMastersQueryKey } from "../../../hooks/data/share_certificate_masters";
 import ExcelUploadModal from "../../../components/Layout/ExcelUploadModal";
+import { useParams } from "react-router-dom";
 
 export type ShareCertificateMastersListModalProps = {
     status: boolean;
     type: "Create",
+    projectId: string
 } | {
     status: boolean;
     type: "Edit";
@@ -20,11 +22,12 @@ export type ShareCertificateMastersListModalProps = {
 }
 
 const ShareCertificateMastersListPage:FC = () => {
+    const param = useParams<{projectId: string}>();
     const [selectedData, setSelectedData] = useState<number[]>([]);
     const { exportExcel, excelLoading } = useExcelExport();
     const { deleteMultiple, deleteLoading } = useDeleteMultiple();
-    const exportExcelHandler = async () => await exportExcel(api_routes.shareCertificateMasters + `/export`, 'share_certificate_masters.xlsx');
-    const [modal, setModal] = useState<ShareCertificateMastersListModalProps>({status: false, type: 'Create'});
+    const exportExcelHandler = async () => await exportExcel(api_routes.shareCertificateMasters + `/export/${param.projectId}`, 'share_certificate_masters.xlsx');
+    const [modal, setModal] = useState<ShareCertificateMastersListModalProps>({status: false, type: 'Create', projectId: param.projectId ?? ''});
     const toggleModal = (value:ShareCertificateMastersListModalProps) => setModal(value);
     const [excelModal2, setExcelModal2] = useState<boolean>(false);
     const toggleExcelModal2 = () => setExcelModal2(prev => !prev);
@@ -38,12 +41,12 @@ const ShareCertificateMastersListPage:FC = () => {
 
     return (
         <div>
-            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create'})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
+            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <ShareCertificateMastersTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} />
+                <ShareCertificateMastersTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} projectId={param.projectId ?? ''} />
             </Paper>
-            <ShareCertificateMastersModal {...modal} toggleModal={toggleModal} />
-            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Share Certificate Masters" uploadUrl={`${api_routes.shareCertificateMasters}/import`} sampleUrl="/Sample_Security_Masters.xlsx" />
+            <ShareCertificateMastersModal {...modal} toggleModal={toggleModal} projectId={param.projectId ?? ''} />
+            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Share Certificate Masters" uploadUrl={`${api_routes.shareCertificateMasters}/import/${param.projectId}`} sampleUrl="/Sample_Security_Masters.xlsx" />
         </div>
     )
 }

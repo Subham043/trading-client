@@ -9,7 +9,7 @@ import {
   IconRegistered,
   IconSettings,
   IconLockSquareRounded,
-  IconCloudLock,
+  IconBrandAsana,
 } from '@tabler/icons-react';
 import { Logo } from './Logo';
 import classes from './sidebar.module.css';
@@ -25,10 +25,10 @@ interface SidebarProps {
 const mockdata = [
   { label: 'Dashboard', icon: IconGauge, link: page_routes.dashboard },
   { label: 'Users', icon: IconUserCircle, link: page_routes.users },
+  { label: 'Projects', icon: IconBrandAsana, link: page_routes.projects.list },
   { label: 'Registrar Masters', icon: IconRegistered, link: page_routes.registrarMasters.list },
   { label: 'Company Masters', icon: IconBuilding, link: page_routes.companyMasters.list },
   { label: 'Name Change Masters', icon: IconWriting, link: page_routes.nameChangeMasters.main },
-  { label: 'Share Certificate Masters', icon: IconCloudLock, link: page_routes.shareCertificateMasters.list },
   { label: 'Security Type Masters', icon: IconLockSquareRounded, link: page_routes.securityTypeMasters.list },
   {
     label: 'Settings',

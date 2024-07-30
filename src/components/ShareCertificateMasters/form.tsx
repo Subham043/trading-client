@@ -18,10 +18,12 @@ import { useCompanyMastersSelectQuery } from "../../hooks/data/company_masters";
 type ShareCertificateMastersFormProps = {
     status: boolean;
     type: "Create",
+    projectId: string;
 } | {
     status: boolean;
     type: "Edit";
     id: number;
+    projectId: string;
 }
 type shareCertificateMastersMutateOptionsType = MutateOptions<ShareCertificateMasterType, Error, ShareCertificateMasterFormType, unknown>;
 
@@ -32,8 +34,8 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
     const searchHandler = debounce((value: string) => setSearch(value), 500);
     const {data:companyMasters, isFetching:isCompanyFetching, isLoading:isCompanyLoading} = useCompanyMastersSelectQuery({search: search, enabled:props.status});
     const {data, isFetching, isLoading, status, error,  refetch} = useShareCertificateMasterQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addShareCertificateMasters = useAddShareCertificateMasterMutation()
-    const updateShareCertificateMasters = useUpdateShareCertificateMasterMutation(props.type === "Edit" ? props.id : 0)
+    const addShareCertificateMasters = useAddShareCertificateMasterMutation(props.projectId)
+    const updateShareCertificateMasters = useUpdateShareCertificateMasterMutation(props.type === "Edit" ? props.id : 0, (data && data.projectID) ? data.projectID.toString() : '')
     const form = useForm<SchemaType>({
         initialValues,
         validate: yupResolver(schema),
@@ -60,7 +62,7 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
         const shareCertificateMastersMutateOptions:shareCertificateMastersMutateOptionsType = {
             onSuccess: () => {
                 props.type==="Create" && form.reset();
-                props.toggleModal({status: false, type: "Create"});
+                props.toggleModal({status: false, type: "Create", projectId: props.projectId ?? ''});
             },
             onError: (error:Error) => {
                 if(isAxiosError<AxiosErrorResponseType>(error)){

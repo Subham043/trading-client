@@ -65,7 +65,7 @@ const CompanyMasterTableRow:FC<CompanyMasterQueryType & {toggleModal: (value: Co
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.companyMasters.list}/${id}`}>
+            <Link to={`${page_routes.companyMasters.list}/${id}/name-change-masters`}>
               <ActionIcon  variant="subtle" color="gray">
                   <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>

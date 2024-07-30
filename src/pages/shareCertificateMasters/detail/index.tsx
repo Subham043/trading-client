@@ -4,13 +4,13 @@ import ShareCertificateMasterModal from "../../../components/ShareCertificateMas
 import { ShareCertificateMastersListModalProps } from "../list";
 
 const ShareCertificateMastersDetailPage:FC = () => {
-    const [modal, setModal] = useState<ShareCertificateMastersListModalProps>({status: false, type: 'Create'});
+    const [modal, setModal] = useState<ShareCertificateMastersListModalProps>({status: false, type: 'Create', projectId: ""});
     const toggleModal = (value:ShareCertificateMastersListModalProps) => setModal(value);
 
     return (
         <div>
             <ShareCertificateMasterDetail toggleModal={toggleModal} />
-            <ShareCertificateMasterModal {...modal} toggleModal={toggleModal} />
+            <ShareCertificateMasterModal {...modal} toggleModal={toggleModal} projectId="" />
         </div>
     )
 }

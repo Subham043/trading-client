@@ -8,7 +8,7 @@ import { useDeleteCorporateMasterMutation, useCorporateMastersQuery } from "../.
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const CorporateMastersTableRow:FC<CorporateMasterType & {toggleModal: (value: CorporateMastersListModalProps) => void, toggleDrawer: (value: CorporateMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, companyID, date, type, numerator, denominator, originalHolding, exchange, consolidatedHolding, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const CorporateMastersTableRow:FC<CorporateMasterType & {toggleModal: (value: CorporateMastersListModalProps) => void, toggleDrawer: (value: CorporateMastersListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, companyID, date, type, numerator, denominator, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteCorporateMasters = useDeleteCorporateMasterMutation(id, companyID||0)
   const onDelete = async () => {
@@ -41,21 +41,6 @@ const CorporateMastersTableRow:FC<CorporateMasterType & {toggleModal: (value: Co
       <Table.Td>
           <Text fz="sm" fw={500}>
               {denominator}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {originalHolding}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {exchange}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {consolidatedHolding}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -119,9 +104,6 @@ const CorporateMastersTable:FC<{toggleModal: (value: CorporateMastersListModalPr
               <Table.Th style={{color: 'white'}}>Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Numerator</Table.Th>
               <Table.Th style={{color: 'white'}}>Denominator</Table.Th>
-              <Table.Th style={{color: 'white'}}>Original Holding</Table.Th>
-              <Table.Th style={{color: 'white'}}>Bonus / Split /<br/> Rights / Share exchange</Table.Th>
-              <Table.Th style={{color: 'white'}}>Consolidated Holding</Table.Th>
               <Table.Th style={{color: 'white'}}>Created At</Table.Th>
               <Table.Th />
             </Table.Tr>

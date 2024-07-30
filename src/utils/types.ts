@@ -313,13 +313,14 @@ export type ShareCertificateMasterType = {
   endorsementShareholderName3?: string | null;
   companyMaster?: CompanyMasterQueryType | null;
   companyID?: number | null;
+  projectID?: number | null;
   createdAt?: Date | null;
 };
 
 export interface ShareCertificateMasterFormType
   extends Omit<
     ShareCertificateMasterType,
-    "id" | "createdAt" | "companyMaster"
+    "id" | "createdAt" | "companyMaster" | "projectID"
   > {}
 
 export type FolioType = {
@@ -347,19 +348,10 @@ export interface FolioFormType
 
 export type CorporateMasterType = {
   id: number;
-  type:
-    | "Equity"
-    | "Bonus"
-    | "Splits"
-    | "RightsSubscribed"
-    | "RightsUnsubscribed"
-    | "ShareBought";
+  type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
   date: Date;
   numerator?: string | null;
   denominator?: string | null;
-  originalHolding?: string | null;
-  exchange?: string | null;
-  consolidatedHolding?: string | null;
   companyID?: number | null;
   createdAt?: Date | null;
 };
@@ -367,21 +359,22 @@ export type CorporateMasterType = {
 export interface CorporateMasterFormType
   extends Omit<
     CorporateMasterType,
-    | "id"
-    | "date"
-    | "numerator"
-    | "denominator"
-    | "originalHolding"
-    | "createdAt"
-    | "exchange"
-    | "consolidatedHolding"
-    | "companyID"
+    "id" | "date" | "numerator" | "denominator" | "createdAt" | "companyID"
   > {
   date: string;
   numerator: number;
   denominator: number;
-  originalHolding: number;
 }
+
+export type ProjectType = {
+  id: number;
+  name: string;
+  userID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface ProjectFormType
+  extends Omit<ProjectType, "id" | "createdAt" | "userID"> {}
 
 export type FailedExcelType = {
   id: number;
