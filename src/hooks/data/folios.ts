@@ -5,7 +5,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useAxios } from "../useAxios";
-import { PaginationType, FolioFormType, FolioType } from "../../utils/types";
+import {
+  PaginationType,
+  FolioFormType,
+  FolioType,
+  FolioCorporateMasterType,
+} from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
 import { useSearchParams } from "react-router-dom";
@@ -15,6 +20,7 @@ import { isAxiosError } from "axios";
 export const FolioKey = "folio";
 export const FoliosQueryKey = "folios";
 export const FoliosSelectQueryKey = "folios_select";
+export const FoliosCorporateMasterQueryKey = "folios_corporate_master";
 
 export const useFoliosQuery: (params: {
   shareCertificateMasterId: number;
@@ -77,6 +83,29 @@ export const useFolioQuery: (
       const response = await axios.get<{
         data: FolioType;
       }>(api_routes.folios + `/${id}`);
+      return response.data.data;
+    },
+    enabled,
+  });
+};
+
+export const useFoliosCorporateMasterQuery: (params: {
+  id: number;
+  enabled?: boolean;
+}) => UseQueryResult<FolioCorporateMasterType[], unknown> = ({
+  id,
+  enabled = true,
+}) => {
+  const { axios } = useAxios();
+
+  return useQuery({
+    queryKey: [FoliosCorporateMasterQueryKey, id],
+    queryFn: async () => {
+      const response = await axios.get<{
+        data: PaginationType<{
+          folio: FolioCorporateMasterType[];
+        }>;
+      }>(api_routes.folios + `/list-corporate-master/${id}`);
       return response.data.data;
     },
     enabled,

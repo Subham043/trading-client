@@ -11,6 +11,7 @@ import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { FoliosQueryKey } from "../../../hooks/data/folios";
 import ExcelUploadModal from "../../../components/Layout/ExcelUploadModal";
+import FolioCorporateMasterModal from "../../../components/Folios/corporate_master_modal";
 
 export type FoliosListModalProps = {
     status: boolean;
@@ -19,6 +20,13 @@ export type FoliosListModalProps = {
 } | {
     status: boolean;
     type: "Edit";
+    id: number;
+}
+
+export type FoliosCorporateMasterModalProps = {
+    status: false;
+} | {
+    status: true;
     id: number;
 }
 
@@ -37,6 +45,8 @@ const FoliosListPage:FC = () => {
     const exportExcelHandler = async () => await exportExcel(api_routes.folios + `/export/${param.shareCertificateMasterId}`, 'folios.xlsx');
     const [modal, setModal] = useState<FoliosListModalProps>({status: false, type: 'Create', shareCertificateMasterId: Number(param.shareCertificateMasterId)});
     const toggleModal = (value:FoliosListModalProps) => setModal(value);
+    const [corporateModal, setCorporateModal] = useState<FoliosCorporateMasterModalProps>({status: false});
+    const toggleCorporateModal = (value:FoliosCorporateMasterModalProps) => setCorporateModal(value);
     const [drawerStatus, setDrawerStatus] = useState<FoliosListDrawerProps>({drawerStatus: false});
     const toggleDrawer = (value:FoliosListDrawerProps) => setDrawerStatus(value);
     const [excelModal2, setExcelModal2] = useState<boolean>(false);
@@ -53,9 +63,10 @@ const FoliosListPage:FC = () => {
         <div>
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareCertificateMasterId: Number(param.shareCertificateMasterId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <FoliosTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} shareCertificateMasterId={Number(param.shareCertificateMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} />
+                <FoliosTable toggleModal={toggleModal} toggleCorporateModal={toggleCorporateModal} toggleDrawer={toggleDrawer} shareCertificateMasterId={Number(param.shareCertificateMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
             <FoliosModal {...modal} mainShareCertificateMasterId={Number(param.shareCertificateMasterId)} toggleModal={toggleModal} />
+            <FolioCorporateMasterModal {...corporateModal} toggleModal={toggleCorporateModal} />
             <FoliosDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />
             <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Folios" uploadUrl={`${api_routes.folios}/import`} sampleUrl="/Sample_Folios.xlsx" />
         </div>

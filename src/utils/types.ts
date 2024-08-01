@@ -346,6 +346,16 @@ export type FolioType = {
 export interface FolioFormType
   extends Omit<FolioType, "id" | "createdAt" | "shareCertificateMaster"> {}
 
+export type FolioCorporateMasterType = {
+  type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
+  date: Date;
+  numerator?: string | null;
+  denominator?: string | null;
+  originalHolding?: string | null;
+  exchange?: string | null;
+  consolidatedHolding?: string | null;
+};
+
 export type CorporateMasterType = {
   id: number;
   type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
