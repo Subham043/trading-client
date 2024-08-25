@@ -205,6 +205,9 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                     <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/corporate-masters`} leftSection={<IconBriefcase style={iconStyle} />}>
                         Corporate Masters
                     </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/dividend-masters`} leftSection={<IconBriefcase style={iconStyle} />}>
+                        Dividend Masters
+                    </Tabs.Tab>
                 </Tabs.List>
             </Tabs>
             <Box bg="transparent" mt="md">

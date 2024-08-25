@@ -12,6 +12,7 @@ export const page_routes = {
     view: "/company-masters/:companyId",
     nameChangeMaster: "/company-masters/:companyId/name-change-masters",
     corporateMaster: "/company-masters/:companyId/corporate-masters",
+    dividendMaster: "/company-masters/:companyId/dividend-masters",
   },
   projects: {
     list: "/projects",

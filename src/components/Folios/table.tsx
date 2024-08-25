@@ -3,12 +3,12 @@ import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine
 import { IconCertificate, IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { FolioType } from "../../utils/types";
 import dayjs from 'dayjs';
-import { FoliosCorporateMasterModalProps, FoliosListDrawerProps, FoliosListModalProps } from "../../pages/folios/list";
+import { FoliosCorporateMasterModalProps, FoliosDividendMasterModalProps, FoliosListDrawerProps, FoliosListModalProps } from "../../pages/folios/list";
 import { useDeleteFolioMutation, useFoliosQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, shareCertificateID, toggleCorporateModal, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, shareCertificateID, toggleCorporateModal, toggleDividendModal, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteFolios = useDeleteFolioMutation(id, shareCertificateID||0)
   const onDelete = async () => {
@@ -56,6 +56,9 @@ const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) 
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleCorporateModal({status: true, id: id})}>
                 <IconCertificate style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
+            <ActionIcon variant="subtle" color="gray" onClick={() => toggleDividendModal({status: true, id: id})}>
+                <IconCertificate style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
@@ -85,7 +88,7 @@ const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) 
   )
 }
 
-const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, shareCertificateMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, shareCertificateMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
   const {data:folios, isFetching, isLoading, status, error, refetch} = useFoliosQuery({shareCertificateMasterId: props.shareCertificateMasterId});
   const allChecked = (folios ? folios.folio : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (folios ? folios.folio : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
@@ -112,7 +115,7 @@ const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggle
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (folios ? folios.folio : []).map((item) => <FoliosTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleCorporateModal={props.toggleCorporateModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (folios ? folios.folio : []).map((item) => <FoliosTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleCorporateModal={props.toggleCorporateModal} toggleDividendModal={props.toggleDividendModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>

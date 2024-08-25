@@ -22,6 +22,7 @@ export const api_routes = {
   registrarMasters: "/registrar-masters",
   registrarMasterBranches: "/registrar-master-branches",
   corporateMasters: "/corporate-masters",
+  dividendMasters: "/dividend-masters",
   shareCertificateMasters: "/share-certificate-masters",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",

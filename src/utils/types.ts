@@ -356,6 +356,15 @@ export type FolioCorporateMasterType = {
   consolidatedHolding?: string | null;
 };
 
+export type FolioDividendMasterType = {
+  recorded_date: string;
+  financial_year?: string | null;
+  dividend_per_share?: string | null;
+  no_of_shares?: string | null;
+  total_dividend?: string | null;
+  cumulative_dividend?: string | null;
+};
+
 export type CorporateMasterType = {
   id: number;
   type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
@@ -374,6 +383,30 @@ export interface CorporateMasterFormType
   date: string;
   numerator: number;
   denominator: number;
+}
+
+export type DividendMasterType = {
+  id: number;
+  recorded_date: string;
+  financial_year?: string | null;
+  dividend_per_share?: string | null;
+  companyID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface DividendMasterFormType
+  extends Omit<
+    CorporateMasterType,
+    | "id"
+    | "recorded_date"
+    | "financial_year"
+    | "dividend_per_share"
+    | "createdAt"
+    | "companyID"
+  > {
+  recorded_date: number;
+  financial_year: number;
+  dividend_per_share: number;
 }
 
 export type ProjectType = {

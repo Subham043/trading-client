@@ -10,6 +10,7 @@ import {
   FolioFormType,
   FolioType,
   FolioCorporateMasterType,
+  FolioDividendMasterType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -21,6 +22,7 @@ export const FolioKey = "folio";
 export const FoliosQueryKey = "folios";
 export const FoliosSelectQueryKey = "folios_select";
 export const FoliosCorporateMasterQueryKey = "folios_corporate_master";
+export const FoliosDividendMasterQueryKey = "folios_dividend_master";
 
 export const useFoliosQuery: (params: {
   shareCertificateMasterId: number;
@@ -106,6 +108,29 @@ export const useFoliosCorporateMasterQuery: (params: {
           folio: FolioCorporateMasterType[];
         }>;
       }>(api_routes.folios + `/list-corporate-master/${id}`);
+      return response.data.data;
+    },
+    enabled,
+  });
+};
+
+export const useFoliosDividendMasterQuery: (params: {
+  id: number;
+  enabled?: boolean;
+}) => UseQueryResult<FolioDividendMasterType[], unknown> = ({
+  id,
+  enabled = true,
+}) => {
+  const { axios } = useAxios();
+
+  return useQuery({
+    queryKey: [FoliosDividendMasterQueryKey, id],
+    queryFn: async () => {
+      const response = await axios.get<{
+        data: PaginationType<{
+          folio: FolioDividendMasterType[];
+        }>;
+      }>(api_routes.folios + `/list-dividend-master/${id}`);
       return response.data.data;
     },
     enabled,
