@@ -26,7 +26,7 @@ export const FoliosDividendMasterQueryKey = "folios_dividend_master";
 
 export const useFoliosQuery: (params: {
   shareCertificateMasterId: number;
-}) => UseQueryResult<PaginationType<{ folio: FolioType[] }>, unknown> = ({
+}) => UseQueryResult<PaginationType<{ folio: (FolioType & {consolidatedHolding:string; totalMarketValue:number})[] }>, unknown> = ({
   shareCertificateMasterId,
 }) => {
   const { axios } = useAxios();

@@ -23,7 +23,13 @@ export const useShareCertificateMastersQuery: (
   projectId: string,
   enabled?: boolean
 ) => UseQueryResult<
-  PaginationType<{ shareCertificateMaster: ShareCertificateMasterType[] }>,
+  PaginationType<{
+    shareCertificateMaster: (ShareCertificateMasterType & {
+      totalFolioCount: number;
+      totalShares: number;
+      totalValuation: number;
+    })[];
+  }>,
   unknown
 > = (projectId, enabled = true) => {
   const { axios } = useAxios();

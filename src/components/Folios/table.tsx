@@ -2,13 +2,12 @@ import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCertificate, IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { FolioType } from "../../utils/types";
-import dayjs from 'dayjs';
 import { FoliosCorporateMasterModalProps, FoliosDividendMasterModalProps, FoliosListDrawerProps, FoliosListModalProps } from "../../pages/folios/list";
 import { useDeleteFolioMutation, useFoliosQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, createdAt, shareCertificateID, toggleCorporateModal, toggleDividendModal, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValue:number; toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, consolidatedHolding, totalMarketValue, shareCertificateID, toggleCorporateModal, toggleDividendModal, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteFolios = useDeleteFolioMutation(id, shareCertificateID||0)
   const onDelete = async () => {
@@ -45,7 +44,12 @@ const FoliosTableRow:FC<FolioType & {toggleModal: (value: FoliosListModalProps) 
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
+              {consolidatedHolding}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {totalMarketValue}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -110,7 +114,8 @@ const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggle
               <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
               <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
-              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
+              <Table.Th style={{color: 'white'}}>Consolidated Holdings</Table.Th>
+              <Table.Th style={{color: 'white'}}>Total Market Share</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

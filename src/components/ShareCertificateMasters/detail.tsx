@@ -2,7 +2,6 @@ import { FC } from "react"
 import { Box, Button, Group, Table, Text } from '@mantine/core';
 import { useShareCertificateMasterQuery } from "../../hooks/data/share_certificate_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
-import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 import { ShareCertificateMastersListModalProps } from "../../pages/shareCertificateMasters/list";
 import FoliosListPage from "../../pages/folios/list";
@@ -30,7 +29,8 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                             <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
                             <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
                             <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-                            <Table.Th style={{color: 'white'}}>Created On</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Closing Price NSE</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Closing Price BSE</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -42,11 +42,8 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                             <Table.Td>{data.companyMaster?.ISIN}</Table.Td>
                             <Table.Td>{data.instrumentType}</Table.Td>
                             <Table.Td>{data.companyMaster?.faceValue}</Table.Td>
-                            <Table.Td>
-                                <Text fz="sm" fw={500}>
-                                    {(data && data.createdAt) && dayjs(data.createdAt.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
-                                </Text>
-                            </Table.Td>
+                            <Table.Td>{data.companyMaster?.closingPriceNSE}</Table.Td>
+                            <Table.Td>{data.companyMaster?.closingPriceBSE}</Table.Td>
                         </Table.Tr>
                     </Table.Tbody>
                 </Table>

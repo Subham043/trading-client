@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, instrumentType, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFolioCount: number; totalShares: number; totalValuation: number; toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, instrumentType, totalFolioCount, totalShares, totalValuation, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareCertificateMasters = useDeleteShareCertificateMasterMutation(id, projectID?.toString() ?? '');
   const onDelete = async () => {
@@ -33,6 +33,21 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {toggleMod
       <Table.Td>
           <Text fz="sm" fw={500}>
               {instrumentType}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {totalFolioCount}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {totalShares}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {totalValuation}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -96,6 +111,9 @@ const ShareCertificateMastersTable:FC<{projectId: string, toggleModal: (value: S
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
               <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
+              <Table.Th style={{color: 'white'}}>No. Of Folios</Table.Th>
+              <Table.Th style={{color: 'white'}}>Total Shares</Table.Th>
+              <Table.Th style={{color: 'white'}}>Total Valuation</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
