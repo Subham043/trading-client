@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const ProjectsTableRow:FC<ProjectType & {toggleModal: (value: ProjectsListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, name, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ProjectsTableRow:FC<ProjectType & {toggleModal: (value: ProjectsListModalProps) => void, selectedData: number[], noOfCompanies: number, setSelectedData: (value: number[]) => void}> = ({id, name, createdAt, noOfCompanies, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteProjects = useDeleteProjectMutation(id)
   const onDelete = async () => {
@@ -33,6 +33,11 @@ const ProjectsTableRow:FC<ProjectType & {toggleModal: (value: ProjectsListModalP
       <Table.Td>
           <Text fz="sm" fw={500}>
               {name}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {noOfCompanies}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -96,6 +101,7 @@ const ProjectsTable:FC<{toggleModal: (value: ProjectsListModalProps) => void, se
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Id</Table.Th>
               <Table.Th style={{color: 'white'}}>Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>No. Of Companies</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>

@@ -27,7 +27,9 @@ export const useShareCertificateMastersQuery: (
     shareCertificateMaster: (ShareCertificateMasterType & {
       totalFolioCount: number;
       totalShares: number;
-      totalValuation: number;
+      folios: string[];
+      totalValuationInNse: number;
+      totalValuationInBse: number;
     })[];
   }>,
   unknown

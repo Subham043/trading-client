@@ -387,7 +387,7 @@ export interface CorporateMasterFormType
 
 export type DividendMasterType = {
   id: number;
-  recorded_date: string;
+  recorded_date: Date;
   financial_year?: string | null;
   dividend_per_share?: string | null;
   companyID?: number | null;
@@ -396,7 +396,7 @@ export type DividendMasterType = {
 
 export interface DividendMasterFormType
   extends Omit<
-    CorporateMasterType,
+    DividendMasterType,
     | "id"
     | "recorded_date"
     | "financial_year"
@@ -404,8 +404,8 @@ export interface DividendMasterFormType
     | "createdAt"
     | "companyID"
   > {
-  recorded_date: number;
-  financial_year: number;
+  recorded_date: string;
+  financial_year: string;
   dividend_per_share: number;
 }
 

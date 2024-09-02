@@ -25,7 +25,7 @@ const DividendMastersTableRow:FC<DividendMasterType & {toggleModal: (value: Divi
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {recorded_date}
+              {dayjs(recorded_date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
       <Table.Td>

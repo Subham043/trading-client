@@ -3,6 +3,7 @@ import { Table } from '@mantine/core';
 import { DividendMastersListDrawerProps } from "../../pages/dividendMasters/list";
 import { useDividendMasterQuery } from "../../hooks/data/dividend_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import dayjs from "dayjs";
 
 const DividendMasterDetail:FC<DividendMastersListDrawerProps> = (props) => {
   const {data, isFetching, isLoading, status, error, refetch} = useDividendMasterQuery(props.drawerStatus ? props.id : 0, props.drawerStatus);
@@ -13,7 +14,7 @@ const DividendMasterDetail:FC<DividendMastersListDrawerProps> = (props) => {
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Recorded Date</Table.Th>
-                        <Table.Td>{data.recorded_date}</Table.Td>
+                        <Table.Td>{dayjs(data.recorded_date.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Financial Year</Table.Th>

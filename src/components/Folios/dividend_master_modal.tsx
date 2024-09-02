@@ -3,6 +3,7 @@ import { Modal, Table, Text } from '@mantine/core';
 import { FoliosDividendMasterModalProps } from "../../pages/folios/list";
 import { useFoliosDividendMasterQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import dayjs from "dayjs";
 
 const FolioDividendMasterModal:FC<FoliosDividendMasterModalProps & {toggleModal: (value: FoliosDividendMasterModalProps) => void}> = (props) => {
     const {data, isFetching, isLoading, status, error,  refetch} = useFoliosDividendMasterQuery(props.status ? {id: props.id, enabled: true} : {id: 0, enabled: false});
@@ -28,7 +29,7 @@ const FolioDividendMasterModal:FC<FoliosDividendMasterModalProps & {toggleModal:
                         (data ? data : []).map(({recorded_date, financial_year, dividend_per_share, no_of_shares, total_dividend, cumulative_dividend}, i) => <Table.Tr key={i}>
                             <Table.Td>
                                 <Text fz="sm" fw={500}>
-                                    {recorded_date}
+                                    {dayjs(recorded_date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
                                 </Text>
                             </Table.Td>
                             <Table.Td>

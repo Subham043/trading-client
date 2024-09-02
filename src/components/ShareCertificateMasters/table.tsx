@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFolioCount: number; totalShares: number; totalValuation: number; toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, instrumentType, totalFolioCount, totalShares, totalValuation, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFolioCount: number; totalShares: number; folios:string[]; totalValuationInNse: number; totalValuationInBse: number; toggleModal: (value: ShareCertificateMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, instrumentType, totalShares, totalValuationInNse, totalValuationInBse, folios, companyMaster, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareCertificateMasters = useDeleteShareCertificateMasterMutation(id, projectID?.toString() ?? '');
   const onDelete = async () => {
@@ -37,7 +37,7 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFoli
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {totalFolioCount}
+              {folios.length > 0 && folios.map((folio, i) => <span key={i}>{folio}<br /></span>)}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -47,7 +47,7 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFoli
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {totalValuation}
+              {totalValuationInNse} / {totalValuationInBse}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -111,9 +111,9 @@ const ShareCertificateMastersTable:FC<{projectId: string, toggleModal: (value: S
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
               <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
-              <Table.Th style={{color: 'white'}}>No. Of Folios</Table.Th>
-              <Table.Th style={{color: 'white'}}>Total Shares</Table.Th>
-              <Table.Th style={{color: 'white'}}>Total Valuation</Table.Th>
+              <Table.Th style={{color: 'white'}}>Folios</Table.Th>
+              <Table.Th style={{color: 'white'}}>Consolidated Holdings</Table.Th>
+              <Table.Th style={{color: 'white'}}>Total Valuation In NSE / BSE</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>

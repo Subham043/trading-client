@@ -21,7 +21,7 @@ export const ProjectsQueryKey = "projects";
 
 export const useProjectsQuery: (
   enabled?: boolean
-) => UseQueryResult<PaginationType<{ project: ProjectType[] }>, unknown> = (
+) => UseQueryResult<PaginationType<{ project: (ProjectType & {noOfCompanies: number})[] }>, unknown> = (
   enabled = true
 ) => {
   const { axios } = useAxios();
@@ -33,7 +33,7 @@ export const useProjectsQuery: (
     queryKey: [ProjectsQueryKey, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
-        data: PaginationType<{ project: ProjectType[] }>;
+        data: PaginationType<{ project: (ProjectType & {noOfCompanies: number})[] }>;
       }>(api_routes.projects + `?page=${page}&limit=${limit}&search=${search}`);
       return response.data.data;
     },

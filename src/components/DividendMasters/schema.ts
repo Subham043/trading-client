@@ -1,25 +1,25 @@
 import * as yup from "yup";
 
 export type SchemaType = {
-  recorded_date: number;
-  financial_year?: number;
+  recorded_date: string;
+  financial_year?: string;
   dividend_per_share: number;
 };
 
 export const initialValues: SchemaType = {
-  recorded_date: 0,
+  recorded_date: "",
   financial_year: undefined,
   dividend_per_share: 0,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   recorded_date: yup
-    .number()
-    .typeError("Recorded Date in Year must be a number")
+    .string()
+    .typeError("Recorded Date must be a string")
     .required("Recorded Date is required"),
   financial_year: yup
-    .number()
-    .typeError("Financial year must be a number")
+    .string()
+    .typeError("Financial year must be a string")
     .optional(),
   dividend_per_share: yup
     .number()
@@ -29,8 +29,8 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
 
 export const transformValues = (values: SchemaType) => {
   return {
-    recorded_date: Number(values.recorded_date),
-    financial_year: Number(values.financial_year),
+    recorded_date: values.recorded_date,
+    financial_year: values.financial_year,
     dividend_per_share: Number(values.dividend_per_share),
   };
 };

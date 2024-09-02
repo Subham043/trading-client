@@ -10,6 +10,7 @@ import { AxiosErrorResponseType, DividendMasterFormType, DividendMasterType } fr
 import { DividendMastersListModalProps } from "../../pages/dividendMasters/list";
 import { SchemaType, initialValues, schema, transformValues } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { DateInput } from "@mantine/dates";
 
 
 type DividendMastersFormProps = {
@@ -37,8 +38,8 @@ const DividendMastersForm:FC<DividendMastersFormProps & {mainCompanyId: number, 
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             form.setValues({
-                recorded_date: data.recorded_date ? Number(data.recorded_date) : 0,
-                financial_year: data.financial_year ? Number(data.financial_year) : 0,
+                recorded_date: data.recorded_date ? data.recorded_date.toString() : undefined,
+                financial_year: data.financial_year ? data.financial_year : '',
                 dividend_per_share: data.dividend_per_share ? Number(data.dividend_per_share) : 0,
             });
         }
@@ -75,7 +76,12 @@ const DividendMastersForm:FC<DividendMastersFormProps & {mainCompanyId: number, 
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 3 }}>
-                    <TextInput label="Recorded Date (YYYY)" {...form.getInputProps('recorded_date')} />
+                    <DateInput
+                        value={form.values.recorded_date ? new Date(form.values.recorded_date) : undefined}
+                        onChange={(value) => form.setFieldValue('recorded_date', value?.toISOString() ? value.toISOString() : new Date().toISOString())}
+                        label="Recorded Date"
+                        placeholder="Recorded Date"
+                    />
                     <TextInput label="Financial Year" {...form.getInputProps('financial_year')} />
                     <TextInput label="Dividend Per Share" {...form.getInputProps('dividend_per_share')} />
                 </SimpleGrid>
