@@ -24,6 +24,8 @@ export const api_routes = {
   corporateMasters: "/corporate-masters",
   dividendMasters: "/dividend-masters",
   shareCertificateMasters: "/share-certificate-masters",
+  shareHolderMasters: "/share-holder-masters",
+  shareHolderDetails: "/share-holder-detail",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
   upload: {

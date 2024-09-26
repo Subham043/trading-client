@@ -18,6 +18,7 @@ export const page_routes = {
     list: "/projects",
     view: "/projects/:projectId",
     shareCertificateMaster: "/projects/:projectId/share-certificate-masters",
+    shareHolderDetails: "/projects/:projectId/share-holder-details",
   },
   registrarMasters: {
     list: "/registrar-masters",
@@ -32,6 +33,10 @@ export const page_routes = {
   shareCertificateMasters: {
     list: "/share-certificate-masters",
     view: "/share-certificate-masters/:shareCertificateMasterId",
+  },
+  shareHolderMasters: {
+    list: "/share-holder-masters",
+    view: "/share-holder-masters/:shareHolderMasterId",
   },
   auth: {
     login: "/login",

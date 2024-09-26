@@ -22,6 +22,8 @@ const CompanyMastersDetailPage = lazy(()=>import("./pages/companyMasters/detail"
 const NameChangeMastersMainPage = lazy(()=>import("./pages/nameChangeMasters/main"));
 const RegistrarMastersPage = lazy(()=>import("./pages/registrarMasters/list"));
 const RegistrarMastersDetailPage = lazy(()=>import("./pages/registrarMasters/detail"));
+const ShareHolderMastersListPage = lazy(()=>import("./pages/shareHolderMasters/list"));
+const ShareHolderMastersDetailPage = lazy(()=>import("./pages/shareHolderMasters/detail"));
 const ShareCertificateMastersListPage = lazy(()=>import("./pages/shareCertificateMasters/list"));
 const ShareCertificateMastersDetailPage = lazy(()=>import("./pages/shareCertificateMasters/detail"));
 const ProjectsListPage = lazy(()=>import("./pages/projects/list"));
@@ -66,8 +68,10 @@ function App() {
                       <Route path={page_routes.projects.view} element={<ProjectsDetailPage />} />
                       <Route element={<ProjectsDetailPage />}>
                         <Route path={page_routes.projects.shareCertificateMaster} element={<ShareCertificateMastersListPage />} />
+                        <Route path={page_routes.projects.shareHolderDetails} element={<ShareHolderMastersListPage />} />
                       </Route>
                       <Route path={page_routes.shareCertificateMasters.view} element={<ShareCertificateMastersDetailPage />} />
+                      <Route path={page_routes.shareHolderMasters.view} element={<ShareHolderMastersDetailPage />} />
                       <Route path={page_routes.failed_excel} element={<FailedExcelsPage />} />
                     </Route>
                   </Route>

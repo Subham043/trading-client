@@ -419,6 +419,24 @@ export type ProjectType = {
 export interface ProjectFormType
   extends Omit<ProjectType, "id" | "createdAt" | "userID"> {}
 
+export type ShareHolderMasterType = {
+  id: number;
+  caseType: string;
+  noOfLegalHeir: string;
+  transpositionOrder?: string | null;
+  projectID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface ShareHolderMasterFormType
+  extends Omit<
+    ShareHolderMasterType,
+    | "id"
+    | "transpositionOrder"
+    | "projectID"
+    | "createdAt"
+  > {}
+
 export type FailedExcelType = {
   id: number;
   file_name: string;

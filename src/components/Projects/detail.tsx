@@ -55,6 +55,9 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCloudLock style={iconStyle} />}>
                         Share Certificate Masters
                     </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-holder-details`} leftSection={<IconCloudLock style={iconStyle} />}>
+                        Share Holder Details
+                    </Tabs.Tab>
                 </Tabs.List>
             </Tabs>
             <Box bg="transparent" mt="md">
