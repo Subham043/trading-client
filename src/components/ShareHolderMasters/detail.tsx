@@ -1,9 +1,10 @@
 import { FC } from "react"
-import { Button, Group, Table, Text } from '@mantine/core';
+import { Box, Button, Group, Table, Text } from '@mantine/core';
 import { useShareHolderMasterInfoQuery } from "../../hooks/data/share_holder_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { useParams } from "react-router-dom";
 import { ShareHolderMastersListModalProps } from "../../pages/shareHolderMasters/list";
+import ShareHolderDetailsListPage from "../../pages/shareHolderDetails/list";
 
 const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListModalProps) => void}> = (props) => {
     const param = useParams<{shareHolderMasterId: string}>();
@@ -35,13 +36,13 @@ const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListMod
                     </Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
+            <Box bg="transparent" mt="md">
+                <div style={{textAlign: 'center'}}>
+                    <Text size="xl" fw={700} p="sm" >Share Holder Details</Text>
+                </div>
+                <ShareHolderDetailsListPage shareHolderMasterData={data} />
+            </Box>
         </>}
-        {/* <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Folios</Text>
-            </div>
-            <FoliosListPage />
-        </Box> */}
     </ErrorBoundary>
   );
 }

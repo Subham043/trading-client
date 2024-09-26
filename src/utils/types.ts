@@ -437,6 +437,73 @@ export interface ShareHolderMasterFormType
     | "createdAt"
   > {}
 
+export type ShareHolderDetailType = {
+  id: number;
+  shareholderName?: string | null;
+  shareholderNamePan?: string | null;
+  shareholderNameAadhar?: string | null;
+  shareholderNameAadharCertificate?: string | null;
+  shareholderNameAadharCml?: string | null;
+  namePan?: string | null;
+  nameAadhar?: string | null;
+  nameCml?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  aadhar?: string | null;
+  pan?: string | null;
+  dob?: string | null;
+  age?: string | null;
+  nationality?: string | null;
+  placeOfBirth?: string | null;
+  city?: string | null;
+  state?: string | null;
+  countryOfBirth?: string | null;
+  DPID?: string | null;
+  dematAccountNo?: string | null;
+  nameBank?: string | null;
+  bankAddress?: string | null;
+  bankEmail?: string | null;
+  bankPhone?: string | null;
+  bankMICR?: string | null;
+  bankIFS?: string | null;
+  bankAccountNo?: string | null;
+  bankAccountType?: string | null;
+  addressBank?: string | null;
+  emailBank?: string | null;
+  phoneBank?: string | null;
+  pincodeBank?: string | null;
+  isDeceased?: string | null;
+  shareholderNameDeath?: string | null;
+  dod?: string | null;
+  isTestate?: string | null;
+  proofOfSucession?: string | null;
+  document?: string | null;
+  dateOfDocument?: string | null;
+  isMinor?: string | null;
+  dobMinor?: string | null;
+  guardianName?: string | null;
+  guardianRelationship?: string | null;
+  guardianPan?: string | null;
+  deceasedRelationship?: string | null;
+  taxStatus?: string | null;
+  selectClaimant?: string | null;
+  statusClaimant?: string | null;
+  percentageClaimant?: string | null;
+  occupationClaimant?: string | null;
+  politicalExposureClaimant?: string | null;
+  annualIncomeClaimant?: string | null;
+  shareHolderMasterID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface ShareHolderDetailFormType
+  extends Omit<
+    ShareHolderDetailType,
+    | "id"
+    | "shareHolderMasterID"
+    | "createdAt"
+  > {}
+
 export type FailedExcelType = {
   id: number;
   file_name: string;
