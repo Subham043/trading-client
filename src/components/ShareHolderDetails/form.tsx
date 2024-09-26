@@ -48,7 +48,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 email: (data && data.email) ? data.email : "",
                 aadhar: (data && data.aadhar) ? data.aadhar : "",
                 pan: (data && data.pan) ? data.pan : "",
-                dob: (data && data.dob) ? data.dob : "",
+                dob: (data && data.dob) ? data.dob : undefined,
                 age: (data && data.age) ? data.age : "",
                 nationality: (data && data.nationality) ? data.nationality : "",
                 placeOfBirth: (data && data.placeOfBirth) ? data.placeOfBirth : "",
@@ -136,7 +136,11 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client PAN (Permanent Account Number)" {...form.getInputProps('pan')} />
-                    <DateInput label="Client Date of Birth (if applicable)" {...form.getInputProps('dob')} />
+                    <DateInput 
+                        label="Client Date of Birth (if applicable)" 
+                        value={form.values.dob ? new Date(form.values.dob) : undefined}
+                        onChange={(value) => form.setFieldValue('dob', value?.toISOString() ? value.toISOString() : null)}
+                    />
                     <TextInput label="Client Age" {...form.getInputProps('age')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -169,8 +173,9 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                     <TextInput label="Client Email ID as per Bank" {...form.getInputProps('emailBank')} />
                     <TextInput label="Client Phone number as per Bank" {...form.getInputProps('phoneBank')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
+                    <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
                 </SimpleGrid>
                 {props.shareHolderMasterData.caseType.includes("ClaimSuspense") && <>
                     <Divider 
@@ -200,7 +205,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                         } 
                         labelPosition="left"
                     />
-                    <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                    <SimpleGrid cols={{ base: 1, sm: 1 }}>
                         <Select
                             label="Is soleholder deceased"
                             data={["Yes" , "No"]}
@@ -208,43 +213,61 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                             onChange={(value) => form.setFieldValue("isDeceased", value ? value : "No")}
                         />
                     </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                        <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
-                        <TextInput label="Date of Death" {...form.getInputProps('dod')} />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                        <Select
-                            label="Testate/Intestate"
-                            data={["Yes" , "No"]}
-                            value={form.values.isTestate ? form.values.isTestate : null}
-                            onChange={(value) => form.setFieldValue("isTestate", value ? value : "No")}
-                        />
-                        <Select
-                            label="Proof of sucession"
-                            data={["Yes" , "No"]}
-                            value={form.values.proofOfSucession ? form.values.proofOfSucession : null}
-                            onChange={(value) => form.setFieldValue("proofOfSucession", value ? value : "No")}
-                        />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    {form.values.isDeceased==="Yes" && <>
+                        <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                            <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
+                            <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
+                            <DateInput 
+                                label="Date of Death" 
+                                value={form.values.dod ? new Date(form.values.dod) : undefined}
+                                onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
+                            />
+                        </SimpleGrid>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                            <Select
+                                label="Testate/Intestate"
+                                data={["Yes" , "No"]}
+                                value={form.values.isTestate ? form.values.isTestate : null}
+                                onChange={(value) => form.setFieldValue("isTestate", value ? value : "No")}
+                            />
+                            <Select
+                                label="Proof of sucession"
+                                data={["Yes" , "No"]}
+                                value={form.values.proofOfSucession ? form.values.proofOfSucession : null}
+                                onChange={(value) => form.setFieldValue("proofOfSucession", value ? value : "No")}
+                            />
+                        </SimpleGrid>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                            <FileInput label="Document" {...form.getInputProps('document')} />
+                            <DateInput 
+                                label="Date of document" 
+                                value={form.values.dateOfDocument ? new Date(form.values.dateOfDocument) : undefined}
+                                onChange={(value) => form.setFieldValue('dateOfDocument', value?.toISOString() ? value.toISOString() : null)}
+                            />
+                        </SimpleGrid>
+                    </>}
+                    <SimpleGrid cols={{ base: 1, sm: 1 }} mt="md">
                         <Select
                             label="If claimant is minor"
                             data={["Yes" , "No"]}
                             value={form.values.isMinor ? form.values.isMinor : null}
                             onChange={(value) => form.setFieldValue("isMinor", value ? value : "No")}
                         />
-                        <TextInput label="DOB of Minor" {...form.getInputProps('dobMinor')} />
-                        <TextInput label="Name of Guardian of minor" {...form.getInputProps('guardianName')} />
                     </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                        <TextInput label="Relationship of Guardian with Minor" {...form.getInputProps('guardianRelationship')} />
-                        <TextInput label="PAN of Guardian" {...form.getInputProps('guardianPan')} />
-                        <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                        <FileInput label="Document" {...form.getInputProps('document')} />
-                        <TextInput label="Date of document" {...form.getInputProps('dateOfDocument')} />
-                    </SimpleGrid>
+                    {form.values.isMinor==="Yes" && <>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                            <DateInput 
+                                label="DOB of Minor" 
+                                value={form.values.dobMinor ? new Date(form.values.dobMinor) : undefined}
+                                onChange={(value) => form.setFieldValue('dobMinor', value?.toISOString() ? value.toISOString() : null)}
+                            />
+                            <TextInput label="Name of Guardian of minor" {...form.getInputProps('guardianName')} />
+                        </SimpleGrid>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                            <TextInput label="Relationship of Guardian with Minor" {...form.getInputProps('guardianRelationship')} />
+                            <TextInput label="PAN of Guardian" {...form.getInputProps('guardianPan')} />
+                        </SimpleGrid>
+                    </>}
                     <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                         <Select
                             label="Tax Status"
@@ -269,7 +292,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                             onChange={(value) => form.setFieldValue("occupationClaimant", value ? value : "No")}
                         />
                     </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                         <Select
                             label="Claimant Political Exposure"
                             data={["a Politically Exposed Person" , "Related to a Politically Exposed Person", "Neither (Not applicable)"]}

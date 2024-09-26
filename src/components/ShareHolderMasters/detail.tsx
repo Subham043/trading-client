@@ -8,9 +8,9 @@ import ShareHolderDetailsListPage from "../../pages/shareHolderDetails/list";
 
 const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListModalProps) => void}> = (props) => {
     const param = useParams<{shareHolderMasterId: string}>();
-  const {data, isFetching, isLoading, status, error, refetch} = useShareHolderMasterInfoQuery(Number(param.shareHolderMasterId), true);
+  const {data, isFetching, isLoading, isRefetching, status, error, refetch} = useShareHolderMasterInfoQuery(Number(param.shareHolderMasterId), true);
   return (
-    <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
+    <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching || isRefetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         <Group justify="space-between" mb="lg" align="center">
             <Text size="xl" fw={700}>Share Holder Master Detail</Text>
             <Button type='submit' variant="filled" color='blue' onClick={() => props.toggleModal({status: true, type: 'Edit', id: Number(param.shareHolderMasterId)})}>
