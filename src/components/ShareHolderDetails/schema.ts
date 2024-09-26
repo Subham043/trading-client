@@ -1,169 +1,172 @@
 import * as yup from "yup";
 
 export type SchemaType = {
-  shareholderName?: string | undefined;
-  shareholderNamePan?: string | undefined;
-  shareholderNameAadhar?: string | undefined;
-  shareholderNameAadharCertificate?: string | undefined;
-  shareholderNameAadharCml?: string | undefined;
-  namePan?: string | undefined;
-  nameAadhar?: string | undefined;
-  nameCml?: string | undefined;
-  phone?: string | undefined;
-  email?: string | undefined;
-  aadhar?: string | undefined;
-  pan?: string | undefined;
-  dob?: string | undefined;
-  age?: string | undefined;
-  nationality?: string | undefined;
-  placeOfBirth?: string | undefined;
-  city?: string | undefined;
-  state?: string | undefined;
-  countryOfBirth?: string | undefined;
-  DPID?: string | undefined;
-  dematAccountNo?: string | undefined;
-  nameBank?: string | undefined;
-  bankAddress?: string | undefined;
-  bankEmail?: string | undefined;
-  bankPhone?: string | undefined;
-  bankMICR?: string | undefined;
-  bankIFS?: string | undefined;
-  bankAccountNo?: string | undefined;
-  bankAccountType?: string | undefined;
-  addressBank?: string | undefined;
-  emailBank?: string | undefined;
-  phoneBank?: string | undefined;
-  pincodeBank?: string | undefined;
-  isDeceased?: string | undefined;
-  shareholderNameDeath?: string | undefined;
-  dod?: string | undefined;
-  isTestate?: string | undefined;
-  proofOfSucession?: string | undefined;
-  document?: string | undefined;
-  dateOfDocument?: string | undefined;
-  isMinor?: string | undefined;
-  dobMinor?: string | undefined;
-  guardianName?: string | undefined;
-  guardianRelationship?: string | undefined;
-  guardianPan?: string | undefined;
-  deceasedRelationship?: string | undefined;
-  taxStatus?: string | undefined;
-  selectClaimant?: string | undefined;
-  statusClaimant?: string | undefined;
-  percentageClaimant?: string | undefined;
-  occupationClaimant?: string | undefined;
-  politicalExposureClaimant?: string | undefined;
-  annualIncomeClaimant?: string | undefined;
+  shareholderName?: string | undefined | null;
+  shareholderNamePan?: string | undefined | null;
+  shareholderNameAadhar?: string | undefined | null;
+  shareholderNameCertificate?: string | undefined | null;
+  shareholderNameCml?: string | undefined | null;
+  namePan?: string | undefined | null;
+  nameAadhar?: string | undefined | null;
+  nameCml?: string | undefined | null;
+  phone?: string | undefined | null;
+  email?: string | undefined | null;
+  aadhar?: string | undefined | null;
+  pan?: string | undefined | null;
+  dob?: string | undefined | null;
+  age?: string | undefined | null;
+  nationality?: string | undefined | null;
+  placeOfBirth?: string | undefined | null;
+  city?: string | undefined | null;
+  state?: string | undefined | null;
+  countryOfBirth?: string | undefined | null;
+  DPID?: string | undefined | null;
+  dematAccountNo?: string | undefined | null;
+  nameBank?: string | undefined | null;
+  bankName?: string | undefined | null;
+  bankAddress?: string | undefined | null;
+  bankEmail?: string | undefined | null;
+  bankPhone?: string | undefined | null;
+  bankMICR?: string | undefined | null;
+  bankIFS?: string | undefined | null;
+  bankAccountNo?: string | undefined | null;
+  bankAccountType?: string | undefined | null;
+  addressBank?: string | undefined | null;
+  emailBank?: string | undefined | null;
+  phoneBank?: string | undefined | null;
+  pincodeBank?: string | undefined | null;
+  isDeceased?: string | undefined | null;
+  shareholderNameDeath?: string | undefined | null;
+  dod?: string | undefined | null;
+  isTestate?: string | undefined | null;
+  proofOfSucession?: string | undefined | null;
+  document?: string | undefined | null;
+  dateOfDocument?: string | undefined | null;
+  isMinor?: string | undefined | null;
+  dobMinor?: string | undefined | null;
+  guardianName?: string | undefined | null;
+  guardianRelationship?: string | undefined | null;
+  guardianPan?: string | undefined | null;
+  deceasedRelationship?: string | undefined | null;
+  taxStatus?: string | undefined | null;
+  selectClaimant?: string | undefined | null;
+  statusClaimant?: string | undefined | null;
+  percentageClaimant?: string | undefined | null;
+  occupationClaimant?: string | undefined | null;
+  politicalExposureClaimant?: string | undefined | null;
+  annualIncomeClaimant?: string | undefined | null;
 };
 
 export const initialValues: SchemaType = {
-  shareholderName: undefined,
-  shareholderNamePan: undefined,
-  shareholderNameAadhar: undefined,
-  shareholderNameAadharCertificate: undefined,
-  shareholderNameAadharCml: undefined,
-  namePan: undefined,
-  nameAadhar: undefined,
-  nameCml: undefined,
-  phone: undefined,
-  email: undefined,
-  aadhar: undefined,
-  pan: undefined,
-  dob: undefined,
-  age: undefined,
-  nationality: undefined,
-  placeOfBirth: undefined,
-  city: undefined,
-  state: undefined,
-  countryOfBirth: undefined,
-  DPID: undefined,
-  dematAccountNo: undefined,
-  nameBank: undefined,
-  bankAddress: undefined,
-  bankEmail: undefined,
-  bankPhone: undefined,
-  bankMICR: undefined,
-  bankIFS: undefined,
-  bankAccountNo: undefined,
-  bankAccountType: undefined,
-  addressBank: undefined,
-  emailBank: undefined,
-  phoneBank: undefined,
-  pincodeBank: undefined,
-  isDeceased: undefined,
-  shareholderNameDeath: undefined,
-  dod: undefined,
-  isTestate: undefined,
-  proofOfSucession: undefined,
-  document: undefined,
-  dateOfDocument: undefined,
-  isMinor: undefined,
-  dobMinor: undefined,
-  guardianName: undefined,
-  guardianRelationship: undefined,
-  guardianPan: undefined,
-  deceasedRelationship: undefined,
-  taxStatus: undefined,
-  selectClaimant: undefined,
-  statusClaimant: undefined,
-  percentageClaimant: undefined,
-  occupationClaimant: undefined,
-  politicalExposureClaimant: undefined,
-  annualIncomeClaimant: undefined,
+  shareholderName: null,
+  shareholderNamePan: null,
+  shareholderNameAadhar: null,
+  shareholderNameCertificate: null,
+  shareholderNameCml: null,
+  namePan: null,
+  nameAadhar: null,
+  nameCml: null,
+  phone: null,
+  email: null,
+  aadhar: null,
+  pan: null,
+  dob: null,
+  age: null,
+  nationality: null,
+  placeOfBirth: null,
+  city: null,
+  state: null,
+  countryOfBirth: null,
+  DPID: null,
+  dematAccountNo: null,
+  nameBank: null,
+  bankName: null,
+  bankAddress: null,
+  bankEmail: null,
+  bankPhone: null,
+  bankMICR: null,
+  bankIFS: null,
+  bankAccountNo: null,
+  bankAccountType: null,
+  addressBank: null,
+  emailBank: null,
+  phoneBank: null,
+  pincodeBank: null,
+  isDeceased: null,
+  shareholderNameDeath: null,
+  dod: null,
+  isTestate: null,
+  proofOfSucession: null,
+  document: null,
+  dateOfDocument: null,
+  isMinor: null,
+  dobMinor: null,
+  guardianName: null,
+  guardianRelationship: null,
+  guardianPan: null,
+  deceasedRelationship: null,
+  taxStatus: null,
+  selectClaimant: null,
+  statusClaimant: null,
+  percentageClaimant: null,
+  occupationClaimant: null,
+  politicalExposureClaimant: null,
+  annualIncomeClaimant: null,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
-  shareholderName: yup.string().trim().optional(),
-  shareholderNamePan: yup.string().trim().optional(),
-  shareholderNameAadhar: yup.string().trim().optional(),
-  shareholderNameAadharCertificate: yup.string().trim().optional(),
-  shareholderNameAadharCml: yup.string().trim().optional(),
-  namePan: yup.string().trim().optional(),
-  nameAadhar: yup.string().trim().optional(),
-  nameCml: yup.string().trim().optional(),
-  phone: yup.string().trim().optional(),
-  email: yup.string().trim().optional(),
-  aadhar: yup.string().trim().optional(),
-  pan: yup.string().trim().optional(),
-  dob: yup.string().trim().optional(),
-  age: yup.string().trim().optional(),
-  nationality: yup.string().trim().optional(),
-  placeOfBirth: yup.string().trim().optional(),
-  city: yup.string().trim().optional(),
-  state: yup.string().trim().optional(),
-  countryOfBirth: yup.string().trim().optional(),
-  DPID: yup.string().trim().optional(),
-  dematAccountNo: yup.string().trim().optional(),
-  nameBank: yup.string().trim().optional(),
-  bankAddress: yup.string().trim().optional(),
-  bankEmail: yup.string().trim().optional(),
-  bankPhone: yup.string().trim().optional(),
-  bankMICR: yup.string().trim().optional(),
-  bankIFS: yup.string().trim().optional(),
-  bankAccountNo: yup.string().trim().optional(),
-  bankAccountType: yup.string().trim().optional(),
-  addressBank: yup.string().trim().optional(),
-  emailBank: yup.string().trim().optional(),
-  phoneBank: yup.string().trim().optional(),
-  pincodeBank: yup.string().trim().optional(),
-  isDeceased: yup.string().trim().optional(),
-  shareholderNameDeath: yup.string().trim().optional(),
-  dod: yup.string().trim().optional(),
-  isTestate: yup.string().trim().optional(),
-  proofOfSucession: yup.string().trim().optional(),
-  document: yup.string().trim().optional(),
-  dateOfDocument: yup.string().trim().optional(),
-  isMinor: yup.string().trim().optional(),
-  dobMinor: yup.string().trim().optional(),
-  guardianName: yup.string().trim().optional(),
-  guardianRelationship: yup.string().trim().optional(),
-  guardianPan: yup.string().trim().optional(),
-  deceasedRelationship: yup.string().trim().optional(),
-  taxStatus: yup.string().trim().optional(),
-  selectClaimant: yup.string().trim().optional(),
-  statusClaimant: yup.string().trim().optional(),
-  percentageClaimant: yup.string().trim().optional(),
-  occupationClaimant: yup.string().trim().optional(),
-  politicalExposureClaimant: yup.string().trim().optional(),
-  annualIncomeClaimant: yup.string().trim().optional(),
+  shareholderName: yup.string().trim().notRequired(),
+  shareholderNamePan: yup.string().trim().notRequired(),
+  shareholderNameAadhar: yup.string().trim().notRequired(),
+  shareholderNameCertificate: yup.string().trim().notRequired(),
+  shareholderNameCml: yup.string().trim().notRequired(),
+  namePan: yup.string().trim().notRequired(),
+  nameAadhar: yup.string().trim().notRequired(),
+  nameCml: yup.string().trim().notRequired(),
+  phone: yup.string().trim().notRequired(),
+  email: yup.string().trim().notRequired(),
+  aadhar: yup.string().trim().notRequired(),
+  pan: yup.string().trim().notRequired(),
+  dob: yup.string().trim().notRequired(),
+  age: yup.string().trim().notRequired(),
+  nationality: yup.string().trim().notRequired(),
+  placeOfBirth: yup.string().trim().notRequired(),
+  city: yup.string().trim().notRequired(),
+  state: yup.string().trim().notRequired(),
+  countryOfBirth: yup.string().trim().notRequired(),
+  DPID: yup.string().trim().notRequired(),
+  dematAccountNo: yup.string().trim().notRequired(),
+  nameBank: yup.string().trim().notRequired(),
+  bankName: yup.string().trim().notRequired(),
+  bankAddress: yup.string().trim().notRequired(),
+  bankEmail: yup.string().trim().notRequired(),
+  bankPhone: yup.string().trim().notRequired(),
+  bankMICR: yup.string().trim().notRequired(),
+  bankIFS: yup.string().trim().notRequired(),
+  bankAccountNo: yup.string().trim().notRequired(),
+  bankAccountType: yup.string().trim().notRequired(),
+  addressBank: yup.string().trim().notRequired(),
+  emailBank: yup.string().trim().notRequired(),
+  phoneBank: yup.string().trim().notRequired(),
+  pincodeBank: yup.string().trim().notRequired(),
+  isDeceased: yup.string().trim().notRequired(),
+  shareholderNameDeath: yup.string().trim().notRequired(),
+  dod: yup.string().trim().notRequired(),
+  isTestate: yup.string().trim().notRequired(),
+  proofOfSucession: yup.string().trim().notRequired(),
+  document: yup.string().trim().notRequired(),
+  dateOfDocument: yup.string().trim().notRequired(),
+  isMinor: yup.string().trim().notRequired(),
+  dobMinor: yup.string().trim().notRequired(),
+  guardianName: yup.string().trim().notRequired(),
+  guardianRelationship: yup.string().trim().notRequired(),
+  guardianPan: yup.string().trim().notRequired(),
+  deceasedRelationship: yup.string().trim().notRequired(),
+  taxStatus: yup.string().trim().notRequired(),
+  selectClaimant: yup.string().trim().notRequired(),
+  statusClaimant: yup.string().trim().notRequired(),
+  percentageClaimant: yup.string().trim().notRequired(),
+  occupationClaimant: yup.string().trim().notRequired(),
+  politicalExposureClaimant: yup.string().trim().notRequired(),
+  annualIncomeClaimant: yup.string().trim().notRequired(),
 });

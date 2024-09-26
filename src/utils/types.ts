@@ -442,8 +442,8 @@ export type ShareHolderDetailType = {
   shareholderName?: string | null;
   shareholderNamePan?: string | null;
   shareholderNameAadhar?: string | null;
-  shareholderNameAadharCertificate?: string | null;
-  shareholderNameAadharCml?: string | null;
+  shareholderNameCertificate?: string | null;
+  shareholderNameCml?: string | null;
   namePan?: string | null;
   nameAadhar?: string | null;
   nameCml?: string | null;
@@ -460,6 +460,7 @@ export type ShareHolderDetailType = {
   countryOfBirth?: string | null;
   DPID?: string | null;
   dematAccountNo?: string | null;
+  bankName?: string | null;
   nameBank?: string | null;
   bankAddress?: string | null;
   bankEmail?: string | null;
