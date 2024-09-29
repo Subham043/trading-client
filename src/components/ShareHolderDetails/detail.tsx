@@ -1,10 +1,12 @@
 import { FC } from "react"
-import { Table, Title } from '@mantine/core';
+import { Image, Table, Title } from '@mantine/core';
 import { ShareHolderDetailsListDrawerProps } from "../../pages/shareHolderDetails/list";
 import { useShareHolderDetailQuery } from "../../hooks/data/share_holder_details";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 import { ShareHolderMasterType } from "../../utils/types";
+import { env } from "../../utils/env";
+import { api_routes } from "../../utils/api_routes";
 
 const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolderMasterData: ShareHolderMasterType; refetchMasterData: ()=>void}> = (props) => {
   const {data, isFetching, isLoading, status, error, refetch} = useShareHolderDetailQuery(props.drawerStatus ? props.id : 0, props.drawerStatus);
@@ -185,7 +187,15 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>Document</Table.Th>
-                                <Table.Td>{data.document}</Table.Td>
+                                <Table.Td>
+                                    {data.document ? <Image
+                                        radius="md"
+                                        h={350}
+                                        w={150}
+                                        fit="contain"
+                                        src={`${env.API_ENDPOINT}${api_routes.upload.images}/${data.document}`}
+                                    /> : null}
+                                </Table.Td>
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>Date of document</Table.Th>

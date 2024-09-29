@@ -190,9 +190,16 @@ export const useUpdateShareHolderDetailMutation = (
 
   return useMutation({
     mutationFn: async (updateShareHolderDetailVal: ShareHolderDetailFormType) => {
+      const form_data = new FormData();
+      for (const [key, val] of Object.entries(updateShareHolderDetailVal)) {
+        // append each item to the formData (converted to JSON strings)
+        if(!(typeof val==="undefined")){
+          form_data.append(key, val as string | Blob);
+        }
+      }
       const response = await axios.put<{
         data: ShareHolderDetailType;
-      }>(api_routes.shareHolderDetails + `/${id}`, updateShareHolderDetailVal);
+      }>(api_routes.shareHolderDetails + `/${id}`, form_data);
       return response.data.data;
     },
     // 💡 response of the mutation is passed to onSuccess
@@ -218,11 +225,18 @@ export const useAddShareHolderDetailMutation = (shareHolderMasterId: number) => 
 
   return useMutation({
     mutationFn: async (newShareHolderDetailVal: ShareHolderDetailFormType) => {
+      const form_data = new FormData();
+      for (const [key, val] of Object.entries(newShareHolderDetailVal)) {
+        // append each item to the formData (converted to JSON strings)
+        if (!(typeof val === "undefined")) {
+          form_data.append(key, val as string | Blob);
+        }
+      }
       const response = await axios.post<{
         data: ShareHolderDetailType;
       }>(
         api_routes.shareHolderDetails + `/create/${shareHolderMasterId}`,
-        newShareHolderDetailVal
+        form_data
       );
       return response.data.data;
     },

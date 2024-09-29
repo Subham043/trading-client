@@ -11,6 +11,7 @@ import { ShareHolderDetailsListModalProps } from "../../pages/shareHolderDetails
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { DateInput } from "@mantine/dates";
+import { IconFileInfo } from "@tabler/icons-react";
 
 
 type ShareHolderDetailsFormProps = {
@@ -75,7 +76,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 dod: (data && (typeof data.dod === "string")) ? data.dod : "",
                 isTestate: (data && (typeof data.isTestate === "string")) ? data.isTestate : "No",
                 proofOfSucession: (data && (typeof data.proofOfSucession === "string")) ? data.proofOfSucession : "No",
-                document: (data && (typeof data.document === "string")) ? data.document : "",
+                document: undefined,
                 dateOfDocument: (data && (typeof data.dateOfDocument === "string")) ? data.dateOfDocument : "",
                 isMinor: (data && (typeof data.isMinor === "string")) ? data.isMinor : "No",
                 dobMinor: (data && (typeof data.dobMinor === "string")) ? data.dobMinor : "",
@@ -239,7 +240,13 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                             />
                         </SimpleGrid>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                            <FileInput label="Document" {...form.getInputProps('document')} />
+                            <FileInput 
+                                label="Document" 
+                                clearable
+                                accept="image/png,image/jpeg,image/webp,image/jpg"
+                                leftSection={<IconFileInfo size={16} />}
+                                {...form.getInputProps('document')} 
+                            />
                             <DateInput 
                                 label="Date of document" 
                                 value={form.values.dateOfDocument ? new Date(form.values.dateOfDocument) : undefined}

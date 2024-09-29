@@ -29,6 +29,7 @@ export const api_routes = {
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
   upload: {
+    images: "/upload/images",
     failed_excel: {
       download_via_name: "/upload/failed-excel/download-via-name",
       download_via_id: "/upload/failed-excel/download-via-id",

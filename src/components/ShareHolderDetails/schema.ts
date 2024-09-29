@@ -40,7 +40,7 @@ export type SchemaType = {
   dod?: string | undefined | null;
   isTestate?: string | undefined | null;
   proofOfSucession?: string | undefined | null;
-  document?: string | undefined | null;
+  document?: File | undefined | null;
   dateOfDocument?: string | undefined | null;
   isMinor?: string | undefined | null;
   dobMinor?: string | undefined | null;
@@ -97,7 +97,7 @@ export const initialValues: SchemaType = {
   dod: null,
   isTestate: null,
   proofOfSucession: null,
-  document: null,
+  document: undefined,
   dateOfDocument: null,
   isMinor: null,
   dobMinor: null,
@@ -154,7 +154,18 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   dod: yup.string().trim().notRequired(),
   isTestate: yup.string().trim().notRequired(),
   proofOfSucession: yup.string().trim().notRequired(),
-  document: yup.string().trim().notRequired(),
+  document: yup
+    .mixed<File>()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .test("fileFormat", "Please select a valid document file", (value) => {
+      if (value) {
+        return ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(
+          value.type
+        );
+      }
+      return true;
+    })
+    .optional(),
   dateOfDocument: yup.string().trim().notRequired(),
   isMinor: yup.string().trim().notRequired(),
   dobMinor: yup.string().trim().notRequired(),
