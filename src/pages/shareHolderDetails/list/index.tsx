@@ -10,6 +10,7 @@ import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { ShareHolderDetailsQueryKey } from "../../../hooks/data/share_holder_details";
 import { ShareHolderMasterType } from "../../../utils/types";
+import TranspositionOrderModal from "../../../components/ShareHolderDetails/modal2";
 
 export type ShareHolderDetailsListModalProps = {
     status: boolean;
@@ -34,6 +35,8 @@ const ShareHolderDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterTyp
     const { deleteMultiple, deleteLoading } = useDeleteMultiple();
     const [modal, setModal] = useState<ShareHolderDetailsListModalProps>({status: false, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)});
     const toggleModal = (value:ShareHolderDetailsListModalProps) => setModal(value);
+    const [modal2, setModal2] = useState<boolean>(false);
+    const toggleModal2 = (value:boolean) => setModal2(value);
     const [drawerStatus, setDrawerStatus] = useState<ShareHolderDetailsListDrawerProps>({drawerStatus: false});
     const toggleDrawer = (value:ShareHolderDetailsListDrawerProps) => setDrawerStatus(value);
 
@@ -47,11 +50,12 @@ const ShareHolderDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterTyp
 
     return (
         <div>
-            <SearchButtonHeader hasButton={shareHolderMasterData.shareHolderDetails.length<Number(shareHolderMasterData.noOfLegalHeir)} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
+            <SearchButtonHeader hasButton={true} buttonText={shareHolderMasterData.shareHolderDetails.length<Number(shareHolderMasterData.noOfLegalHeir) ? "Create" : "Transposition Order"} buttonClickHandler={() => shareHolderMasterData.shareHolderDetails.length<Number(shareHolderMasterData.noOfLegalHeir) ? toggleModal({status: true, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)}) : toggleModal2(true)} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <ShareHolderDetailsTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} shareHolderMasterId={Number(param.shareHolderMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} refetchMasterData={refetchMasterData} />
             </Paper>
             <ShareHolderDetailsModal {...modal} mainShareHolderMasterId={Number(param.shareHolderMasterId)} shareHolderMasterData={shareHolderMasterData} toggleModal={toggleModal} refetchMasterData={refetchMasterData} />
+            <TranspositionOrderModal modal={modal2} mainShareHolderMasterId={Number(param.shareHolderMasterId)} shareHolderMasterData={shareHolderMasterData} toggleModal={toggleModal2} refetchMasterData={refetchMasterData} />
             <ShareHolderDetailsDrawer {...drawerStatus} toggleDrawer={toggleDrawer} shareHolderMasterData={shareHolderMasterData} refetchMasterData={refetchMasterData} />
         </div>
     )
