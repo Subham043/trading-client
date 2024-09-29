@@ -40,7 +40,7 @@ const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListMod
                 <div style={{textAlign: 'center'}}>
                     <Text size="xl" fw={700} p="sm" >Share Holder Details</Text>
                 </div>
-                <ShareHolderDetailsListPage shareHolderMasterData={data} />
+                <ShareHolderDetailsListPage shareHolderMasterData={data} refetchMasterData={refetch} />
             </Box>
         </>}
     </ErrorBoundary>

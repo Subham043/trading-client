@@ -426,6 +426,7 @@ export type ShareHolderMasterType = {
   transpositionOrder?: string | null;
   projectID?: number | null;
   createdAt?: Date | null;
+  shareHolderDetails: ShareHolderDetailType[];
 };
 
 export interface ShareHolderMasterFormType

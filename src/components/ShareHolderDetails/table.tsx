@@ -7,11 +7,12 @@ import { useDeleteShareHolderDetailMutation, useShareHolderDetailsQuery } from "
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareholderName, phone, email, aadhar, pan, shareHolderMasterID, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
+const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = ({id, namePan, phone, email, aadhar, pan, shareHolderMasterID, selectedData, setSelectedData, toggleModal, toggleDrawer, refetchMasterData}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareHolderDetails = useDeleteShareHolderDetailMutation(id, shareHolderMasterID||0)
   const onDelete = async () => {
     await deleteShareHolderDetails.mutateAsync(undefined)
+    refetchMasterData()
   }
   return (
     <Table.Tr>
@@ -24,7 +25,7 @@ const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {shareholderName}
+              {namePan}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -81,7 +82,7 @@ const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value
   )
 }
 
-const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, shareHolderMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, shareHolderMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = (props) => {
   const {data:shareHolderDetails, isFetching, isLoading, status, error, refetch} = useShareHolderDetailsQuery({shareHolderMasterId: props.shareHolderMasterId});
   const allChecked = (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
@@ -99,7 +100,7 @@ const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListMod
                     onChange={() => props.setSelectedData(allChecked ? [] : (shareHolderDetails ? shareHolderDetails.shareHolderDetail.map((value) => value.id) : []))}
                   />
                 </Table.Th>
-              <Table.Th style={{color: 'white'}}>Name of Shareholder</Table.Th>
+              <Table.Th style={{color: 'white'}}>Name as per pan</Table.Th>
               <Table.Th style={{color: 'white'}}>Phone</Table.Th>
               <Table.Th style={{color: 'white'}}>Email</Table.Th>
               <Table.Th style={{color: 'white'}}>Aadhar</Table.Th>
@@ -108,7 +109,7 @@ const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListMod
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).map((item) => <ShareHolderDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).map((item) => <ShareHolderDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} refetchMasterData={props.refetchMasterData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>

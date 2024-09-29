@@ -4,13 +4,13 @@ import ShareHolderDetailForm from "./form";
 import { ShareHolderDetailsListModalProps } from "../../pages/shareHolderDetails/list";
 import { ShareHolderMasterType } from "../../utils/types";
 
-const ShareHolderDetailModal:FC<ShareHolderDetailsListModalProps & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, mainShareHolderMasterId: number, shareHolderMasterData: ShareHolderMasterType}> = (props) => {
+const ShareHolderDetailModal:FC<ShareHolderDetailsListModalProps & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, mainShareHolderMasterId: number, shareHolderMasterData: ShareHolderMasterType; refetchMasterData: ()=>void}> = (props) => {
     return (
         <Modal opened={props.status} onClose={() => props.toggleModal({status: false, type: 'Create', shareHolderMasterId: props.mainShareHolderMasterId})} centered size="xl" withCloseButton={true}  title={props.type === "Edit" ? "Edit Share Holder Detail" : "Create Share Holder Detail"} overlayProps={{
           backgroundOpacity: 0.55,
           blur: 3,
         }}>
-            <ShareHolderDetailForm {...props} shareHolderMasterData={props.shareHolderMasterData} toggleModal={props.toggleModal} />
+            <ShareHolderDetailForm {...props} shareHolderMasterData={props.shareHolderMasterData} toggleModal={props.toggleModal} refetchMasterData={props.refetchMasterData} />
         </Modal>
     )
 }

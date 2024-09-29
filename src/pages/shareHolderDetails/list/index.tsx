@@ -28,7 +28,7 @@ export type ShareHolderDetailsListDrawerProps = {
     id: number;
 }
 
-const ShareHolderDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterType}> = ({shareHolderMasterData}) => {
+const ShareHolderDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterType; refetchMasterData: ()=>void}> = ({shareHolderMasterData, refetchMasterData}) => {
     const param = useParams<{shareHolderMasterId: string}>()
     const [selectedData, setSelectedData] = useState<number[]>([]);
     const { deleteMultiple, deleteLoading } = useDeleteMultiple();
@@ -40,18 +40,19 @@ const ShareHolderDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterTyp
     const deleteMultipleHandler = async () => {
         if(selectedData.length > 0) {
             await deleteMultiple(`${api_routes.shareHolderDetails}/delete-multiple`, 'ShareHolderDetails', [ShareHolderDetailsQueryKey, param.shareHolderMasterId ? Number(param.shareHolderMasterId) : ''], selectedData);
+            refetchMasterData()
             setSelectedData([]);
         }
     }
 
     return (
         <div>
-            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
+            <SearchButtonHeader hasButton={shareHolderMasterData.shareHolderDetails.length<Number(shareHolderMasterData.noOfLegalHeir)} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <ShareHolderDetailsTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} shareHolderMasterId={Number(param.shareHolderMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} />
+                <ShareHolderDetailsTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} shareHolderMasterId={Number(param.shareHolderMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} refetchMasterData={refetchMasterData} />
             </Paper>
-            <ShareHolderDetailsModal {...modal} mainShareHolderMasterId={Number(param.shareHolderMasterId)} shareHolderMasterData={shareHolderMasterData} toggleModal={toggleModal} />
-            <ShareHolderDetailsDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />
+            <ShareHolderDetailsModal {...modal} mainShareHolderMasterId={Number(param.shareHolderMasterId)} shareHolderMasterData={shareHolderMasterData} toggleModal={toggleModal} refetchMasterData={refetchMasterData} />
+            <ShareHolderDetailsDrawer {...drawerStatus} toggleDrawer={toggleDrawer} shareHolderMasterData={shareHolderMasterData} refetchMasterData={refetchMasterData} />
         </div>
     )
 }
