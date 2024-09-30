@@ -75,7 +75,7 @@ const TranspositionOrderForm:FC<{modal:boolean; mainShareHolderMasterId: number,
                     label="Order"
                     placeholder="Select the order"
                     maxDropdownHeight={200}
-                    data={[...new Set(props.shareHolderMasterData.shareHolderDetails.map(item => item.namePan).filter(item => typeof item === "string"))]}
+                    data={[...new Set(props.shareHolderMasterData.shareHolderDetails.map(item => item.namePan).filter(item => typeof item === "string"))] as string[]}
                     searchable
                     nothingFoundMessage="Nothing found..."
                     error={form.errors.transpositionOrder}
