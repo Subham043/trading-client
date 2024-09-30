@@ -183,6 +183,10 @@ export const useShareHolderMasterQuerySetData = () => {
       [ShareHolderMasterKey, newShareHolderMasterVal.id],
       newShareHolderMasterVal
     );
+    queryClient.setQueryData<ShareHolderMasterType>(
+      [ShareHolderMasterInfoKey, newShareHolderMasterVal.id],
+      newShareHolderMasterVal
+    );
   };
 
   const updateShareHolderMaster = (
@@ -193,11 +197,19 @@ export const useShareHolderMasterQuerySetData = () => {
       [ShareHolderMasterKey, id],
       (prev) => ({ ...prev, ...updateShareHolderMasterVal })
     );
+    queryClient.setQueryData<ShareHolderMasterType>(
+      [ShareHolderMasterInfoKey, id],
+      (prev) => ({ ...prev, ...updateShareHolderMasterVal })
+    );
   };
 
   const deleteShareHolderMaster = (id: number) => {
     queryClient.setQueryData<ShareHolderMasterType>(
       [ShareHolderMasterKey, id],
+      undefined
+    );
+    queryClient.setQueryData<ShareHolderMasterType>(
+      [ShareHolderMasterInfoKey, id],
       undefined
     );
   };

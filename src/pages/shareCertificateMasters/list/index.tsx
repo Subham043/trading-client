@@ -46,7 +46,7 @@ const ShareCertificateMastersListPage:FC = () => {
                 <ShareCertificateMastersTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} projectId={param.projectId ?? ''} />
             </Paper>
             <ShareCertificateMastersModal {...modal} toggleModal={toggleModal} projectId={param.projectId ?? ''} />
-            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Share Certificate Masters" uploadUrl={`${api_routes.shareCertificateMasters}/import/${param.projectId}`} sampleUrl="/Sample_Security_Masters.xlsx" />
+            <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Share Certificate Masters" uploadUrl={`${api_routes.shareCertificateMasters}/import/${param.projectId}`} sampleUrl="/Sample_Share_Certificate_Masters.xlsx" />
         </div>
     )
 }
