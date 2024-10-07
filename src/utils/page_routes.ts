@@ -19,6 +19,7 @@ export const page_routes = {
     view: "/projects/:projectId",
     shareCertificateMaster: "/projects/:projectId/share-certificate-masters",
     shareHolderDetails: "/projects/:projectId/share-holder-details",
+    legalHeirDetails: "/projects/:projectId/legal-heir-details",
   },
   registrarMasters: {
     list: "/registrar-masters",

@@ -423,10 +423,12 @@ export type ShareHolderMasterType = {
   id: number;
   caseType: string;
   noOfLegalHeir: string;
+  noOfShareHolder: string;
   transpositionOrder?: string | null;
   projectID?: number | null;
   createdAt?: Date | null;
   shareHolderDetails: ShareHolderDetailType[];
+  legalHeirDetails: LegalHeirDetailType[];
 };
 
 export interface ShareHolderMasterFormType
@@ -441,10 +443,7 @@ export interface ShareHolderMasterFormType
 export type ShareHolderDetailType = {
   id: number;
   shareholderName?: string | null;
-  shareholderNamePan?: string | null;
-  shareholderNameAadhar?: string | null;
   shareholderNameCertificate?: string | null;
-  shareholderNameCml?: string | null;
   namePan?: string | null;
   nameAadhar?: string | null;
   nameCml?: string | null;
@@ -474,6 +473,20 @@ export type ShareHolderDetailType = {
   emailBank?: string | null;
   phoneBank?: string | null;
   pincodeBank?: string | null;
+  shareHolderMasterID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface ShareHolderDetailFormType
+  extends Omit<
+    ShareHolderDetailType,
+    | "id"
+    | "shareHolderMasterID"
+    | "createdAt"
+  > {}
+
+export type LegalHeirDetailType = {
+  id: number;
   isDeceased?: string | null;
   shareholderNameDeath?: string | null;
   dod?: string | null;
@@ -498,9 +511,9 @@ export type ShareHolderDetailType = {
   createdAt?: Date | null;
 };
 
-export interface ShareHolderDetailFormType
+export interface LegalHeirDetailFormType
   extends Omit<
-    ShareHolderDetailType,
+    LegalHeirDetailType,
     | "id"
     | "shareHolderMasterID"
     | "createdAt"

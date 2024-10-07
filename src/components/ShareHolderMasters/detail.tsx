@@ -5,6 +5,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import { useParams } from "react-router-dom";
 import { ShareHolderMastersListModalProps } from "../../pages/shareHolderMasters/list";
 import ShareHolderDetailsListPage from "../../pages/shareHolderDetails/list";
+import LegalHeirDetailsListPage from "../../pages/legalHeirDetails/list";
 
 const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListModalProps) => void}> = (props) => {
     const param = useParams<{shareHolderMasterId: string}>();
@@ -24,6 +25,7 @@ const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListMod
                         <Table.Tr>
                             <Table.Th style={{color: 'white'}}>ID</Table.Th>
                             <Table.Th style={{color: 'white'}}>Case Type</Table.Th>
+                            <Table.Th style={{color: 'white'}}>No. Of Share Holders</Table.Th>
                             <Table.Th style={{color: 'white'}}>No. Of Legal Heirs</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
@@ -31,17 +33,24 @@ const ShareHolderMasterDetail:FC<{toggleModal: (value: ShareHolderMastersListMod
                         <Table.Tr>
                             <Table.Td>{data.id}</Table.Td>
                             <Table.Td>{data.caseType}</Table.Td>
+                            <Table.Td>{data.noOfShareHolder}</Table.Td>
                             <Table.Td>{data.noOfLegalHeir}</Table.Td>
                         </Table.Tr>
                     </Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
-            <Box bg="transparent" mt="md">
+            <Box bg="transparent" mt="md" mb="md">
                 <div style={{textAlign: 'center'}}>
                     <Text size="xl" fw={700} p="sm" >Share Holder Details</Text>
                 </div>
                 <ShareHolderDetailsListPage shareHolderMasterData={data} refetchMasterData={refetch} />
             </Box>
+            {(Number(data.noOfLegalHeir) > 0 && data.caseType.includes("Transmission")) && <Box bg="transparent" mt="md">
+                <div style={{textAlign: 'center'}}>
+                    <Text size="xl" fw={700} p="sm" >Legal Heir Details</Text>
+                </div>
+                <LegalHeirDetailsListPage shareHolderMasterData={data} refetchMasterData={refetch} />
+            </Box>}
         </>}
     </ErrorBoundary>
   );

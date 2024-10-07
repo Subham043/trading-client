@@ -2,10 +2,7 @@ import * as yup from "yup";
 
 export type SchemaType = {
   shareholderName?: string | undefined | null;
-  shareholderNamePan?: string | undefined | null;
-  shareholderNameAadhar?: string | undefined | null;
   shareholderNameCertificate?: string | undefined | null;
-  shareholderNameCml?: string | undefined | null;
   namePan?: string | undefined | null;
   nameAadhar?: string | undefined | null;
   nameCml?: string | undefined | null;
@@ -35,34 +32,11 @@ export type SchemaType = {
   emailBank?: string | undefined | null;
   phoneBank?: string | undefined | null;
   pincodeBank?: string | undefined | null;
-  isDeceased?: string | undefined | null;
-  shareholderNameDeath?: string | undefined | null;
-  dod?: string | undefined | null;
-  isTestate?: string | undefined | null;
-  proofOfSucession?: string | undefined | null;
-  document?: File | undefined | null;
-  dateOfDocument?: string | undefined | null;
-  isMinor?: string | undefined | null;
-  dobMinor?: string | undefined | null;
-  guardianName?: string | undefined | null;
-  guardianRelationship?: string | undefined | null;
-  guardianPan?: string | undefined | null;
-  deceasedRelationship?: string | undefined | null;
-  taxStatus?: string | undefined | null;
-  selectClaimant?: string | undefined | null;
-  statusClaimant?: string | undefined | null;
-  percentageClaimant?: string | undefined | null;
-  occupationClaimant?: string | undefined | null;
-  politicalExposureClaimant?: string | undefined | null;
-  annualIncomeClaimant?: string | undefined | null;
 };
 
 export const initialValues: SchemaType = {
   shareholderName: null,
-  shareholderNamePan: null,
-  shareholderNameAadhar: null,
   shareholderNameCertificate: null,
-  shareholderNameCml: null,
   namePan: null,
   nameAadhar: null,
   nameCml: null,
@@ -92,37 +66,21 @@ export const initialValues: SchemaType = {
   emailBank: null,
   phoneBank: null,
   pincodeBank: null,
-  isDeceased: null,
-  shareholderNameDeath: null,
-  dod: null,
-  isTestate: null,
-  proofOfSucession: null,
-  document: undefined,
-  dateOfDocument: null,
-  isMinor: null,
-  dobMinor: null,
-  guardianName: null,
-  guardianRelationship: null,
-  guardianPan: null,
-  deceasedRelationship: null,
-  taxStatus: null,
-  selectClaimant: null,
-  statusClaimant: null,
-  percentageClaimant: null,
-  occupationClaimant: null,
-  politicalExposureClaimant: null,
-  annualIncomeClaimant: null,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
-  shareholderName: yup.string().trim().notRequired(),
-  shareholderNamePan: yup.string().trim().notRequired(),
-  shareholderNameAadhar: yup.string().trim().notRequired(),
-  shareholderNameCertificate: yup.string().trim().notRequired(),
-  shareholderNameCml: yup.string().trim().notRequired(),
   namePan: yup.string().trim().notRequired(),
-  nameAadhar: yup.string().trim().notRequired(),
-  nameCml: yup.string().trim().notRequired(),
+  nameAadhar: yup
+    .string()
+    .trim()
+    .oneOf([yup.ref("namePan")], "It must match with name as per pan")
+    .notRequired(),
+  nameCml: yup
+    .string()
+    .trim()
+    .oneOf([yup.ref("namePan")], "It must match with name as per pan")
+    .oneOf([yup.ref("nameAadhar")], "It must match with name as per aadhar")
+    .notRequired(),
   phone: yup.string().trim().notRequired(),
   email: yup.string().trim().notRequired(),
   aadhar: yup.string().trim().notRequired(),
@@ -149,35 +107,12 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   emailBank: yup.string().trim().notRequired(),
   phoneBank: yup.string().trim().notRequired(),
   pincodeBank: yup.string().trim().notRequired(),
-  isDeceased: yup.string().trim().notRequired(),
-  shareholderNameDeath: yup.string().trim().notRequired(),
-  dod: yup.string().trim().notRequired(),
-  isTestate: yup.string().trim().notRequired(),
-  proofOfSucession: yup.string().trim().notRequired(),
-  document: yup
-    .mixed<File>()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .test("fileFormat", "Please select a valid document file", (value) => {
-      if (value) {
-        return ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(
-          value.type
-        );
-      }
-      return true;
-    })
-    .optional(),
-  dateOfDocument: yup.string().trim().notRequired(),
-  isMinor: yup.string().trim().notRequired(),
-  dobMinor: yup.string().trim().notRequired(),
-  guardianName: yup.string().trim().notRequired(),
-  guardianRelationship: yup.string().trim().notRequired(),
-  guardianPan: yup.string().trim().notRequired(),
-  deceasedRelationship: yup.string().trim().notRequired(),
-  taxStatus: yup.string().trim().notRequired(),
-  selectClaimant: yup.string().trim().notRequired(),
-  statusClaimant: yup.string().trim().notRequired(),
-  percentageClaimant: yup.string().trim().notRequired(),
-  occupationClaimant: yup.string().trim().notRequired(),
-  politicalExposureClaimant: yup.string().trim().notRequired(),
-  annualIncomeClaimant: yup.string().trim().notRequired(),
+  shareholderName: yup
+    .string()
+    .trim()
+    .notRequired(),
+  shareholderNameCertificate: yup
+    .string()
+    .trim()
+    .notRequired(),
 });

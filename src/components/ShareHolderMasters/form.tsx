@@ -39,6 +39,7 @@ const ShareHolderMastersForm:FC<ShareHolderMastersFormProps & {toggleModal: (val
         if(props.type === "Edit" && data && props.status){
             form.setValues({
                 caseType: data.caseType ? data.caseType as CaseType : undefined,
+                noOfShareHolder: data.noOfShareHolder ? data.noOfShareHolder : undefined,
                 noOfLegalHeir: data.noOfLegalHeir ? data.noOfLegalHeir : undefined,
             });
         }
@@ -74,15 +75,16 @@ const ShareHolderMastersForm:FC<ShareHolderMastersFormProps & {toggleModal: (val
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: form.values.caseType.includes("Transmission") ? 3 : 2 }}>
                     <Select
                         label="Instrument Type"
                         withAsterisk
-                        data={["ClaimSuspense" , "ClaimSuspenseTransmission" , "ClaimSuspenseTransmissionIssueDuplicate" , "ClaimSuspenseTransmissionIssueDuplicateTransposition" , "Transmission" , "TransmissionIssueDuplicate" , "TransmissionIssueDuplicateTransposition"]}
+                        data={Object.values(CaseType)}
                         value={form.values.caseType ? form.values.caseType : null}
-                        onChange={(value) => form.setFieldValue("caseType", value ? value as CaseType : "ClaimSuspense")}
+                        onChange={(value) => form.setFieldValue("caseType", value ? value as CaseType : CaseType.Claim)}
                     />
-                    <TextInput label="No. of Legal Heirs" {...form.getInputProps('noOfLegalHeir')} />
+                    <TextInput label="No. of Share Holders" {...form.getInputProps('noOfShareHolder')} />
+                    {form.values.caseType.includes("Transmission") && <TextInput label="No. of Legal Heirs" {...form.getInputProps('noOfLegalHeir')} />}
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addShareHolderMasters.isPending : updateShareHolderMasters.isPending} disabled={props.type === "Create" ? addShareHolderMasters.isPending : updateShareHolderMasters.isPending} data-disabled={props.type === "Create" ? addShareHolderMasters.isPending : updateShareHolderMasters.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}

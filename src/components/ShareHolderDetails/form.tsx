@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, Divider, FileInput, Select, SimpleGrid, TextInput, Title } from "@mantine/core";
+import { Button, Divider, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddShareHolderDetailMutation, useShareHolderDetailQuery, useUpdateShareHolderDetailMutation } from "../../hooks/data/share_holder_details";
 import { MutateOptions } from "@tanstack/react-query";
@@ -11,7 +11,6 @@ import { ShareHolderDetailsListModalProps } from "../../pages/shareHolderDetails
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { DateInput } from "@mantine/dates";
-import { IconFileInfo } from "@tabler/icons-react";
 
 
 type ShareHolderDetailsFormProps = {
@@ -38,10 +37,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
         if(props.status){
             form.setValues({
                 shareholderName: (data && (typeof data.shareholderName === "string")) ? data.shareholderName : "",
-                shareholderNamePan: (data && (typeof data.shareholderNamePan === "string")) ? data.shareholderNamePan : "",
-                shareholderNameAadhar: (data && (typeof data.shareholderNameAadhar === "string")) ? data.shareholderNameAadhar : "",
                 shareholderNameCertificate: (data && (typeof data.shareholderNameCertificate === "string")) ? data.shareholderNameCertificate : "",
-                shareholderNameCml: (data && (typeof data.shareholderNameCml === "string")) ? data.shareholderNameCml : "",
                 namePan: (data && (typeof data.namePan === "string")) ? data.namePan : "",
                 nameAadhar: (data && (typeof data.nameAadhar === "string")) ? data.nameAadhar : "",
                 nameCml: (data && (typeof data.nameCml === "string")) ? data.nameCml : "",
@@ -71,26 +67,6 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 emailBank: (data && (typeof data.emailBank === "string")) ? data.emailBank : "",
                 phoneBank: (data && (typeof data.phoneBank === "string")) ? data.phoneBank : "",
                 pincodeBank: (data && (typeof data.pincodeBank === "string")) ? data.pincodeBank : "",
-                isDeceased: (data && (typeof data.isDeceased === "string")) ? data.isDeceased : "No",
-                shareholderNameDeath: (data && (typeof data.shareholderNameDeath === "string")) ? data.shareholderNameDeath : "",
-                dod: (data && (typeof data.dod === "string")) ? data.dod : "",
-                isTestate: (data && (typeof data.isTestate === "string")) ? data.isTestate : "No",
-                proofOfSucession: (data && (typeof data.proofOfSucession === "string")) ? data.proofOfSucession : "No",
-                document: undefined,
-                dateOfDocument: (data && (typeof data.dateOfDocument === "string")) ? data.dateOfDocument : "",
-                isMinor: (data && (typeof data.isMinor === "string")) ? data.isMinor : "No",
-                dobMinor: (data && (typeof data.dobMinor === "string")) ? data.dobMinor : "",
-                guardianName: (data && (typeof data.guardianName === "string")) ? data.guardianName : "",
-                guardianRelationship: (data && (typeof data.guardianRelationship === "string")) ? data.guardianRelationship : "",
-                guardianPan: (data && (typeof data.guardianPan === "string")) ? data.guardianPan : "",
-                deceasedRelationship: (data && (typeof data.deceasedRelationship === "string")) ? data.deceasedRelationship : "",
-                taxStatus: (data && (typeof data.taxStatus === "string")) ? data.taxStatus : "",
-                selectClaimant: (data && (typeof data.selectClaimant === "string")) ? data.selectClaimant : "",
-                statusClaimant: (data && (typeof data.statusClaimant === "string")) ? data.statusClaimant : "",
-                percentageClaimant: (data && (typeof data.percentageClaimant === "string")) ? data.percentageClaimant : "",
-                occupationClaimant: (data && (typeof data.occupationClaimant === "string")) ? data.occupationClaimant : "",
-                politicalExposureClaimant: (data && (typeof data.politicalExposureClaimant === "string")) ? data.politicalExposureClaimant : "",
-                annualIncomeClaimant: (data && (typeof data.annualIncomeClaimant === "string")) ? data.annualIncomeClaimant : "",
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,140 +155,18 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                     <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
                 </SimpleGrid>
-                {props.shareHolderMasterData.caseType.includes("ClaimSuspense") && <>
+                {props.shareHolderMasterData.caseType.includes("Claim") && <>
                     <Divider 
                         my="xs" 
                         variant="dashed"
                         label={
-                            <Title order={5}>Claim / Suspense</Title>
+                            <Title order={5}>Claim</Title>
                         } 
                         labelPosition="left"
                     />
                     <SimpleGrid cols={{ base: 1, sm: 2 }}>
                         <TextInput label="Share Holder Name" {...form.getInputProps('shareholderName')} />
                         <TextInput label="Share Holder Name as per Certificate" {...form.getInputProps('shareholderNameCertificate')} />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                        <TextInput label="Share Holder Name as per PAN" {...form.getInputProps('shareholderNamePan')} />
-                        <TextInput label="Share Holder Name as per Aadhaar" {...form.getInputProps('shareholderNameAadhar')} />
-                        <TextInput label="Share Holder Name as per CML" {...form.getInputProps('shareholderNameCml')} />
-                    </SimpleGrid>
-                </>}
-                {props.shareHolderMasterData.caseType.includes("Transmission") && <>
-                    <Divider 
-                        my="xs" 
-                        variant="dashed"
-                        label={
-                            <Title order={5}>Transmission</Title>
-                        } 
-                        labelPosition="left"
-                    />
-                    <SimpleGrid cols={{ base: 1, sm: 1 }}>
-                        <Select
-                            label="Is soleholder deceased"
-                            data={["Yes" , "No"]}
-                            value={form.values.isDeceased ? form.values.isDeceased : null}
-                            onChange={(value) => form.setFieldValue("isDeceased", value ? value : "No")}
-                        />
-                    </SimpleGrid>
-                    {form.values.isDeceased==="Yes" && <>
-                        <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                            <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
-                            <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
-                            <DateInput 
-                                label="Date of Death" 
-                                value={form.values.dod ? new Date(form.values.dod) : undefined}
-                                onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
-                            />
-                        </SimpleGrid>
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                            <Select
-                                label="Testate/Intestate"
-                                data={["Yes" , "No"]}
-                                value={form.values.isTestate ? form.values.isTestate : null}
-                                onChange={(value) => form.setFieldValue("isTestate", value ? value : "No")}
-                            />
-                            <Select
-                                label="Proof of sucession"
-                                data={["Yes" , "No"]}
-                                value={form.values.proofOfSucession ? form.values.proofOfSucession : null}
-                                onChange={(value) => form.setFieldValue("proofOfSucession", value ? value : "No")}
-                            />
-                        </SimpleGrid>
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                            <FileInput 
-                                label="Document" 
-                                clearable
-                                accept="image/png,image/jpeg,image/webp,image/jpg"
-                                leftSection={<IconFileInfo size={16} />}
-                                {...form.getInputProps('document')} 
-                            />
-                            <DateInput 
-                                label="Date of document" 
-                                value={form.values.dateOfDocument ? new Date(form.values.dateOfDocument) : undefined}
-                                onChange={(value) => form.setFieldValue('dateOfDocument', value?.toISOString() ? value.toISOString() : null)}
-                            />
-                        </SimpleGrid>
-                    </>}
-                    <SimpleGrid cols={{ base: 1, sm: 1 }} mt="md">
-                        <Select
-                            label="If claimant is minor"
-                            data={["Yes" , "No"]}
-                            value={form.values.isMinor ? form.values.isMinor : null}
-                            onChange={(value) => form.setFieldValue("isMinor", value ? value : "No")}
-                        />
-                    </SimpleGrid>
-                    {form.values.isMinor==="Yes" && <>
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                            <DateInput 
-                                label="DOB of Minor" 
-                                value={form.values.dobMinor ? new Date(form.values.dobMinor) : undefined}
-                                onChange={(value) => form.setFieldValue('dobMinor', value?.toISOString() ? value.toISOString() : null)}
-                            />
-                            <TextInput label="Name of Guardian of minor" {...form.getInputProps('guardianName')} />
-                        </SimpleGrid>
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                            <TextInput label="Relationship of Guardian with Minor" {...form.getInputProps('guardianRelationship')} />
-                            <TextInput label="PAN of Guardian" {...form.getInputProps('guardianPan')} />
-                        </SimpleGrid>
-                    </>}
-                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                        <Select
-                            label="Tax Status"
-                            data={["Resident Individual" , "Resident Minor (through Guardian)", "NRI", "PIO"]}
-                            value={form.values.taxStatus ? form.values.taxStatus : null}
-                            onChange={(value) => form.setFieldValue("taxStatus", value ? value : "No")}
-                        />
-                        <TextInput label="Select Claimant" {...form.getInputProps('selectClaimant')} />
-                        <Select
-                            label="Claimant Status"
-                            data={["Nominee" , "Legal Heir", "Successor to the Estate of the deceased", "Administrator of the Estate of the deceased"]}
-                            value={form.values.statusClaimant ? form.values.statusClaimant : null}
-                            onChange={(value) => form.setFieldValue("statusClaimant", value ? value : "No")}
-                        />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                        <TextInput label="Claimant Percentage" {...form.getInputProps('percentageClaimant')} />
-                        <Select
-                            label="Claimant Occupation"
-                            data={["Private Sector Service" , "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
-                            value={form.values.occupationClaimant ? form.values.occupationClaimant : null}
-                            onChange={(value) => form.setFieldValue("occupationClaimant", value ? value : "No")}
-                        />
-                    </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
-                        <Select
-                            label="Claimant Political Exposure"
-                            data={["a Politically Exposed Person" , "Related to a Politically Exposed Person", "Neither (Not applicable)"]}
-                            value={form.values.politicalExposureClaimant ? form.values.politicalExposureClaimant : null}
-                            onChange={(value) => form.setFieldValue("politicalExposureClaimant", value ? value : "No")}
-                        />
-                        <Select
-                            label="Claimant Annual Income"
-                            data={["Below 1 Lac" , "1-5 Lacs", "5-10 Lacs", "10-25 Lacs", "25 Lacs-1crore", ">1 crore"]}
-                            value={form.values.annualIncomeClaimant ? form.values.annualIncomeClaimant : null}
-                            onChange={(value) => form.setFieldValue("annualIncomeClaimant", value ? value : "No")}
-                        />
                     </SimpleGrid>
                 </>}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending} disabled={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending} data-disabled={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending}>

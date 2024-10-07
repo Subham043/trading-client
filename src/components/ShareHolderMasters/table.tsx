@@ -9,7 +9,7 @@ import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-
 import { page_routes } from "../../utils/page_routes";
 import dayjs from "dayjs";
 
-const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value: ShareHolderMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, caseType, noOfLegalHeir, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value: ShareHolderMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, caseType, noOfLegalHeir, noOfShareHolder, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareHolderMasters = useDeleteShareHolderMasterMutation(id, projectID?.toString() ?? '');
   const onDelete = async () => {
@@ -27,6 +27,11 @@ const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value
       <Table.Td>
           <Text fz="sm" fw={500}>
               {caseType}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {noOfShareHolder}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -94,6 +99,7 @@ const ShareHolderMastersTable:FC<{projectId: string, toggleModal: (value: ShareH
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Case Type</Table.Th>
+              <Table.Th style={{color: 'white'}}>No. Of Share Holders</Table.Th>
               <Table.Th style={{color: 'white'}}>No. Of Legal Heirs</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
