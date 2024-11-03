@@ -110,7 +110,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client Contact Phone Number" {...form.getInputProps('phone')} />
                     <TextInput label="Client Contact Email address" {...form.getInputProps('email')} />
-                    <TextInput label="Client Aadhaar Number (if applicable)" {...form.getInputProps('aadhaar')} />
+                    <TextInput label="Client Aadhaar Number (if applicable)" {...form.getInputProps('aadhar')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client PAN (Permanent Account Number)" {...form.getInputProps('pan')} />

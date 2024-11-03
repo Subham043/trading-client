@@ -37,7 +37,7 @@ const ShareCertificateMastersTableRow:FC<ShareCertificateMasterType & {totalFoli
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {folios.length > 0 && folios.map((folio, i) => <span key={i}>{folio}<br /></span>)}
+              {folios && folios.length > 0 && folios.map((folio, i) => <span key={i}>{folio}<br /></span>)}
           </Text>
       </Table.Td>
       <Table.Td>
