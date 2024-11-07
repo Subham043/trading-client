@@ -26,15 +26,15 @@ const FolioDetail:FC<FoliosListDrawerProps> = (props) => {
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Shareholder Name 1</Table.Th>
-                        <Table.Td>{data.shareholderName1}</Table.Td>
+                        <Table.Td>{data.shareholderName1?.shareholderName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Shareholder Name 2</Table.Th>
-                        <Table.Td>{data.shareholderName2}</Table.Td>
+                        <Table.Td>{data.shareholderName2?.shareholderName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Shareholder Name 3</Table.Th>
-                        <Table.Td>{data.shareholderName3}</Table.Td>
+                        <Table.Td>{data.shareholderName3?.shareholderName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Equity Type</Table.Th>
@@ -64,6 +64,34 @@ const FolioDetail:FC<FoliosListDrawerProps> = (props) => {
                         <Table.Th>Distinctive Nos To</Table.Th>
                         <Table.Td>{data.distinctiveNosTo}</Table.Td>
                     </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Endorsement</Table.Th>
+                        <Table.Td>{data.endorsement}</Table.Td>
+                    </Table.Tr>
+                    {
+                        data.endorsement === "Yes" && <>
+                            <Table.Tr>
+                                <Table.Th>Endorsement Shareholder Name 1</Table.Th>
+                                <Table.Td>{data.endorsementShareholderName1?.shareholderName}</Table.Td>
+                            </Table.Tr>
+                            <Table.Tr>
+                                <Table.Th>Endorsement Shareholder Name 2</Table.Th>
+                                <Table.Td>{data.endorsementShareholderName2?.shareholderName}</Table.Td>
+                            </Table.Tr>
+                            <Table.Tr>
+                                <Table.Th>Endorsement Shareholder Name 3</Table.Th>
+                                <Table.Td>{data.endorsementShareholderName3?.shareholderName}</Table.Td>
+                            </Table.Tr>
+                            <Table.Tr>
+                                <Table.Th>Endorsement Folio</Table.Th>
+                                <Table.Td>{data.endorsementFolio}</Table.Td>
+                            </Table.Tr>
+                            <Table.Tr>
+                                <Table.Th>Endorsement Date</Table.Th>
+                                <Table.Td>{dayjs(data.endorsementDate?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                            </Table.Tr>
+                        </>
+                    }
                     <Table.Tr>
                         <Table.Th>Share Certificate Master ID</Table.Th>
                         <Table.Td>{data.shareCertificateID}</Table.Td>

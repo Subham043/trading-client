@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { ShareHolderDetailType } from "../../utils/types";
@@ -7,12 +7,11 @@ import { useDeleteShareHolderDetailMutation, useShareHolderDetailsQuery } from "
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = ({id, namePan, phone, email, aadhar, pan, shareHolderMasterID, selectedData, setSelectedData, toggleModal, toggleDrawer, refetchMasterData}) => {
+const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareholderName, shareholderNameCertificate, namePan, phone, email, aadhar, pan, projectID, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteShareHolderDetails = useDeleteShareHolderDetailMutation(id, shareHolderMasterID||0)
+  const deleteShareHolderDetails = useDeleteShareHolderDetailMutation(id, projectID||0)
   const onDelete = async () => {
     await deleteShareHolderDetails.mutateAsync(undefined)
-    refetchMasterData()
   }
   return (
     <Table.Tr>
@@ -22,6 +21,16 @@ const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value
           onChange={() => setSelectedData(selectedData.includes(id) ? selectedData.filter((value) => value !== id) : [...selectedData, id])}
           color="gray"
         />
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {shareholderName}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {shareholderNameCertificate}
+          </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
@@ -82,10 +91,18 @@ const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value
   )
 }
 
-const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, shareHolderMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = (props) => {
-  const {data:shareHolderDetails, isFetching, isLoading, status, error, refetch} = useShareHolderDetailsQuery({shareHolderMasterId: props.shareHolderMasterId});
+const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, projectId: number, selectedData: number[], setSelectedData: (value: number[]) => void; setShareHolderCount: React.Dispatch<React.SetStateAction<number>>}> = (props) => {
+  const {data:shareHolderDetails, isFetching, isLoading, status, error, refetch} = useShareHolderDetailsQuery({projectId: props.projectId});
   const allChecked = (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
+  useEffect(() => {
+    if(shareHolderDetails && shareHolderDetails.shareHolderDetail.length>0){
+      props.setShareHolderCount(shareHolderDetails.shareHolderDetail.length)
+    }else{
+      props.setShareHolderCount(0)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shareHolderDetails])
   return (
     <ErrorBoundary hasData={shareHolderDetails ? shareHolderDetails.shareHolderDetail.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={true} total={shareHolderDetails?.total} current_page={shareHolderDetails?.current_page} last_page={shareHolderDetails?.last_page} refetch={refetch}>
       <Table.ScrollContainer minWidth={800}>
@@ -100,6 +117,8 @@ const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListMod
                     onChange={() => props.setSelectedData(allChecked ? [] : (shareHolderDetails ? shareHolderDetails.shareHolderDetail.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>Share Holder Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Name as per Share Holder Certificate</Table.Th>
               <Table.Th style={{color: 'white'}}>Name as per pan</Table.Th>
               <Table.Th style={{color: 'white'}}>Phone</Table.Th>
               <Table.Th style={{color: 'white'}}>Email</Table.Th>
@@ -109,7 +128,7 @@ const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListMod
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).map((item) => <ShareHolderDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} refetchMasterData={props.refetchMasterData} />)
+            (shareHolderDetails ? shareHolderDetails.shareHolderDetail : []).map((item) => <ShareHolderDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>

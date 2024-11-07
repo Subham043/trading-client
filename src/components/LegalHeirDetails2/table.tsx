@@ -3,15 +3,16 @@ import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { LegalHeirDetailType } from "../../utils/types";
 import { LegalHeirDetailsListDrawerProps, LegalHeirDetailsListModalProps } from "../../pages/legalHeirDetails/list";
-import { useDeleteLegalHeirDetailMutation, useLegalHeirDetailsQuery } from "../../hooks/data/legal_heir_details";
+import { useDeleteLegalHeirDetailMutation, useLegalHeirDetailsQuery } from "../../hooks/data/legal_heir_details2";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const LegalHeirDetailsTableRow:FC<LegalHeirDetailType & {toggleModal: (value: LegalHeirDetailsListModalProps) => void, toggleDrawer: (value: LegalHeirDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, namePan, phone, email, aadhar, pan, projectID, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
+const LegalHeirDetailsTableRow:FC<LegalHeirDetailType & {toggleModal: (value: LegalHeirDetailsListModalProps) => void, toggleDrawer: (value: LegalHeirDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = ({id, selectClaimant, isDeceased, shareholderNameDeath, isMinor, guardianName, guardianRelationship, shareHolderMasterID, selectedData, setSelectedData, toggleModal, toggleDrawer, refetchMasterData}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteLegalHeirDetails = useDeleteLegalHeirDetailMutation(id, projectID||0)
+  const deleteLegalHeirDetails = useDeleteLegalHeirDetailMutation(id, shareHolderMasterID||0)
   const onDelete = async () => {
     await deleteLegalHeirDetails.mutateAsync(undefined)
+    refetchMasterData()
   }
   return (
     <Table.Tr>
@@ -24,27 +25,32 @@ const LegalHeirDetailsTableRow:FC<LegalHeirDetailType & {toggleModal: (value: Le
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {namePan}
+              {selectClaimant}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {phone}
+              {isDeceased}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {email}
+              {shareholderNameDeath}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {aadhar}
+              {isMinor}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {pan}
+              {guardianName}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {guardianRelationship}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -81,8 +87,8 @@ const LegalHeirDetailsTableRow:FC<LegalHeirDetailType & {toggleModal: (value: Le
   )
 }
 
-const LegalHeirDetailsTable:FC<{toggleModal: (value: LegalHeirDetailsListModalProps) => void, toggleDrawer: (value: LegalHeirDetailsListDrawerProps) => void, projectId: number, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
-  const {data:legalHeirDetails, isFetching, isLoading, status, error, refetch} = useLegalHeirDetailsQuery({projectId: props.projectId});
+const LegalHeirDetailsTable:FC<{toggleModal: (value: LegalHeirDetailsListModalProps) => void, toggleDrawer: (value: LegalHeirDetailsListDrawerProps) => void, shareHolderMasterId: number, selectedData: number[], setSelectedData: (value: number[]) => void; refetchMasterData: ()=>void}> = (props) => {
+  const {data:legalHeirDetails, isFetching, isLoading, status, error, refetch} = useLegalHeirDetailsQuery({shareHolderMasterId: props.shareHolderMasterId});
   const allChecked = (legalHeirDetails ? legalHeirDetails.legalHeirDetail : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (legalHeirDetails ? legalHeirDetails.legalHeirDetail : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
@@ -99,16 +105,17 @@ const LegalHeirDetailsTable:FC<{toggleModal: (value: LegalHeirDetailsListModalPr
                     onChange={() => props.setSelectedData(allChecked ? [] : (legalHeirDetails ? legalHeirDetails.legalHeirDetail.map((value) => value.id) : []))}
                   />
                 </Table.Th>
-              <Table.Th style={{color: 'white'}}>Name as per pan</Table.Th>
-              <Table.Th style={{color: 'white'}}>Phone</Table.Th>
-              <Table.Th style={{color: 'white'}}>Email</Table.Th>
-              <Table.Th style={{color: 'white'}}>Aadhar</Table.Th>
-              <Table.Th style={{color: 'white'}}>Pan</Table.Th>
+              <Table.Th style={{color: 'white'}}>Claimaint Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Is Deceased?</Table.Th>
+              <Table.Th style={{color: 'white'}}>Shareholder Name (Death Certificate)</Table.Th>
+              <Table.Th style={{color: 'white'}}>Is Minor?</Table.Th>
+              <Table.Th style={{color: 'white'}}>Gurdian Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Gurdian Relatioship</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (legalHeirDetails ? legalHeirDetails.legalHeirDetail : []).map((item) => <LegalHeirDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (legalHeirDetails ? legalHeirDetails.legalHeirDetail : []).map((item) => <LegalHeirDetailsTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} refetchMasterData={props.refetchMasterData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>

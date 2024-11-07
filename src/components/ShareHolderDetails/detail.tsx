@@ -1,18 +1,25 @@
 import { FC } from "react"
-import { Table, Title } from '@mantine/core';
+import { Table } from '@mantine/core';
 import { ShareHolderDetailsListDrawerProps } from "../../pages/shareHolderDetails/list";
 import { useShareHolderDetailQuery } from "../../hooks/data/share_holder_details";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
-import { ShareHolderMasterType } from "../../utils/types";
 
-const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolderMasterData: ShareHolderMasterType; refetchMasterData: ()=>void}> = (props) => {
+const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) => {
   const {data, isFetching, isLoading, status, error, refetch} = useShareHolderDetailQuery(props.drawerStatus ? props.id : 0, props.drawerStatus);
   return (
     <ErrorBoundary hasData={data ? true : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} refetch={refetch}>
         {(data) && <Table.ScrollContainer minWidth={'100%'}>
             <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                 <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Share Holder Name</Table.Th>
+                        <Table.Td>{data.shareholderName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Share Holder Name as per Certificate</Table.Th>
+                        <Table.Td>{data.shareholderNameCertificate}</Table.Td>
+                    </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Name as Per Pan</Table.Th>
                         <Table.Td>{data.namePan}</Table.Td>
@@ -24,6 +31,10 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                     <Table.Tr>
                         <Table.Th>Name as Per CML</Table.Th>
                         <Table.Td>{data.nameCml}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Father/Husband Name</Table.Th>
+                        <Table.Td>{data.husbandName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client Contact Phone Number</Table.Th>
@@ -44,6 +55,10 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                     <Table.Tr>
                         <Table.Th>Client Age</Table.Th>
                         <Table.Td>{data.age}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Occupation</Table.Th>
+                        <Table.Td>{data.occupation}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client Date of Birth (if applicable)</Table.Th>
@@ -82,6 +97,10 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                         <Table.Td>{data.bankName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
+                        <Table.Th>Client Branch name</Table.Th>
+                        <Table.Td>{data.branchName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
                         <Table.Th>Client Bank address</Table.Th>
                         <Table.Td>{data.addressBank}</Table.Td>
                     </Table.Tr>
@@ -110,6 +129,10 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                         <Table.Td>{data.bankAccountType}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
+                        <Table.Th>Client Account Opening Date</Table.Th>
+                        <Table.Td>{dayjs(data.accountOpeningDate?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
                         <Table.Th>Client address as per Bank</Table.Th>
                         <Table.Td>{data.addressBank}</Table.Td>
                     </Table.Tr>
@@ -129,19 +152,6 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps & {shareHolde
                         <Table.Th>Demat Account No.</Table.Th>
                         <Table.Td>{data.dematAccountNo}</Table.Td>
                     </Table.Tr>
-                    {props.shareHolderMasterData.caseType.includes("Claim") && <>
-                        <Table.Tr>
-                            <Table.Th colSpan={2}><Title order={5} style={{textAlign: 'center'}}>Claim</Title></Table.Th>
-                        </Table.Tr>
-                        <Table.Tr>
-                            <Table.Th>Share Holder Name</Table.Th>
-                            <Table.Td>{data.shareholderName}</Table.Td>
-                        </Table.Tr>
-                        <Table.Tr>
-                            <Table.Th>Share Holder Name as per Certificate</Table.Th>
-                            <Table.Td>{data.shareholderNameCertificate}</Table.Td>
-                        </Table.Tr>
-                    </>}
                 </Table.Thead>
             </Table>
         </Table.ScrollContainer>}

@@ -20,9 +20,9 @@ export const LegalHeirDetailKey = "legal_heir_detail";
 export const LegalHeirDetailsQueryKey = "legal_heir_details";
 
 export const useLegalHeirDetailsQuery: (params: {
-  projectId: number;
+  shareHolderMasterId: number;
 }) => UseQueryResult<PaginationType<{ legalHeirDetail: (LegalHeirDetailType & {consolidatedHolding:string; totalMarketValue:number})[] }>, unknown> = ({
-  projectId,
+  shareHolderMasterId,
 }) => {
   const { axios } = useAxios();
   const [searchParams] = useSearchParams();
@@ -31,7 +31,7 @@ export const useLegalHeirDetailsQuery: (params: {
   const search = searchParams.get("search") || "";
 
   return useQuery({
-    queryKey: [LegalHeirDetailsQueryKey, projectId, page, limit, search],
+    queryKey: [LegalHeirDetailsQueryKey, shareHolderMasterId, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
@@ -39,7 +39,7 @@ export const useLegalHeirDetailsQuery: (params: {
         }>;
       }>(
         api_routes.legalHeirDetails +
-          `/list/${projectId}?page=${page}&limit=${limit}&search=${search}`
+          `/list/${shareHolderMasterId}?page=${page}&limit=${limit}&search=${search}`
       );
       return response.data.data;
     },
@@ -71,7 +71,7 @@ export const useLegalHeirDetailsQuerySetData = () => {
   const search = searchParams.get("search") || "";
 
   const addLegalHeirDetails = (
-    projectId: number,
+    shareHolderMasterId: number,
     newLegalHeirDetailVal: LegalHeirDetailType
   ) => {
     queryClient.setQueryData<
@@ -81,7 +81,7 @@ export const useLegalHeirDetailsQuerySetData = () => {
     >(
       [
         LegalHeirDetailsQueryKey,
-        projectId,
+        shareHolderMasterId,
         QueryInitialPageParam.toString(),
         limit,
         search,
@@ -102,7 +102,7 @@ export const useLegalHeirDetailsQuerySetData = () => {
 
   const updateLegalHeirDetails = (
     id: number,
-    projectId: number,
+    shareHolderMasterId: number,
     updateLegalHeirDetailVal: LegalHeirDetailType
   ) => {
     queryClient.setQueryData<
@@ -110,7 +110,7 @@ export const useLegalHeirDetailsQuerySetData = () => {
         legalHeirDetail: LegalHeirDetailType[];
       }>
     >(
-      [LegalHeirDetailsQueryKey, projectId, page, limit, search],
+      [LegalHeirDetailsQueryKey, shareHolderMasterId, page, limit, search],
       (prev) => {
         if (prev) {
           return {
@@ -129,13 +129,13 @@ export const useLegalHeirDetailsQuerySetData = () => {
     );
   };
 
-  const deleteLegalHeirDetails = (id: number, projectId: number) => {
+  const deleteLegalHeirDetails = (id: number, shareHolderMasterId: number) => {
     queryClient.setQueryData<
       PaginationType<{
         legalHeirDetail: LegalHeirDetailType[];
       }>
     >(
-      [LegalHeirDetailsQueryKey, projectId, page, limit, search],
+      [LegalHeirDetailsQueryKey, shareHolderMasterId, page, limit, search],
       (prev) => {
         if (prev) {
           return {
@@ -181,7 +181,7 @@ export const useLegalHeirDetailQuerySetData = () => {
 
 export const useUpdateLegalHeirDetailMutation = (
   id: number,
-  projectId: number
+  shareHolderMasterId: number
 ) => {
   const { axios } = useAxios();
   const { updateLegalHeirDetails } = useLegalHeirDetailsQuerySetData();
@@ -206,7 +206,7 @@ export const useUpdateLegalHeirDetailMutation = (
     onSuccess: (updateLegalHeirDetailVal) => {
       // ✅ update detail view directly
       updateLegalHeirDetail(id, updateLegalHeirDetailVal);
-      updateLegalHeirDetails(id, projectId, updateLegalHeirDetailVal);
+      updateLegalHeirDetails(id, shareHolderMasterId, updateLegalHeirDetailVal);
       toastSuccess("Legal Heir Detail updated successfully.");
     },
     onError: (error) => {
@@ -217,7 +217,7 @@ export const useUpdateLegalHeirDetailMutation = (
   });
 };
 
-export const useAddLegalHeirDetailMutation = (projectId: number) => {
+export const useAddLegalHeirDetailMutation = (shareHolderMasterId: number) => {
   const { axios } = useAxios();
   const { addLegalHeirDetails } = useLegalHeirDetailsQuerySetData();
   const { addLegalHeirDetail } = useLegalHeirDetailQuerySetData();
@@ -235,7 +235,7 @@ export const useAddLegalHeirDetailMutation = (projectId: number) => {
       const response = await axios.post<{
         data: LegalHeirDetailType;
       }>(
-        api_routes.legalHeirDetails + `/create/${projectId}`,
+        api_routes.legalHeirDetails + `/create/${shareHolderMasterId}`,
         form_data
       );
       return response.data.data;
@@ -244,7 +244,7 @@ export const useAddLegalHeirDetailMutation = (projectId: number) => {
     onSuccess: (newLegalHeirDetailVal) => {
       // ✅ update detail view directly
       addLegalHeirDetail(newLegalHeirDetailVal);
-      addLegalHeirDetails(projectId, newLegalHeirDetailVal);
+      addLegalHeirDetails(shareHolderMasterId, newLegalHeirDetailVal);
       toastSuccess("Legal Heir Detail created successfully.");
     },
     onError: (error) => {
@@ -257,7 +257,7 @@ export const useAddLegalHeirDetailMutation = (projectId: number) => {
 
 export const useDeleteLegalHeirDetailMutation = (
   id: number,
-  projectId: number
+  shareHolderMasterId: number
 ) => {
   const { axios } = useAxios();
   const { deleteLegalHeirDetails } = useLegalHeirDetailsQuerySetData();
@@ -275,7 +275,7 @@ export const useDeleteLegalHeirDetailMutation = (
     onSuccess: () => {
       // ✅ update detail view directly
       deleteLegalHeirDetail(id);
-      deleteLegalHeirDetails(id, projectId);
+      deleteLegalHeirDetails(id, shareHolderMasterId);
       toastSuccess("Legal Heir Detail deleted successfully.");
     },
     onError: (error) => {

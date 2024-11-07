@@ -2,11 +2,11 @@ import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, Divider, SimpleGrid, TextInput, Title } from "@mantine/core";
+import { Button, SimpleGrid, TextInput } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddShareHolderDetailMutation, useShareHolderDetailQuery, useUpdateShareHolderDetailMutation } from "../../hooks/data/share_holder_details";
 import { MutateOptions } from "@tanstack/react-query";
-import { AxiosErrorResponseType, ShareHolderDetailFormType, ShareHolderDetailType, ShareHolderMasterType } from "../../utils/types";
+import { AxiosErrorResponseType, ShareHolderDetailFormType, ShareHolderDetailType } from "../../utils/types";
 import { ShareHolderDetailsListModalProps } from "../../pages/shareHolderDetails/list";
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -23,12 +23,12 @@ type ShareHolderDetailsFormProps = {
 }
 type foliosMutateOptionsType = MutateOptions<ShareHolderDetailType, Error, ShareHolderDetailFormType, unknown>;
 
-const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMasterId: number, shareHolderMasterData: ShareHolderMasterType, toggleModal: (value: ShareHolderDetailsListModalProps) => void; refetchMasterData: ()=>void}> = (props) => {
+const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: number, toggleModal: (value: ShareHolderDetailsListModalProps) => void;}> = (props) => {
 
     const {toastError} = useToast();
     const {data, isFetching, isLoading, status, error,  refetch} = useShareHolderDetailQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
-    const addShareHolderDetails = useAddShareHolderDetailMutation(props.mainShareHolderMasterId)
-    const updateShareHolderDetails = useUpdateShareHolderDetailMutation(props.type === "Edit" ? props.id : 0, props.mainShareHolderMasterId)
+    const addShareHolderDetails = useAddShareHolderDetailMutation(props.mainProjectId)
+    const updateShareHolderDetails = useUpdateShareHolderDetailMutation(props.type === "Edit" ? props.id : 0, props.mainProjectId)
     const form = useForm<SchemaType>({
         initialValues,
         validate: yupResolver(schema),
@@ -41,11 +41,14 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 namePan: (data && (typeof data.namePan === "string")) ? data.namePan : "",
                 nameAadhar: (data && (typeof data.nameAadhar === "string")) ? data.nameAadhar : "",
                 nameCml: (data && (typeof data.nameCml === "string")) ? data.nameCml : "",
+                husbandName: (data && (typeof data.husbandName === "string")) ? data.husbandName : "",
+                occupation: (data && (typeof data.occupation === "string")) ? data.occupation : "",
                 phone: (data && (typeof data.phone === "string")) ? data.phone : "",
                 email: (data && (typeof data.email === "string")) ? data.email : "",
                 aadhar: (data && (typeof data.aadhar === "string")) ? data.aadhar : "",
                 pan: (data && (typeof data.pan === "string")) ? data.pan : "",
                 dob: (data && (typeof data.dob === "string")) ? data.dob : "",
+                accountOpeningDate: (data && (typeof data.accountOpeningDate === "string")) ? data.accountOpeningDate : "",
                 age: (data && (typeof data.age === "string")) ? data.age : "",
                 nationality: (data && (typeof data.nationality === "string")) ? data.nationality : "",
                 placeOfBirth: (data && (typeof data.placeOfBirth === "string")) ? data.placeOfBirth : "",
@@ -56,6 +59,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                 dematAccountNo: (data && (typeof data.dematAccountNo === "string")) ? data.dematAccountNo : "",
                 nameBank: (data && (typeof data.nameBank === "string")) ? data.nameBank : "",
                 bankName: (data && (typeof data.bankName === "string")) ? data.bankName : "",
+                branchName: (data && (typeof data.branchName === "string")) ? data.branchName : "",
                 bankAddress: (data && (typeof data.bankAddress === "string")) ? data.bankAddress : "",
                 bankEmail: (data && (typeof data.bankEmail === "string")) ? data.bankEmail : "",
                 bankPhone: (data && (typeof data.bankPhone === "string")) ? data.bankPhone : "",
@@ -76,8 +80,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
         const foliosMutateOptions:foliosMutateOptionsType = {
             onSuccess: () => {
                 props.type==="Create" && form.reset();
-                props.refetchMasterData()
-                props.toggleModal({status: false, type: "Create", shareHolderMasterId: props.mainShareHolderMasterId});
+                props.toggleModal({status: false, type: "Create", projectId: props.mainProjectId});
             },
             onError: (error:Error) => {
                 if(isAxiosError<AxiosErrorResponseType>(error)){
@@ -102,7 +105,11 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 3 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                    <TextInput label="Share Holder Name" {...form.getInputProps('shareholderName')} />
+                    <TextInput label="Share Holder Name as per Certificate" {...form.getInputProps('shareholderNameCertificate')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Name as per PAN" {...form.getInputProps('namePan')} />
                     <TextInput label="Name as per Aadhaar" {...form.getInputProps('nameAadhar')} />
                     <TextInput label="Name as per CML" {...form.getInputProps('nameCml')} />
@@ -147,28 +154,24 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainShareHolderMa
                     <TextInput label="Client Bank account type" {...form.getInputProps('bankAccountType')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="Client Bank Branch Name" {...form.getInputProps('branchName')} />
+                    <DateInput 
+                        label="Client Account Opening Date" 
+                        value={form.values.accountOpeningDate ? new Date(form.values.accountOpeningDate) : undefined}
+                        onChange={(value) => form.setFieldValue('accountOpeningDate', value?.toISOString() ? value.toISOString() : null)}
+                    />
                     <TextInput label="Client address as per Bank" {...form.getInputProps('addressBank')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client Email ID as per Bank" {...form.getInputProps('emailBank')} />
                     <TextInput label="Client Phone number as per Bank" {...form.getInputProps('phoneBank')} />
+                    <TextInput label="Client Husband/Father Name" {...form.getInputProps('husbandName')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
+                    <TextInput label="Client Occupation" {...form.getInputProps('occupation')} />
                 </SimpleGrid>
-                {props.shareHolderMasterData.caseType.includes("Claim") && <>
-                    <Divider 
-                        my="xs" 
-                        variant="dashed"
-                        label={
-                            <Title order={5}>Claim</Title>
-                        } 
-                        labelPosition="left"
-                    />
-                    <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                        <TextInput label="Share Holder Name" {...form.getInputProps('shareholderName')} />
-                        <TextInput label="Share Holder Name as per Certificate" {...form.getInputProps('shareholderNameCertificate')} />
-                    </SimpleGrid>
-                </>}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending} disabled={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending} data-disabled={props.type === "Create" ? addShareHolderDetails.isPending : updateShareHolderDetails.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>

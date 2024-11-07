@@ -7,20 +7,32 @@ enum EquityType {
   Rights = "Rights",
 }
 
+
+enum TruthyType {
+  Yes = "Yes",
+  No = "No",
+}
+
 export type SchemaType = {
   equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio: string;
   certificateNumber?: string | undefined;
   certificateSerialNumber?: string | undefined;
-  shareholderName1?: string | undefined;
-  shareholderName2?: string | undefined;
-  shareholderName3?: string | undefined;
+  shareholderName1ID?: number | undefined;
+  shareholderName2ID?: number | undefined;
+  shareholderName3ID?: number | undefined;
   noOfShares?: string | undefined;
   noOfSharesWords?: string | undefined;
   dateOfAllotment?: string | undefined;
   faceValue: number | undefined;
   distinctiveNosFrom?: string | undefined;
   distinctiveNosTo?: string | undefined;
+  endorsement: "Yes" | "No";
+  endorsementFolio?: string | undefined;
+  endorsementDate?: string | undefined;
+  endorsementShareholderName1ID?: number | undefined;
+  endorsementShareholderName2ID?: number | undefined;
+  endorsementShareholderName3ID?: number | undefined;
 };
 
 export const initialValues: SchemaType = {
@@ -28,15 +40,21 @@ export const initialValues: SchemaType = {
   Folio: "",
   certificateNumber: undefined,
   certificateSerialNumber: undefined,
-  shareholderName1: undefined,
-  shareholderName2: undefined,
-  shareholderName3: undefined,
+  shareholderName1ID: undefined,
+  shareholderName2ID: undefined,
+  shareholderName3ID: undefined,
   noOfShares: undefined,
   noOfSharesWords: undefined,
   dateOfAllotment: undefined,
   faceValue: undefined,
   distinctiveNosFrom: undefined,
   distinctiveNosTo: undefined,
+  endorsement: "No",
+  endorsementFolio: undefined,
+  endorsementDate: undefined,
+  endorsementShareholderName1ID: undefined,
+  endorsementShareholderName2ID: undefined,
+  endorsementShareholderName3ID: undefined,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -56,17 +74,17 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .string()
     .typeError("Certificate Serial Number must be a string")
     .optional(),
-  shareholderName1: yup
-    .string()
-    .typeError("Shareholder Name 1 must be a string")
+  shareholderName1ID: yup
+    .number()
+    .typeError("Shareholder Name 1 must be a number")
     .required("Shareholder Name 1 is required"),
-  shareholderName2: yup
-    .string()
-    .typeError("Shareholder Name 2 must be a string")
+  shareholderName2ID: yup
+    .number()
+    .typeError("Shareholder Name 2 must be a number")
     .optional(),
-  shareholderName3: yup
-    .string()
-    .typeError("Shareholder Name 3 must be a string")
+  shareholderName3ID: yup
+    .number()
+    .typeError("Shareholder Name 3 must be a number")
     .optional(),
   noOfShares: yup
     .string()
@@ -91,5 +109,29 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   faceValue: yup
     .number()
     .typeError("Paid Up value must be a number")
+    .optional(),
+  endorsement: yup
+    .mixed<TruthyType>()
+    .oneOf(Object.values(TruthyType), "Invalid Endorsement")
+    .required("Endorsement is required"),
+  endorsementFolio: yup
+    .string()
+    .typeError("Endorsement Folio must be a string")
+    .optional(),
+  endorsementDate: yup
+    .string()
+    .typeError("Endorsement Date must be a string")
+    .optional(),
+  endorsementShareholderName1ID: yup
+    .number()
+    .typeError("Endorsement Shareholder Name 1 must be a number")
+    .optional(),
+  endorsementShareholderName2ID: yup
+    .number()
+    .typeError("Endorsement Shareholder Name 2 must be a number")
+    .optional(),
+  endorsementShareholderName3ID: yup
+    .number()
+    .typeError("Endorsement Shareholder Name 3 must be a number")
     .optional(),
 });

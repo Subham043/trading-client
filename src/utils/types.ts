@@ -305,12 +305,6 @@ export type ShareCertificateMasterType = {
     | "REiT"
     | "Equity"
     | "Warrant";
-  endorsement: "Yes" | "No";
-  endorsementFolio?: string | null;
-  endorsementDate?: Date | null;
-  endorsementShareholderName1?: string | null;
-  endorsementShareholderName2?: string | null;
-  endorsementShareholderName3?: string | null;
   companyMaster?: CompanyMasterQueryType | null;
   companyID?: number | null;
   projectID?: number | null;
@@ -329,15 +323,27 @@ export type FolioType = {
   Folio?: string | null;
   certificateNumber?: string | null;
   certificateSerialNumber?: string | null;
-  shareholderName1?: string | null;
-  shareholderName2?: string | null;
-  shareholderName3?: string | null;
+  shareholderName1ID?: number | null;
+  shareholderName1?: ShareHolderDetailType | null;
+  shareholderName2ID?: number | null;
+  shareholderName2?: ShareHolderDetailType | null;
+  shareholderName3ID?: number | null;
+  shareholderName3?: ShareHolderDetailType | null;
   noOfShares?: string | null;
   noOfSharesWords?: string | null;
   dateOfAllotment?: Date | null;
   faceValue: number | null;
   distinctiveNosFrom?: string | null;
   distinctiveNosTo?: string | null;
+  endorsement: "Yes" | "No";
+  endorsementFolio?: string | null;
+  endorsementDate?: Date | null;
+  endorsementShareholderName1ID?: number | null;
+  endorsementShareholderName1?: ShareHolderDetailType | null;
+  endorsementShareholderName2ID?: number | null;
+  endorsementShareholderName2?: ShareHolderDetailType | null;
+  endorsementShareholderName3ID?: number | null;
+  endorsementShareholderName3?: ShareHolderDetailType | null;
   shareCertificateMaster?: ShareCertificateMasterType | null;
   shareCertificateID?: number | null;
   createdAt?: Date | null;
@@ -447,6 +453,8 @@ export type ShareHolderDetailType = {
   namePan?: string | null;
   nameAadhar?: string | null;
   nameCml?: string | null;
+  husbandName?: string | null;
+  occupation?: string | null;
   phone?: string | null;
   email?: string | null;
   aadhar?: string | null;
@@ -461,19 +469,21 @@ export type ShareHolderDetailType = {
   DPID?: string | null;
   dematAccountNo?: string | null;
   bankName?: string | null;
+  branchName?: string | null;
   nameBank?: string | null;
   bankAddress?: string | null;
   bankEmail?: string | null;
   bankPhone?: string | null;
   bankMICR?: string | null;
   bankIFS?: string | null;
+  accountOpeningDate?: string | null;
   bankAccountNo?: string | null;
   bankAccountType?: string | null;
   addressBank?: string | null;
   emailBank?: string | null;
   phoneBank?: string | null;
   pincodeBank?: string | null;
-  shareHolderMasterID?: number | null;
+  projectID?: number | null;
   createdAt?: Date | null;
 };
 
@@ -481,11 +491,58 @@ export interface ShareHolderDetailFormType
   extends Omit<
     ShareHolderDetailType,
     | "id"
-    | "shareHolderMasterID"
+    | "projectID"
     | "createdAt"
   > {}
 
 export type LegalHeirDetailType = {
+  id: number;
+  namePan?: string | null;
+  nameAadhar?: string | null;
+  nameCml?: string | null;
+  husbandName?: string | null;
+  occupation?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  aadhar?: string | null;
+  pan?: string | null;
+  dob?: string | null;
+  age?: string | null;
+  nationality?: string | null;
+  placeOfBirth?: string | null;
+  city?: string | null;
+  state?: string | null;
+  countryOfBirth?: string | null;
+  DPID?: string | null;
+  dematAccountNo?: string | null;
+  bankName?: string | null;
+  branchName?: string | null;
+  nameBank?: string | null;
+  bankAddress?: string | null;
+  bankEmail?: string | null;
+  bankPhone?: string | null;
+  bankMICR?: string | null;
+  bankIFS?: string | null;
+  accountOpeningDate?: string | null;
+  bankAccountNo?: string | null;
+  bankAccountType?: string | null;
+  addressBank?: string | null;
+  emailBank?: string | null;
+  phoneBank?: string | null;
+  pincodeBank?: string | null;
+  projectID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface LegalHeirDetailFormType
+  extends Omit<
+    LegalHeirDetailType,
+    | "id"
+    | "projectID"
+    | "createdAt"
+  > {}
+
+export type LegalHeirDetailType2 = {
   id: number;
   isDeceased?: string | null;
   shareholderNameDeath?: string | null;
@@ -511,9 +568,9 @@ export type LegalHeirDetailType = {
   createdAt?: Date | null;
 };
 
-export interface LegalHeirDetailFormType
+export interface LegalHeirDetailFormType2
   extends Omit<
-    LegalHeirDetailType,
+    LegalHeirDetailType2,
     | "id"
     | "shareHolderMasterID"
     | "createdAt"

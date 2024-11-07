@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, Select, SimpleGrid, TextInput } from "@mantine/core";
+import { Button, Select, SimpleGrid } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddShareCertificateMasterMutation, useShareCertificateMasterQuery, useUpdateShareCertificateMasterMutation } from "../../hooks/data/share_certificate_masters";
 import { MutateOptions } from "@tanstack/react-query";
@@ -11,7 +11,6 @@ import { ShareCertificateMastersListModalProps } from "../../pages/shareCertific
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import debounce from "lodash.debounce";
-import { DateInput } from "@mantine/dates";
 import { useCompanyMastersSelectQuery } from "../../hooks/data/company_masters";
 
 
@@ -46,12 +45,6 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
             setSearch((data.companyMaster && data.companyMaster.currentNameChangeMasters && data.companyMaster.currentNameChangeMasters.currentName) ? data.companyMaster.currentNameChangeMasters.currentName.toString() : "");
             form.setValues({
                 instrumentType: data.instrumentType ? data.instrumentType : undefined,
-                endorsement: data.endorsement ? data.endorsement : undefined,
-                endorsementFolio: data.endorsementFolio ? data.endorsementFolio : undefined,
-                endorsementDate: (data  && data.endorsementDate) ? data.endorsementDate.toString() : undefined,
-                endorsementShareholderName1: data.endorsementShareholderName1 ? data.endorsementShareholderName1 : undefined,
-                endorsementShareholderName2: data.endorsementShareholderName2 ? data.endorsementShareholderName2 : undefined,
-                endorsementShareholderName3: data.endorsementShareholderName3 ? data.endorsementShareholderName3 : undefined,
                 companyID: data.companyID ? data.companyID : undefined,
             });
         }
@@ -121,29 +114,6 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
                         onSearchChange={searchHandler}
                     />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <Select
-                        label="Endorsement"
-                        withAsterisk
-                        data={["Yes", "No"]}
-                        value={form.values.endorsement ? form.values.endorsement : null}
-                        onChange={(value) => form.setFieldValue("endorsement", value ? value as "Yes" | "No" : "No")}
-                    />
-                    {form.values.endorsement === "Yes" && <>
-                        <TextInput label="Endorsement Folio" {...form.getInputProps('endorsementFolio')} />
-                        <DateInput
-                            value={form.values.endorsementDate ? new Date(form.values.endorsementDate) : undefined}
-                            onChange={(value) => form.setFieldValue('endorsementDate', value?.toISOString())}
-                            label="Endorsement Date"
-                            placeholder="Endorsement Date"
-                        />
-                    </>}
-                </SimpleGrid>
-                {form.values.endorsement === "Yes" && <><SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="Endorsement Shareholder Name 1" {...form.getInputProps('endorsementShareholderName1')} />
-                    <TextInput label="Endorsement Shareholder Name 2" {...form.getInputProps('endorsementShareholderName2')} />
-                    <TextInput label="Endorsement Shareholder Name 3" {...form.getInputProps('endorsementShareholderName3')} />
-                </SimpleGrid></>}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addShareCertificateMasters.isPending : updateShareCertificateMasters.isPending} disabled={props.type === "Create" ? addShareCertificateMasters.isPending : updateShareCertificateMasters.isPending} data-disabled={props.type === "Create" ? addShareCertificateMasters.isPending : updateShareCertificateMasters.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>

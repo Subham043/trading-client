@@ -48,13 +48,13 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                     </Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
+            <Box bg="transparent" mt="md">
+                <div style={{textAlign: 'center'}}>
+                    <Text size="xl" fw={700} p="sm" >Folios</Text>
+                </div>
+                <FoliosListPage projectId={data.projectID || 0} />
+            </Box>
         </>}
-        <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Folios</Text>
-            </div>
-            <FoliosListPage />
-        </Box>
     </ErrorBoundary>
   );
 }

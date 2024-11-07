@@ -20,9 +20,9 @@ export const ShareHolderDetailKey = "share_holder_detail";
 export const ShareHolderDetailsQueryKey = "share_holder_details";
 
 export const useShareHolderDetailsQuery: (params: {
-  shareHolderMasterId: number;
+  projectId: number;
 }) => UseQueryResult<PaginationType<{ shareHolderDetail: (ShareHolderDetailType & {consolidatedHolding:string; totalMarketValue:number})[] }>, unknown> = ({
-  shareHolderMasterId,
+  projectId,
 }) => {
   const { axios } = useAxios();
   const [searchParams] = useSearchParams();
@@ -31,7 +31,7 @@ export const useShareHolderDetailsQuery: (params: {
   const search = searchParams.get("search") || "";
 
   return useQuery({
-    queryKey: [ShareHolderDetailsQueryKey, shareHolderMasterId, page, limit, search],
+    queryKey: [ShareHolderDetailsQueryKey, projectId, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
@@ -39,7 +39,7 @@ export const useShareHolderDetailsQuery: (params: {
         }>;
       }>(
         api_routes.shareHolderDetails +
-          `/list/${shareHolderMasterId}?page=${page}&limit=${limit}&search=${search}`
+          `/list/${projectId}?page=${page}&limit=${limit}&search=${search}`
       );
       return response.data.data;
     },
@@ -71,7 +71,7 @@ export const useShareHolderDetailsQuerySetData = () => {
   const search = searchParams.get("search") || "";
 
   const addShareHolderDetails = (
-    shareHolderMasterId: number,
+    projectId: number,
     newShareHolderDetailVal: ShareHolderDetailType
   ) => {
     queryClient.setQueryData<
@@ -81,7 +81,7 @@ export const useShareHolderDetailsQuerySetData = () => {
     >(
       [
         ShareHolderDetailsQueryKey,
-        shareHolderMasterId,
+        projectId,
         QueryInitialPageParam.toString(),
         limit,
         search,
@@ -102,7 +102,7 @@ export const useShareHolderDetailsQuerySetData = () => {
 
   const updateShareHolderDetails = (
     id: number,
-    shareHolderMasterId: number,
+    projectId: number,
     updateShareHolderDetailVal: ShareHolderDetailType
   ) => {
     queryClient.setQueryData<
@@ -110,7 +110,7 @@ export const useShareHolderDetailsQuerySetData = () => {
         shareHolderDetail: ShareHolderDetailType[];
       }>
     >(
-      [ShareHolderDetailsQueryKey, shareHolderMasterId, page, limit, search],
+      [ShareHolderDetailsQueryKey, projectId, page, limit, search],
       (prev) => {
         if (prev) {
           return {
@@ -129,13 +129,13 @@ export const useShareHolderDetailsQuerySetData = () => {
     );
   };
 
-  const deleteShareHolderDetails = (id: number, shareHolderMasterId: number) => {
+  const deleteShareHolderDetails = (id: number, projectId: number) => {
     queryClient.setQueryData<
       PaginationType<{
         shareHolderDetail: ShareHolderDetailType[];
       }>
     >(
-      [ShareHolderDetailsQueryKey, shareHolderMasterId, page, limit, search],
+      [ShareHolderDetailsQueryKey, projectId, page, limit, search],
       (prev) => {
         if (prev) {
           return {
@@ -181,7 +181,7 @@ export const useShareHolderDetailQuerySetData = () => {
 
 export const useUpdateShareHolderDetailMutation = (
   id: number,
-  shareHolderMasterId: number
+  projectId: number
 ) => {
   const { axios } = useAxios();
   const { updateShareHolderDetails } = useShareHolderDetailsQuerySetData();
@@ -206,8 +206,8 @@ export const useUpdateShareHolderDetailMutation = (
     onSuccess: (updateShareHolderDetailVal) => {
       // ✅ update detail view directly
       updateShareHolderDetail(id, updateShareHolderDetailVal);
-      updateShareHolderDetails(id, shareHolderMasterId, updateShareHolderDetailVal);
-      toastSuccess("Name Change Master updated successfully.");
+      updateShareHolderDetails(id, projectId, updateShareHolderDetailVal);
+      toastSuccess("Share Holder Detail updated successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -217,7 +217,7 @@ export const useUpdateShareHolderDetailMutation = (
   });
 };
 
-export const useAddShareHolderDetailMutation = (shareHolderMasterId: number) => {
+export const useAddShareHolderDetailMutation = (projectId: number) => {
   const { axios } = useAxios();
   const { addShareHolderDetails } = useShareHolderDetailsQuerySetData();
   const { addShareHolderDetail } = useShareHolderDetailQuerySetData();
@@ -235,7 +235,7 @@ export const useAddShareHolderDetailMutation = (shareHolderMasterId: number) => 
       const response = await axios.post<{
         data: ShareHolderDetailType;
       }>(
-        api_routes.shareHolderDetails + `/create/${shareHolderMasterId}`,
+        api_routes.shareHolderDetails + `/create/${projectId}`,
         form_data
       );
       return response.data.data;
@@ -244,8 +244,8 @@ export const useAddShareHolderDetailMutation = (shareHolderMasterId: number) => 
     onSuccess: (newShareHolderDetailVal) => {
       // ✅ update detail view directly
       addShareHolderDetail(newShareHolderDetailVal);
-      addShareHolderDetails(shareHolderMasterId, newShareHolderDetailVal);
-      toastSuccess("Name Change Master created successfully.");
+      addShareHolderDetails(projectId, newShareHolderDetailVal);
+      toastSuccess("Share Holder Detail created successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -257,7 +257,7 @@ export const useAddShareHolderDetailMutation = (shareHolderMasterId: number) => 
 
 export const useDeleteShareHolderDetailMutation = (
   id: number,
-  shareHolderMasterId: number
+  projectId: number
 ) => {
   const { axios } = useAxios();
   const { deleteShareHolderDetails } = useShareHolderDetailsQuerySetData();
@@ -275,8 +275,8 @@ export const useDeleteShareHolderDetailMutation = (
     onSuccess: () => {
       // ✅ update detail view directly
       deleteShareHolderDetail(id);
-      deleteShareHolderDetails(id, shareHolderMasterId);
-      toastSuccess("Name Change Master deleted successfully.");
+      deleteShareHolderDetails(id, projectId);
+      toastSuccess("Share Holder Detail deleted successfully.");
     },
     onError: (error) => {
       if (isAxiosError(error)) {

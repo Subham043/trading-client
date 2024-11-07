@@ -9,12 +9,11 @@ import SearchButtonHeader from "../../../components/Layout/SearchButtonHeader";
 import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { LegalHeirDetailsQueryKey } from "../../../hooks/data/legal_heir_details";
-import { ShareHolderMasterType } from "../../../utils/types";
 
 export type LegalHeirDetailsListModalProps = {
     status: boolean;
     type: "Create",
-    shareHolderMasterId: number;
+    projectId: number;
 } | {
     status: boolean;
     type: "Edit";
@@ -28,31 +27,30 @@ export type LegalHeirDetailsListDrawerProps = {
     id: number;
 }
 
-const LegalHeirDetailsListPage:FC<{shareHolderMasterData: ShareHolderMasterType; refetchMasterData: ()=>void}> = ({shareHolderMasterData, refetchMasterData}) => {
-    const param = useParams<{shareHolderMasterId: string}>()
+const LegalHeirDetailsListPage:FC = () => {
+    const param = useParams<{projectId: string}>()
     const [selectedData, setSelectedData] = useState<number[]>([]);
     const { deleteMultiple, deleteLoading } = useDeleteMultiple();
-    const [modal, setModal] = useState<LegalHeirDetailsListModalProps>({status: false, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)});
+    const [modal, setModal] = useState<LegalHeirDetailsListModalProps>({status: false, type: 'Create', projectId: Number(param.projectId)});
     const toggleModal = (value:LegalHeirDetailsListModalProps) => setModal(value);
     const [drawerStatus, setDrawerStatus] = useState<LegalHeirDetailsListDrawerProps>({drawerStatus: false});
     const toggleDrawer = (value:LegalHeirDetailsListDrawerProps) => setDrawerStatus(value);
 
     const deleteMultipleHandler = async () => {
         if(selectedData.length > 0) {
-            await deleteMultiple(`${api_routes.legalHeirDetails}/delete-multiple`, 'LegalHeirDetails', [LegalHeirDetailsQueryKey, param.shareHolderMasterId ? Number(param.shareHolderMasterId) : ''], selectedData);
-            refetchMasterData()
+            await deleteMultiple(`${api_routes.legalHeirDetails}/delete-multiple`, 'LegalHeirDetails', [LegalHeirDetailsQueryKey, param.projectId ? Number(param.projectId) : ''], selectedData);
             setSelectedData([]);
         }
     }
 
     return (
         <div>
-            <SearchButtonHeader hasButton={shareHolderMasterData.legalHeirDetails.length<Number(shareHolderMasterData.noOfLegalHeir)} buttonText={"Create"} buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareHolderMasterId: Number(param.shareHolderMasterId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
+            <SearchButtonHeader hasButton={true} buttonText={"Create"} buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: Number(param.projectId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
-                <LegalHeirDetailsTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} shareHolderMasterId={Number(param.shareHolderMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} refetchMasterData={refetchMasterData} />
+                <LegalHeirDetailsTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} projectId={Number(param.projectId)} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
-            <LegalHeirDetailsModal {...modal} mainShareHolderMasterId={Number(param.shareHolderMasterId)} shareHolderMasterData={shareHolderMasterData} toggleModal={toggleModal} refetchMasterData={refetchMasterData} />
-            <LegalHeirDetailsDrawer {...drawerStatus} toggleDrawer={toggleDrawer} shareHolderMasterData={shareHolderMasterData} refetchMasterData={refetchMasterData} />
+            <LegalHeirDetailsModal {...modal} mainProjectId={Number(param.projectId)} toggleModal={toggleModal} />
+            <LegalHeirDetailsDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />
         </div>
     )
 }

@@ -45,7 +45,7 @@ export type FoliosListDrawerProps = {
     id: number;
 }
 
-const FoliosListPage:FC = () => {
+const FoliosListPage:FC<{projectId: number}> = ({projectId}) => {
     const param = useParams<{shareCertificateMasterId: string}>()
     const [selectedData, setSelectedData] = useState<number[]>([]);
     const { exportExcel, excelLoading } = useExcelExport();
@@ -75,7 +75,7 @@ const FoliosListPage:FC = () => {
             <Paper shadow="sm" className={classes.paper_background}>
                 <FoliosTable toggleModal={toggleModal} toggleCorporateModal={toggleCorporateModal} toggleDividendModal={toggleDividendModal} toggleDrawer={toggleDrawer} shareCertificateMasterId={Number(param.shareCertificateMasterId)} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
-            <FoliosModal {...modal} mainShareCertificateMasterId={Number(param.shareCertificateMasterId)} toggleModal={toggleModal} />
+            <FoliosModal {...modal} mainShareCertificateMasterId={Number(param.shareCertificateMasterId)} toggleModal={toggleModal} projectId={projectId} />
             <FolioCorporateMasterModal {...corporateModal} toggleModal={toggleCorporateModal} />
             <FolioDividendMasterModal {...dividendModal} toggleModal={toggleDividendModal} />
             <FoliosDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />

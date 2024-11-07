@@ -24,7 +24,7 @@ const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValu
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {[shareholderName1, shareholderName2, shareholderName3].filter((value) => value).join(', ')}
+              {[shareholderName1?.shareholderName, shareholderName2?.shareholderName, shareholderName3?.shareholderName].filter((value) => value).join(', ')}
           </Text>
       </Table.Td>
       <Table.Td>

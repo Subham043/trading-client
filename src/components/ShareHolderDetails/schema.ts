@@ -6,6 +6,8 @@ export type SchemaType = {
   namePan?: string | undefined | null;
   nameAadhar?: string | undefined | null;
   nameCml?: string | undefined | null;
+  husbandName?: string | undefined | null;
+  occupation?: string | undefined | null;
   phone?: string | undefined | null;
   email?: string | undefined | null;
   aadhar?: string | undefined | null;
@@ -21,6 +23,7 @@ export type SchemaType = {
   dematAccountNo?: string | undefined | null;
   nameBank?: string | undefined | null;
   bankName?: string | undefined | null;
+  branchName?: string | undefined | null;
   bankAddress?: string | undefined | null;
   bankEmail?: string | undefined | null;
   bankPhone?: string | undefined | null;
@@ -28,6 +31,7 @@ export type SchemaType = {
   bankIFS?: string | undefined | null;
   bankAccountNo?: string | undefined | null;
   bankAccountType?: string | undefined | null;
+  accountOpeningDate?: string | undefined | null;
   addressBank?: string | undefined | null;
   emailBank?: string | undefined | null;
   phoneBank?: string | undefined | null;
@@ -40,6 +44,8 @@ export const initialValues: SchemaType = {
   namePan: null,
   nameAadhar: null,
   nameCml: null,
+  husbandName: null,
+  occupation: null,
   phone: null,
   email: null,
   aadhar: null,
@@ -61,6 +67,8 @@ export const initialValues: SchemaType = {
   bankMICR: null,
   bankIFS: null,
   bankAccountNo: null,
+  branchName: null,
+  accountOpeningDate: null,
   bankAccountType: null,
   addressBank: null,
   emailBank: null,
@@ -69,6 +77,8 @@ export const initialValues: SchemaType = {
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
+  shareholderName: yup.string().trim().required("Share Holder Name is required"),
+  shareholderNameCertificate: yup.string().trim().required("Share Holder Name as per certificate is required"),
   namePan: yup.string().trim().notRequired(),
   nameAadhar: yup
     .string()
@@ -81,6 +91,8 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .oneOf([yup.ref("namePan")], "It must match with name as per pan")
     .oneOf([yup.ref("nameAadhar")], "It must match with name as per aadhar")
     .notRequired(),
+  husbandName: yup.string().trim().notRequired(),
+  occupation: yup.string().trim().notRequired(),
   phone: yup.string().trim().notRequired(),
   email: yup.string().trim().notRequired(),
   aadhar: yup.string().trim().notRequired(),
@@ -96,6 +108,8 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   dematAccountNo: yup.string().trim().notRequired(),
   nameBank: yup.string().trim().notRequired(),
   bankName: yup.string().trim().notRequired(),
+  branchName: yup.string().trim().notRequired(),
+  accountOpeningDate: yup.string().trim().notRequired(),
   bankAddress: yup.string().trim().notRequired(),
   bankEmail: yup.string().trim().notRequired(),
   bankPhone: yup.string().trim().notRequired(),
@@ -107,12 +121,4 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   emailBank: yup.string().trim().notRequired(),
   phoneBank: yup.string().trim().notRequired(),
   pincodeBank: yup.string().trim().notRequired(),
-  shareholderName: yup
-    .string()
-    .trim()
-    .notRequired(),
-  shareholderNameCertificate: yup
-    .string()
-    .trim()
-    .notRequired(),
 });
