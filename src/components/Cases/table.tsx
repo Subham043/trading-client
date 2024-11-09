@@ -1,19 +1,17 @@
 import { FC, useState } from "react"
 import { Table, Checkbox, Text, Group, ActionIcon, rem, Popover } from '@mantine/core';
 import ErrorBoundary from "../Layout/ErrorBoundary";
-import { ShareHolderMastersListModalProps } from "../../pages/shareHolderMasters/list";
-import { useDeleteShareHolderMasterMutation, useShareHolderMastersQuery } from "../../hooks/data/share_holder_masters";
-import { ShareHolderMasterType } from "../../utils/types";
-import { Link } from "react-router-dom";
+import { CasesListDrawerProps, CasesListModalProps } from "../../pages/cases/list";
+import { useDeleteCaseMutation, useCasesQuery } from "../../hooks/data/cases";
+import { CaseType, FolioType, ShareHolderDetailType } from "../../utils/types";
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
-import { page_routes } from "../../utils/page_routes";
 import dayjs from "dayjs";
 
-const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value: ShareHolderMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, caseType, noOfLegalHeir, noOfShareHolder, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: ShareHolderDetailType[], foliosSet: FolioType[] }) & {toggleModal: (value: CasesListModalProps) => void, toggleDrawer: (value: CasesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareCertificateID, foliosSet, caseType, createdAt, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  const deleteShareHolderMasters = useDeleteShareHolderMasterMutation(id, projectID?.toString() ?? '');
+  const deleteCases = useDeleteCaseMutation(id, shareCertificateID?.toString() ?? '');
   const onDelete = async () => {
-    await deleteShareHolderMasters.mutateAsync(undefined)
+    await deleteCases.mutateAsync(undefined)
   }
   return (
     <Table.Tr>
@@ -31,12 +29,7 @@ const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {noOfShareHolder}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {noOfLegalHeir}
+              {foliosSet.map((folio) => folio.Folio).join(', ')}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -46,11 +39,9 @@ const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.shareHolderMasters.list}/${id}`}>
-              <ActionIcon  variant="subtle" color="gray">
-                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-              </ActionIcon>
-            </Link>
+            <ActionIcon variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
+                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
@@ -67,7 +58,7 @@ const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value
                     <ActionIcon variant="subtle" color="gray" onClick={() => setOpened((o) => !o)}>
                         <IconX style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteShareHolderMasters.isPending} disabled={deleteShareHolderMasters.isPending}>
+                    <ActionIcon variant="subtle" color="red" onClick={onDelete} loading={deleteCases.isPending} disabled={deleteCases.isPending}>
                         <IconCheck style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     </ActionIcon>
                   </Group>
@@ -80,8 +71,8 @@ const ShareHolderMastersTableRow:FC<ShareHolderMasterType & {toggleModal: (value
   )
 }
 
-const ShareHolderMastersTable:FC<{projectId: string, toggleModal: (value: ShareHolderMastersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
-  const {data:shareHolderMasters, isFetching, isLoading, status, error, refetch} = useShareHolderMastersQuery(props.projectId);
+const CasesTable:FC<{shareCertificateId: number, toggleModal: (value: CasesListModalProps) => void, toggleDrawer: (value: CasesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = (props) => {
+  const {data:shareHolderMasters, isFetching, isLoading, status, error, refetch} = useCasesQuery(props.shareCertificateId);
   const allChecked = (shareHolderMasters ? shareHolderMasters.shareHolderMaster : []).every((value) => props.selectedData.includes(value.id));
   const indeterminate = (shareHolderMasters ? shareHolderMasters.shareHolderMaster : []).some((value) => props.selectedData.includes(value.id)) && !allChecked;
   return (
@@ -99,14 +90,13 @@ const ShareHolderMastersTable:FC<{projectId: string, toggleModal: (value: ShareH
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Case Type</Table.Th>
-              <Table.Th style={{color: 'white'}}>No. Of Share Holders</Table.Th>
-              <Table.Th style={{color: 'white'}}>No. Of Legal Heirs</Table.Th>
+              <Table.Th style={{color: 'white'}}>Folios</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{
-            (shareHolderMasters ? shareHolderMasters.shareHolderMaster : []).map((item) => <ShareHolderMastersTableRow key={item.id} {...item} toggleModal={props.toggleModal} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
+            (shareHolderMasters ? shareHolderMasters.shareHolderMaster : []).map((item) => <CasesTableRow key={item.id} {...item} toggleModal={props.toggleModal} toggleDrawer={props.toggleDrawer} selectedData={props.selectedData} setSelectedData={props.setSelectedData} />)
           }</Table.Tbody>
         </Table>
       </Table.ScrollContainer>
@@ -114,4 +104,4 @@ const ShareHolderMastersTable:FC<{projectId: string, toggleModal: (value: ShareH
   );
 }
 
-export default ShareHolderMastersTable
+export default CasesTable

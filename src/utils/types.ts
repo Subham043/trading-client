@@ -425,25 +425,39 @@ export type ProjectType = {
 export interface ProjectFormType
   extends Omit<ProjectType, "id" | "createdAt" | "userID"> {}
 
-export type ShareHolderMasterType = {
+export type CaseType = {
   id: number;
   caseType: string;
-  noOfLegalHeir: string;
-  noOfShareHolder: string;
+  folios?: string | null;
   transpositionOrder?: string | null;
-  projectID?: number | null;
+  isDeceased?: string | null;
+  shareholderNameDeath?: string | null;
+  dod?: string | null;
+  isTestate?: string | null;
+  proofOfSucession?: string | null;
+  document?: string | null;
+  dateOfDocument?: string | null;
+  isMinor?: string | null;
+  dobMinor?: string | null;
+  guardianName?: string | null;
+  guardianRelationship?: string | null;
+  guardianPan?: string | null;
+  deceasedRelationship?: string | null;
+  taxStatus?: string | null;
+  selectClaimant?: string | null;
+  statusClaimant?: string | null;
+  percentageClaimant?: string | null;
+  occupationClaimant?: string | null;
+  politicalExposureClaimant?: string | null;
+  annualIncomeClaimant?: string | null;
+  shareCertificateID?: number | null;
   createdAt?: Date | null;
-  shareHolderDetails: ShareHolderDetailType[];
-  legalHeirDetails: LegalHeirDetailType[];
 };
 
-export interface ShareHolderMasterFormType
+export interface CaseFormType
   extends Omit<
-    ShareHolderMasterType,
-    | "id"
-    | "transpositionOrder"
-    | "projectID"
-    | "createdAt"
+    CaseType,
+    "id" | "transpositionOrder" | "shareCertificateID" | "createdAt"
   > {}
 
 export type ShareHolderDetailType = {
@@ -539,40 +553,6 @@ export interface LegalHeirDetailFormType
     LegalHeirDetailType,
     | "id"
     | "projectID"
-    | "createdAt"
-  > {}
-
-export type LegalHeirDetailType2 = {
-  id: number;
-  isDeceased?: string | null;
-  shareholderNameDeath?: string | null;
-  dod?: string | null;
-  isTestate?: string | null;
-  proofOfSucession?: string | null;
-  document?: string | null;
-  dateOfDocument?: string | null;
-  isMinor?: string | null;
-  dobMinor?: string | null;
-  guardianName?: string | null;
-  guardianRelationship?: string | null;
-  guardianPan?: string | null;
-  deceasedRelationship?: string | null;
-  taxStatus?: string | null;
-  selectClaimant?: string | null;
-  statusClaimant?: string | null;
-  percentageClaimant?: string | null;
-  occupationClaimant?: string | null;
-  politicalExposureClaimant?: string | null;
-  annualIncomeClaimant?: string | null;
-  shareHolderMasterID?: number | null;
-  createdAt?: Date | null;
-};
-
-export interface LegalHeirDetailFormType2
-  extends Omit<
-    LegalHeirDetailType2,
-    | "id"
-    | "shareHolderMasterID"
     | "createdAt"
   > {}
 

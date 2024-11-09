@@ -5,6 +5,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import { useParams } from "react-router-dom";
 import { ShareCertificateMastersListModalProps } from "../../pages/shareCertificateMasters/list";
 import FoliosListPage from "../../pages/folios/list";
+import CasesListPage from "../../pages/cases/list";
 
 const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMastersListModalProps) => void}> = (props) => {
     const param = useParams<{shareCertificateMasterId: string}>();
@@ -53,6 +54,12 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                     <Text size="xl" fw={700} p="sm" >Folios</Text>
                 </div>
                 <FoliosListPage projectId={data.projectID || 0} />
+            </Box>
+            <Box bg="transparent" mt="lg">
+                <div style={{textAlign: 'center'}}>
+                    <Text size="xl" fw={700} p="sm" >Cases</Text>
+                </div>
+                <CasesListPage shareCertificateId={data.id || 0} projectId={data.projectID || 0} />
             </Box>
         </>}
     </ErrorBoundary>

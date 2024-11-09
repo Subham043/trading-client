@@ -27,6 +27,7 @@ export const api_routes = {
   shareHolderMasters: "/share-holder-masters",
   shareHolderDetails: "/share-holder-details",
   legalHeirDetails: "/legal-heir-details",
+  cases: "/cases",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
   upload: {
