@@ -115,7 +115,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
-                        label="Instrument Type"
+                        label="Case Type"
                         withAsterisk
                         data={Object.values(CaseEnumType)}
                         value={form.values.caseType ? form.values.caseType : null}

@@ -4,14 +4,43 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import { CasesListDrawerProps, CasesListModalProps } from "../../pages/cases/list";
 import { useDeleteCaseMutation, useCasesQuery } from "../../hooks/data/cases";
 import { CaseType, FolioType, ShareHolderDetailType } from "../../utils/types";
-import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
+import { IconCheck, IconDownload, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { useToast } from "../../hooks/useToast";
+import { useAxios } from "../../hooks/useAxios";
+import { api_routes } from "../../utils/api_routes";
 
 const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: ShareHolderDetailType[], foliosSet: FolioType[] }) & {toggleModal: (value: CasesListModalProps) => void, toggleDrawer: (value: CasesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareCertificateID, foliosSet, caseType, createdAt, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {toastError, toastSuccess} = useToast();
+  const { axios } = useAxios();
   const deleteCases = useDeleteCaseMutation(id, shareCertificateID?.toString() ?? '');
   const onDelete = async () => {
     await deleteCases.mutateAsync(undefined)
+  }
+  const generateDocs = async () => {
+    setLoading(true);
+    try {
+        const response = await axios.get(api_routes.cases + `/generate-docs/${id}`, {responseType: 'blob'});
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', "docs-"+dayjs().format("YYYYMMDDHHmmss")+".zip");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        toastSuccess("Docs generated successfully.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+        if(error?.response?.data?.message){
+            toastError(error.response.data.message);
+        }else{
+            toastError('Something went wrong. Please try again later.');
+        }
+    } finally {
+        setLoading(false);
+    }
   }
   return (
     <Table.Tr>
@@ -41,6 +70,9 @@ const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: 
           <Group gap={0} justify="flex-end">
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
                 <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
+            <ActionIcon variant="subtle" color="gray" onClick={generateDocs} loading={loading} disabled={loading}>
+                <IconDownload style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
             </ActionIcon>
             <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                 <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />

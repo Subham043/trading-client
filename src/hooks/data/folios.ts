@@ -292,12 +292,13 @@ export const useAddFolioMutation = (shareCertificateMasterId: number) => {
 
   return useMutation({
     mutationFn: async (newFolioVal: FolioFormType) => {
+      const {faceValue, ...rest} = newFolioVal;
       const response = await axios.post<{
         data: FolioType;
-      }>(
-        api_routes.folios + `/create/${shareCertificateMasterId}`,
-        newFolioVal
-      );
+      }>(api_routes.folios + `/create/${shareCertificateMasterId}`, {
+        ...rest,
+        faceValue: (faceValue && !isNaN(Number(faceValue))) ? Number(faceValue) : 0,
+      });
       return response.data.data;
     },
     // 💡 response of the mutation is passed to onSuccess
