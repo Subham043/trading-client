@@ -96,7 +96,7 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                         </Table.Tr>
                         <Table.Tr>
                             <Table.Th>Select Claimant</Table.Th>
-                            <Table.Td>{data.clamaints.map((item) => item.shareholderName).join(", ")}</Table.Td>
+                            <Table.Td>{data.clamaints.map((item) => item.namePan).join(", ")}</Table.Td>
                         </Table.Tr>
                         <Table.Tr>
                             <Table.Th>Claimant Status</Table.Th>

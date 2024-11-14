@@ -3,14 +3,14 @@ import { Table, Checkbox, Text, Group, ActionIcon, rem, Popover } from '@mantine
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { CasesListDrawerProps, CasesListModalProps } from "../../pages/cases/list";
 import { useDeleteCaseMutation, useCasesQuery } from "../../hooks/data/cases";
-import { CaseType, FolioType, ShareHolderDetailType } from "../../utils/types";
+import { CaseType, FolioType, LegalHeirDetailType, ShareHolderDetailType } from "../../utils/types";
 import { IconCheck, IconDownload, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useToast } from "../../hooks/useToast";
 import { useAxios } from "../../hooks/useAxios";
 import { api_routes } from "../../utils/api_routes";
 
-const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: ShareHolderDetailType[], foliosSet: FolioType[] }) & {toggleModal: (value: CasesListModalProps) => void, toggleDrawer: (value: CasesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareCertificateID, foliosSet, caseType, createdAt, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
+const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: LegalHeirDetailType[], foliosSet: FolioType[] }) & {toggleModal: (value: CasesListModalProps) => void, toggleDrawer: (value: CasesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareCertificateID, foliosSet, caseType, createdAt, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const {toastError, toastSuccess} = useToast();

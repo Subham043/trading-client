@@ -1,6 +1,6 @@
 import { AsyncPaginate } from "react-select-async-paginate";
-import { PaginationType, ShareHolderDetailType } from "../../utils/types";
-import type { GroupBase, OptionsOrGroups } from "react-select";
+import { PaginationType, LegalHeirDetailType } from "../../utils/types";
+import type { GroupBase, MultiValue, OptionsOrGroups } from "react-select";
 import { useCallback } from "react";
 import { useAxios } from "../../hooks/useAxios";
 import { api_routes } from "../../utils/api_routes";
@@ -12,11 +12,11 @@ type OptionType = {
 
 type Props = {
  projectId: number;
- value?: OptionType;
- setValue: (value: OptionType) => void;
+ value?: MultiValue<OptionType>;
+ setValue: (value: MultiValue<OptionType>) => void;
 };
 
-export default function ShareHolderSelect({ projectId, value, setValue }: Props) {
+export default function LegalHeirMultiSelect({ projectId, value, setValue }: Props) {
  const { axios } = useAxios();
  const loadOptions = useCallback(
   async (
@@ -26,17 +26,17 @@ export default function ShareHolderSelect({ projectId, value, setValue }: Props)
   ) => {
    const response = await axios.get<{
     data: PaginationType<{
-     shareHolderDetail: ShareHolderDetailType[];
+     legalHeirDetail: LegalHeirDetailType[];
     }>;
    }>(
-    api_routes.shareHolderDetails +
+    api_routes.legalHeirDetails +
     `/list/${projectId}?page=${additional ? additional.page : 1
     }&limit=10&search=${search}`
    );
    return {
-    options: response.data.data.shareHolderDetail.map((shareHolderDetail) => ({
-     value: shareHolderDetail.id,
-     label: shareHolderDetail.shareholderName || "",
+    options: response.data.data.legalHeirDetail.map((legalHeirDetail) => ({
+     value: legalHeirDetail.id,
+     label: legalHeirDetail.namePan || "",
     })),
     hasMore: response.data.data.current_page < response.data.data.last_page,
     additional: {
@@ -49,12 +49,13 @@ export default function ShareHolderSelect({ projectId, value, setValue }: Props)
  );
 
  return (
-  <div style={{ position: "relative", zIndex: 12 }}>
+  <div style={{ position: "relative", zIndex: 999999999999999 }}>
    <AsyncPaginate
     value={value}
     loadOptions={loadOptions}
+    isMulti
     // isDisabled={isDisabled}
-    onChange={(value) => { setValue(value as OptionType); }}
+    onChange={(value) => { setValue(value); }}
     additional={{
      page: 1,
     }}

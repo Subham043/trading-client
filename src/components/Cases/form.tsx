@@ -13,7 +13,9 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import { DateInput } from "@mantine/dates";
 import { IconFileInfo } from "@tabler/icons-react";
 import FolioSelect from "./folioSelect";
-import ShareHolderMultiSelect from "./shareholderSelect";
+import ShareHolderMultiSelect from "./shareholderMultiSelect";
+import LegalHeirMultiSelect from "./legalHeirSelect";
+import ShareHolderSelect from "./shareholderSelect";
 
 
 type CasesFormProps = {
@@ -48,7 +50,9 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
     });
     const [folios, setFolios] = useState<OptionType[]>([]);
     const [claimants, selectClaimants] = useState<OptionType[]>([]);
+    const [affidavits, selectAffidavits] = useState<OptionType[]>([]);
     const [order, setOrder] = useState<OptionType[]>([]);
+    const [deadShareholder, setDeadShareholder] = useState<OptionType|undefined>(undefined);
 
     useEffect(() => {
         if (props.type === "Edit" && data && props.status) {
@@ -58,28 +62,38 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                 folios: (data && (typeof data.folios === "string")) ? data.folios : "",
                 transpositionOrder: (data && (typeof data.transpositionOrder === "string")) ? data.transpositionOrder : "",
                 shareholderNameDeath: (data && (typeof data.shareholderNameDeath === "string")) ? data.shareholderNameDeath : "",
-                dod: (data && (typeof data.dod === "string")) ? data.dod : "",
+                dod: (data && (typeof data.dod === "string") && data.dod !== "null") ? data.dod : "",
                 isTestate: (data && (typeof data.isTestate === "string")) ? data.isTestate : "No",
+                allowAffidavit: (data && (typeof data.allowAffidavit === "string")) ? data.allowAffidavit : "No",
                 proofOfSucession: (data && (typeof data.proofOfSucession === "string")) ? data.proofOfSucession : "No",
                 document: undefined,
-                dateOfDocument: (data && (typeof data.dateOfDocument === "string")) ? data.dateOfDocument : "",
+                placeOfDeath: (data && (typeof data.placeOfDeath === "string") && data.placeOfDeath !== "null") ? data.placeOfDeath : "",
+                dateOfDocument: (data && (typeof data.dateOfDocument === "string") && data.dateOfDocument !== "null") ? data.dateOfDocument : "",
                 isMinor: (data && (typeof data.isMinor === "string")) ? data.isMinor : "No",
-                dobMinor: (data && (typeof data.dobMinor === "string")) ? data.dobMinor : "",
-                guardianName: (data && (typeof data.guardianName === "string")) ? data.guardianName : "",
-                guardianRelationship: (data && (typeof data.guardianRelationship === "string")) ? data.guardianRelationship : "",
+                dobMinor: (data && (typeof data.dobMinor === "string") && data.dobMinor !== "null") ? data.dobMinor : "",
+                guardianName: (data && (typeof data.guardianName === "string") && data.guardianName !== "null") ? data.guardianName : "",
+                guardianRelationship: (data && (typeof data.guardianRelationship === "string") && data.guardianRelationship !== "null") ? data.guardianRelationship : "",
                 guardianPan: (data && (typeof data.guardianPan === "string")) ? data.guardianPan : "",
-                deceasedRelationship: (data && (typeof data.deceasedRelationship === "string")) ? data.deceasedRelationship : "",
+                deceasedRelationship: (data && (typeof data.deceasedRelationship === "string") && data.deceasedRelationship !== "null") ? data.deceasedRelationship : "",
                 taxStatus: (data && (typeof data.taxStatus === "string")) ? data.taxStatus : "",
                 selectClaimant: (data && (typeof data.selectClaimant === "string")) ? data.selectClaimant : "",
+                selectAffidavit: (data && (typeof data.selectAffidavit === "string")) ? data.selectAffidavit : "",
                 statusClaimant: (data && (typeof data.statusClaimant === "string")) ? data.statusClaimant : "",
-                percentageClaimant: (data && (typeof data.percentageClaimant === "string")) ? data.percentageClaimant : "",
+                percentageClaimant: (data && (typeof data.percentageClaimant === "string") && data.percentageClaimant !== "null") ? data.percentageClaimant : "",
                 occupationClaimant: (data && (typeof data.occupationClaimant === "string")) ? data.occupationClaimant : "",
                 politicalExposureClaimant: (data && (typeof data.politicalExposureClaimant === "string")) ? data.politicalExposureClaimant : "",
                 annualIncomeClaimant: (data && (typeof data.annualIncomeClaimant === "string")) ? data.annualIncomeClaimant : "",
+                deadShareholderID: (data && (typeof data.deadShareholderID === "number")) ? data.deadShareholderID : undefined,
             });
             setFolios(data.folios ? (data.foliosSet.map((folio) => ({ value: folio.id, label: folio.Folio|| "" }))) : []);
-            selectClaimants(data.selectClaimant ? (data.clamaints.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
+            selectClaimants(data.selectClaimant ? (data.clamaints.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
             setOrder(data.transpositionOrder ? (data.order.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
+            setDeadShareholder(data.deadShareholder ? { value: data.deadShareholder.id, label: data.deadShareholder.shareholderName || "" } : undefined);
+            if(data.caseType.includes("Transmission")){
+                selectAffidavits(data.selectAffidavit ? (data.affidavits.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
+            }else{
+                selectAffidavits(data.selectAffidavit ? (data.affidavits.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, props.type, props.status]);
@@ -130,6 +144,35 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         />
                         <InputError>{form.errors.folios}</InputError>
                     </div>
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                    <Select
+                        label="Generate Affidavit"
+                        data={["Yes", "No"]}
+                        value={form.values.allowAffidavit ? form.values.allowAffidavit : null}
+                        onChange={(value) => form.setFieldValue("allowAffidavit", value ? value : "No")}
+                    />
+                    {
+                        form.values.allowAffidavit === "Yes" && <>
+                        <div>
+                            <InputLabel>Select Affidavit</InputLabel>
+                            {
+                                form.values.caseType.includes("Transmission") ? 
+                                <LegalHeirMultiSelect 
+                                    projectId={props.projectId} 
+                                    value={affidavits} 
+                                    setValue={(value) => {form.setFieldValue("selectAffidavit", value.map((folio) => folio.value).join("_")); selectAffidavits(value.map((folio) => folio))}}
+                                /> :
+                                <ShareHolderMultiSelect 
+                                    projectId={props.projectId} 
+                                    value={affidavits} 
+                                    setValue={(value) => {form.setFieldValue("selectAffidavit", value.map((folio) => folio.value).join("_")); selectAffidavits(value.map((folio) => folio))}} 
+                                />
+                            }
+                            <InputError>{form.errors.selectAffidavit}</InputError>
+                        </div>
+                        </> 
+                    }
                 </SimpleGrid>
                 {form.values.caseType.includes("Transmission") && <>
                     <Divider
@@ -218,7 +261,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         />
                         <div>
                             <InputLabel>Select Claimant</InputLabel>
-                            <ShareHolderMultiSelect 
+                            <LegalHeirMultiSelect 
                                 projectId={props.projectId} 
                                 value={claimants} 
                                 setValue={(value) => {form.setFieldValue("selectClaimant", value.map((folio) => folio.value).join("_")); selectClaimants(value.map((folio) => folio))}}
@@ -275,6 +318,35 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             />
                             <InputError>{form.errors.transpositionOrder}</InputError>
                         </div>
+                    </SimpleGrid>
+                </>}
+                {form.values.caseType.includes("Deletion") && <>
+                    <Divider
+                        my="xs"
+                        variant="dashed"
+                        label={
+                            <Title order={5}>Deletion</Title>
+                        }
+                        labelPosition="left"
+                    />
+                    <SimpleGrid cols={{ base: 1, sm: 1 }} mt="md">
+                        <div>
+                            <InputLabel>Select Deleted Shareholder</InputLabel>
+                            <ShareHolderSelect 
+                                projectId={props.projectId} 
+                                value={deadShareholder} 
+                                setValue={(value) => {form.setFieldValue("deadShareholderID", value.value); setDeadShareholder({...value})}} 
+                            />
+                            <InputError>{form.errors.deadShareholderID}</InputError>
+                        </div>
+                    </SimpleGrid>
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                        <TextInput label="Place Of Death" {...form.getInputProps('placeOfDeath')} />
+                        <DateInput
+                            label="Date of Death"
+                            value={form.values.dod ? new Date(form.values.dod) : undefined}
+                            onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
+                        />
                     </SimpleGrid>
                 </>}
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addCases.isPending : updateCases.isPending} disabled={props.type === "Create" ? addCases.isPending : updateCases.isPending} data-disabled={props.type === "Create" ? addCases.isPending : updateCases.isPending}>

@@ -433,6 +433,7 @@ export type CaseType = {
   isDeceased?: string | null;
   shareholderNameDeath?: string | null;
   dod?: string | null;
+  placeOfDeath?: string | null;
   isTestate?: string | null;
   proofOfSucession?: string | null;
   document?: string | null;
@@ -444,13 +445,17 @@ export type CaseType = {
   guardianPan?: string | null;
   deceasedRelationship?: string | null;
   taxStatus?: string | null;
+  allowAffidavit?: string | null;
   selectClaimant?: string | null;
+  selectAffidavit?: string | null;
   statusClaimant?: string | null;
   percentageClaimant?: string | null;
   occupationClaimant?: string | null;
   politicalExposureClaimant?: string | null;
   annualIncomeClaimant?: string | null;
   shareCertificateID?: number | null;
+  deadShareholderID?: number | null;
+  deadShareholder?: ShareHolderDetailType | null;
   createdAt?: Date | null;
 };
 

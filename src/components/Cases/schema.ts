@@ -19,6 +19,7 @@ export type SchemaType = {
   isDeceased?: string | undefined | null;
   shareholderNameDeath?: string | undefined | null;
   dod?: string | undefined | null;
+  placeOfDeath?: string | undefined | null;
   isTestate?: string | undefined | null;
   proofOfSucession?: string | undefined | null;
   document?: File | undefined | null;
@@ -31,11 +32,14 @@ export type SchemaType = {
   deceasedRelationship?: string | undefined | null;
   taxStatus?: string | undefined | null;
   selectClaimant?: string | undefined | null;
+  allowAffidavit?: string | undefined | null;
+  selectAffidavit?: string | undefined | null;
   statusClaimant?: string | undefined | null;
   percentageClaimant?: string | undefined | null;
   occupationClaimant?: string | undefined | null;
   politicalExposureClaimant?: string | undefined | null;
   annualIncomeClaimant?: string | undefined | null;
+  deadShareholderID: number | undefined;
 };
 
 export const initialValues: SchemaType = {
@@ -43,6 +47,7 @@ export const initialValues: SchemaType = {
   isDeceased: "No",
   shareholderNameDeath: null,
   dod: null,
+  placeOfDeath: null,
   isTestate: "No",
   proofOfSucession: "No",
   document: undefined,
@@ -55,11 +60,14 @@ export const initialValues: SchemaType = {
   deceasedRelationship: null,
   taxStatus: null,
   selectClaimant: null,
+  allowAffidavit: "No",
+  selectAffidavit: null,
   statusClaimant: null,
   percentageClaimant: null,
   occupationClaimant: null,
   politicalExposureClaimant: null,
   annualIncomeClaimant: null,
+  deadShareholderID: undefined,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -72,6 +80,7 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   transpositionOrder: yup.string().trim().notRequired(),
   shareholderNameDeath: yup.string().trim().notRequired(),
   dod: yup.string().trim().notRequired(),
+  placeOfDeath: yup.string().trim().notRequired(),
   isTestate: yup.string().trim().notRequired(),
   proofOfSucession: yup.string().trim().notRequired(),
   document: yup
@@ -95,9 +104,15 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   deceasedRelationship: yup.string().trim().notRequired(),
   taxStatus: yup.string().trim().notRequired(),
   selectClaimant: yup.string().trim().notRequired(),
+  allowAffidavit: yup.string().trim().notRequired(),
+  selectAffidavit: yup.string().trim().notRequired(),
   statusClaimant: yup.string().trim().notRequired(),
   percentageClaimant: yup.string().trim().notRequired(),
   occupationClaimant: yup.string().trim().notRequired(),
   politicalExposureClaimant: yup.string().trim().notRequired(),
   annualIncomeClaimant: yup.string().trim().notRequired(),
+  deadShareholderID: yup
+    .number()
+    .typeError("Dead Shareholder must be a number")
+    .optional(),
 });

@@ -11,6 +11,7 @@ import {
   CaseFormType,
   ShareHolderDetailType,
   FolioType,
+  LegalHeirDetailType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -29,8 +30,9 @@ export const useCasesQuery: (
   PaginationType<{
     shareHolderMaster: (CaseType & {
       order: ShareHolderDetailType[];
-      clamaints: ShareHolderDetailType[];
+      clamaints: LegalHeirDetailType[];
       foliosSet: FolioType[];
+      affidavits: (ShareHolderDetailType)[];
     })[];
   }>,
   unknown
@@ -47,7 +49,7 @@ export const useCasesQuery: (
         data: PaginationType<{
           shareHolderMaster: (CaseType & {
             order: ShareHolderDetailType[];
-            clamaints: ShareHolderDetailType[];
+            clamaints: LegalHeirDetailType[];
             foliosSet: FolioType[];
           })[];
         }>;
@@ -84,8 +86,9 @@ export const useCaseInfoQuery: (
 ) => UseQueryResult<
   CaseType & {
     order: ShareHolderDetailType[];
-    clamaints: ShareHolderDetailType[];
+    clamaints: LegalHeirDetailType[];
     foliosSet: FolioType[];
+    affidavits: (ShareHolderDetailType)[];
   },
   unknown
 > = (id, enabled) => {
@@ -93,9 +96,13 @@ export const useCaseInfoQuery: (
   return useQuery({
     queryKey: [CaseInfoKey, id],
     queryFn: async () => {
-      const response = await axios.get<{ data: (CaseType & { order: ShareHolderDetailType[], clamaints: ShareHolderDetailType[], foliosSet: FolioType[] }) }>(
-        api_routes.cases + `/info/${id}`
-      );
+      const response = await axios.get<{
+        data: CaseType & {
+          order: ShareHolderDetailType[];
+          clamaints: LegalHeirDetailType[];
+          foliosSet: FolioType[];
+        };
+      }>(api_routes.cases + `/info/${id}`);
       return response.data.data;
     },
     enabled,
