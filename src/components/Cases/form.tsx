@@ -203,7 +203,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         </SimpleGrid>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <Select
-                                label="Testate/Intestate"
+                                label="Is Testate?"
                                 data={["Yes", "No"]}
                                 value={form.values.isTestate ? form.values.isTestate : null}
                                 onChange={(value) => form.setFieldValue("isTestate", value ? value : "No")}
