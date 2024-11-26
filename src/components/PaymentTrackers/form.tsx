@@ -90,7 +90,7 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
                     <TextInput label="No Of Stages For Referral" withAsterisk {...form.getInputProps('noOfStagesReferral')} />
                     <TextInput label="Percentage For Each Stage For Referral" withAsterisk {...form.getInputProps('percentageStageReferral')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt={"md"}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt={"md"}>
                     <TextInput label="Referral amount" withAsterisk {...form.getInputProps('amountReferral')} />
                     <Select
                         label="GST Flag"

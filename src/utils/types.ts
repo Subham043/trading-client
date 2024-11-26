@@ -632,6 +632,29 @@ export type PaymentTrackerType = {
 export interface PaymentTrackerFormType
   extends Omit<PaymentTrackerType, "id" | "projectID" | "createdAt"> {}
 
+
+export type PaymentTrackerStageType = {
+  id: number;
+  amount: number | null;
+  status: "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid";
+  paymentTrackerID: number;
+  createdAt: Date;
+};
+
+export interface PaymentTrackerStageFormType
+  extends Omit<PaymentTrackerStageType, "id" | "paymentTrackerID" | "createdAt"> {}
+
+export type ReferralTrackerStageType = {
+  id: number;
+  amount: number | null;
+  status: "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid";
+  paymentTrackerID: number;
+  createdAt: Date;
+};
+
+export interface ReferralTrackerStageFormType
+  extends Omit<ReferralTrackerStageType, "id" | "paymentTrackerID" | "createdAt"> {}
+
 export type PincodeQueryFormType = Omit<PincodeQueryType, "id" | "createdAt">;
 
 export type PaginationMainType = {

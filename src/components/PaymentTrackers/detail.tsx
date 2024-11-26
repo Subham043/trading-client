@@ -4,8 +4,8 @@ import { usePaymentTrackerQuery } from "../../hooks/data/payment_trackers";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { useParams } from "react-router-dom";
 import { PaymentTrackersListModalProps } from "../../pages/paymentTrackers/list";
-import FoliosListPage from "../../pages/folios/list";
-import CasesListPage from "../../pages/cases/list";
+import PaymentTrackerStagesListPage from "../../pages/paymentTrackerStages/list";
+import ReferralTrackerStagesListPage from "../../pages/referralTrackerStages/list";
 
 const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProps) => void}> = (props) => {
     const param = useParams<{paymentTrackerId: string}>();
@@ -42,6 +42,7 @@ const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProp
                             <Table.Td>{data.noOfStages}</Table.Td>
                             <Table.Td>{data.percentageStage}</Table.Td>
                             <Table.Td>{data.noOfStagesReferral}</Table.Td>
+                            <Table.Td>{data.percentageStageReferral}</Table.Td>
                             <Table.Td>{data.amountReferral}</Table.Td>
                             <Table.Td>{data.gstFlag}</Table.Td>
                         </Table.Tr>
@@ -50,15 +51,15 @@ const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProp
             </Table.ScrollContainer>
             <Box bg="transparent" mt="md">
                 <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Folios</Text>
+                    <Text size="xl" fw={700} p="sm" >Payment Tracker Stages</Text>
                 </div>
-                <FoliosListPage projectId={data.projectID || 0} />
+                <PaymentTrackerStagesListPage projectId={data.projectID || 0} />
             </Box>
             <Box bg="transparent" mt="lg">
                 <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Cases</Text>
+                    <Text size="xl" fw={700} p="sm" >Referral Tracker Stages</Text>
                 </div>
-                <CasesListPage shareCertificateId={data.id || 0} projectId={data.projectID || 0} />
+                <ReferralTrackerStagesListPage projectId={data.projectID || 0} />
             </Box>
         </>}
     </ErrorBoundary>

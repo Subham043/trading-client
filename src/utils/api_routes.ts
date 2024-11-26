@@ -31,6 +31,8 @@ export const api_routes = {
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
   paymentTrackers: "/payment-trackers",
+  paymentTrackerStages: "/payment-tracker-stages",
+  referralTrackerStages: "/referral-tracker-stages",
   upload: {
     images: "/upload/images",
     failed_excel: {

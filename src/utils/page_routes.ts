@@ -44,6 +44,14 @@ export const page_routes = {
     list: "/payment-trackers",
     view: "/payment-trackers/:paymentTrackerId",
   },
+  paymentTrackerStages: {
+    list: "/payment-tracker-stages",
+    view: "/payment-tracker-stages/:paymentTrackerStageId",
+  },
+  referralTrackerStages: {
+    list: "/referral-tracker-stages",
+    view: "/referral-tracker-stages/:referralTrackerStageId",
+  },
   auth: {
     login: "/login",
     forgot_password: "/forgot-password",
