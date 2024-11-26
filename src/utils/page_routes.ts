@@ -20,6 +20,7 @@ export const page_routes = {
     shareCertificateMaster: "/projects/:projectId/share-certificate-masters",
     shareHolderDetails: "/projects/:projectId/share-holder-details",
     legalHeirDetails: "/projects/:projectId/legal-heir-details",
+    paymentTrackers: "/projects/:projectId/payment-trackers",
   },
   registrarMasters: {
     list: "/registrar-masters",
@@ -38,6 +39,10 @@ export const page_routes = {
   shareHolderMasters: {
     list: "/share-holder-masters",
     view: "/share-holder-masters/:shareHolderMasterId",
+  },
+  paymentTrackers: {
+    list: "/payment-trackers",
+    view: "/payment-trackers/:paymentTrackerId",
   },
   auth: {
     login: "/login",

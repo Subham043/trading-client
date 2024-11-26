@@ -615,6 +615,23 @@ export type PincodeQueryType = {
   createdAt: Date;
 };
 
+export type PaymentTrackerType = {
+  id: number;
+  valuation: number;
+  percentageTotal: number | null;
+  noOfStages: number | null;
+  percentageStage: number | null;
+  noOfStagesReferral: number | null;
+  percentageStageReferral: number | null;
+  amountReferral: number | null;
+  gstFlag: "Yes" | "No";
+  projectID: number;
+  createdAt: Date;
+};
+
+export interface PaymentTrackerFormType
+  extends Omit<PaymentTrackerType, "id" | "projectID" | "createdAt"> {}
+
 export type PincodeQueryFormType = Omit<PincodeQueryType, "id" | "createdAt">;
 
 export type PaginationMainType = {

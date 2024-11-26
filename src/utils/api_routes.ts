@@ -30,6 +30,7 @@ export const api_routes = {
   cases: "/cases",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
+  paymentTrackers: "/payment-trackers",
   upload: {
     images: "/upload/images",
     failed_excel: {
