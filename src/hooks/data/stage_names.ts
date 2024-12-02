@@ -49,7 +49,7 @@ export const useStageNameQuery: (
     queryKey: [StageNameQueryKey, id],
     queryFn: async () => {
       const response = await axios.get<{ data: StageNameQueryType }>(
-        api_routes.stageNames + `/find/${id}`
+        api_routes.stageNames + `/${id}`
       );
       return response.data.data;
     },
