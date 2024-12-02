@@ -6,6 +6,7 @@ export const page_routes = {
   dashboard: "/",
   users: "/users",
   pincodes: "/pincodes",
+  stageNames: "/stage-names",
   failed_excel: "/failed-excel",
   companyMasters: {
     list: "/company-masters",

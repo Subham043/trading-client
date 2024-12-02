@@ -15,6 +15,7 @@ export const api_routes = {
     password: "/account/password",
   },
   pincodes: "/pincodes",
+  stageNames: "/stage-names",
   users: "/users",
   projects: "/projects",
   companyMasters: "/company-masters",

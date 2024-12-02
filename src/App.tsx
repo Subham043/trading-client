@@ -31,6 +31,7 @@ const ProjectsDetailPage = lazy(()=>import("./pages/projects/detail"));
 const SecurityTypeMastersListPage = lazy(()=>import("./pages/securityTypeMasters/list"));
 const FailedExcelsPage = lazy(()=>import("./pages/failedExcels/list"));
 const PincodesPage = lazy(()=>import("./pages/pincodes"));
+const StageNamesPage = lazy(()=>import("./pages/stageNames"));
 const NameChangeMastersListPage = lazy(()=>import("./pages/nameChangeMasters/list"));
 const CorporateMastersListPage = lazy(()=>import("./pages/corporateMasters/list"));
 const DividendMastersListPage = lazy(()=>import("./pages/dividendMasters/list"));
@@ -55,6 +56,7 @@ function App() {
                       <Route path={page_routes.dashboard} element={<DashboardPage />} />
                       <Route path={page_routes.users} element={<UsersPage />} />
                       <Route path={page_routes.pincodes} element={<PincodesPage />} />
+                      <Route path={page_routes.stageNames} element={<StageNamesPage />} />
                       <Route path={page_routes.companyMasters.list} element={<CompanyMastersPage />} />
                       <Route path={`${page_routes.companyMasters.view}`} element={<CompanyMastersDetailPage />} />
                       <Route element={<CompanyMastersDetailPage />}>

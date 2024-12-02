@@ -615,6 +615,12 @@ export type PincodeQueryType = {
   createdAt: Date;
 };
 
+export type StageNameQueryType = {
+  id: number;
+  name: string;
+  createdAt: Date;
+};
+
 export type PaymentTrackerType = {
   id: number;
   valuation: number;
@@ -659,6 +665,8 @@ export interface ReferralTrackerStageFormType
   extends Omit<ReferralTrackerStageType, "id" | "paymentTrackerID" | "createdAt"> {}
 
 export type PincodeQueryFormType = Omit<PincodeQueryType, "id" | "createdAt">;
+
+export type StageNameQueryFormType = Omit<StageNameQueryType, "id" | "createdAt">;
 
 export type PaginationMainType = {
   total: number;

@@ -36,6 +36,7 @@ const mockdata = [
     initiallyOpened: false,
     links: [
       { label: 'Pincodes', link: page_routes.pincodes },
+      { label: 'Stage Name', link: page_routes.stageNames },
       { label: 'Failed Excel', link: page_routes.failed_excel },
     ],
   },
