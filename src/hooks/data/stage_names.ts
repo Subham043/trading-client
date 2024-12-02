@@ -246,7 +246,7 @@ export const useStageNamesSelectQuery: ({
   search?: string;
   enabled?: boolean;
 }) => UseQueryResult<
-  { id: number; stageName: string; state_name: string }[],
+  StageNameQueryType[],
   unknown
 > = ({ search = "", enabled = false }) => {
   const { axios } = useAxios();
@@ -254,10 +254,10 @@ export const useStageNamesSelectQuery: ({
     queryKey: [StageNamesSelectQueryKey, search],
     queryFn: async () => {
       const response = await axios.get<{
-        data: { id: number; stageName: string; state_name: string }[];
-      }>(api_routes.stageNames + `/select?search=${search}`);
+        data: StageNameQueryType[];
+      }>(api_routes.stageNames + `/all?search=${search}`);
       return response.data.data;
     },
-    enabled: enabled && search.length > 0,
+    enabled: enabled,
   });
 };

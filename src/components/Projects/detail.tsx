@@ -64,6 +64,9 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/payment-trackers`} leftSection={<IconCloudLock style={iconStyle} />}>
                         Payment Trackers
                     </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/stage-trackers`} leftSection={<IconCloudLock style={iconStyle} />}>
+                        Stage Trackers
+                    </Tabs.Tab>
                 </Tabs.List>
             </Tabs>
             <Box bg="transparent" mt="md">

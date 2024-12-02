@@ -621,7 +621,20 @@ export type StageNameQueryType = {
   createdAt: Date;
 };
 
-export type PaymentTrackerType = {
+export type StageTrackerType = {
+  id: number;
+  stage: string;
+  comments: string | null;
+  date: string | null;
+  pendingFrom: "Client" | "RTA" | "IEPF" | "ServiceProvider";
+  projectID: number;
+  createdAt: Date;
+};
+
+export interface StageTrackerFormType
+  extends Omit<StageTrackerType, "id" | "projectID" | "createdAt"> {}
+
+  export type PaymentTrackerType = {
   id: number;
   valuation: number;
   percentageTotal: number | null;

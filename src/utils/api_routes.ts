@@ -31,6 +31,7 @@ export const api_routes = {
   cases: "/cases",
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
+  stageTrackers: "/stage-trackers",
   paymentTrackers: "/payment-trackers",
   paymentTrackerStages: "/payment-tracker-stages",
   referralTrackerStages: "/referral-tracker-stages",

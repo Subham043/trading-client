@@ -22,6 +22,7 @@ export const page_routes = {
     shareHolderDetails: "/projects/:projectId/share-holder-details",
     legalHeirDetails: "/projects/:projectId/legal-heir-details",
     paymentTrackers: "/projects/:projectId/payment-trackers",
+    stageTrackers: "/projects/:projectId/stage-trackers",
   },
   registrarMasters: {
     list: "/registrar-masters",
