@@ -7,32 +7,34 @@ enum TruthyType {
 
 
 export type SchemaType = {
-  gstFlag: "Yes" | "No";
+  tdsFlag: "Yes" | "No";
   valuation: number;
   percentageTotal: number;
   noOfStages: number;
   percentageStage: number;
   noOfStagesReferral: number;
   percentageStageReferral: number;
+  tdsPercentage: number;
   amountReferral: number;
 };
 
 export const initialValues: SchemaType = {
-  gstFlag: "No",
+  tdsFlag: "No",
   valuation: 0,
   percentageTotal: 0,
   noOfStages: 0,
   percentageStage: 0,
   noOfStagesReferral: 0,
   percentageStageReferral: 0,
+  tdsPercentage: 0,
   amountReferral: 0,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
-  gstFlag: yup
+  tdsFlag: yup
     .mixed<TruthyType>()
-    .oneOf(Object.values(TruthyType), "Invalid instrument type")
-    .required("Instrument Type is required"),
+    .oneOf(Object.values(TruthyType), "Invalid tds type")
+    .required("TDS Type is required"),
   valuation: yup
     .number()
     .typeError("Valuation must be a number")
@@ -61,4 +63,8 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .number()
     .typeError("Referral amount must be a number")
     .required("Referral amount is required"),
+  tdsPercentage: yup
+    .number()
+    .typeError("TDS Percentage must be a number")
+    .required("TDS Percentage is required"),
 });

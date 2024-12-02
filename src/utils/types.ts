@@ -624,7 +624,8 @@ export type PaymentTrackerType = {
   noOfStagesReferral: number | null;
   percentageStageReferral: number | null;
   amountReferral: number | null;
-  gstFlag: "Yes" | "No";
+  tdsFlag: "Yes" | "No";
+  tdsPercentage: number | null;
   projectID: number;
   createdAt: Date;
 };
@@ -637,6 +638,7 @@ export type PaymentTrackerStageType = {
   id: number;
   amount: number | null;
   status: "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid";
+  date: string | null;
   paymentTrackerID: number;
   createdAt: Date;
 };
@@ -648,6 +650,7 @@ export type ReferralTrackerStageType = {
   id: number;
   amount: number | null;
   status: "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid";
+  date: string | null;
   paymentTrackerID: number;
   createdAt: Date;
 };

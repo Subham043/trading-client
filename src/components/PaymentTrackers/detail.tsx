@@ -31,7 +31,8 @@ const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProp
                             <Table.Th style={{color: 'white'}}>No. Of Stages For Referral</Table.Th>
                             <Table.Th style={{color: 'white'}}>Percentage of Each Stages For Referral</Table.Th>
                             <Table.Th style={{color: 'white'}}>Referral Amount</Table.Th>
-                            <Table.Th style={{color: 'white'}}>GST Flag</Table.Th>
+                            <Table.Th style={{color: 'white'}}>TDS Flag</Table.Th>
+                            <Table.Th style={{color: 'white'}}>TDS Percentage</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -44,7 +45,8 @@ const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProp
                             <Table.Td>{data.noOfStagesReferral}</Table.Td>
                             <Table.Td>{data.percentageStageReferral}</Table.Td>
                             <Table.Td>{data.amountReferral}</Table.Td>
-                            <Table.Td>{data.gstFlag}</Table.Td>
+                            <Table.Td>{data.tdsFlag}</Table.Td>
+                            <Table.Td>{data.tdsFlag==="Yes" ? data.tdsPercentage : ""}</Table.Td>
                         </Table.Tr>
                     </Table.Tbody>
                 </Table>

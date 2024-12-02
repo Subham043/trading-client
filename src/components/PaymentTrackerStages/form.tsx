@@ -10,6 +10,7 @@ import { AxiosErrorResponseType, PaymentTrackerStageFormType, PaymentTrackerStag
 import { PaymentTrackerStagesListModalProps } from "../../pages/paymentTrackerStages/list";
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { DateInput } from "@mantine/dates";
 
 type PaymentTrackerStagesFormProps = {
     status: boolean;
@@ -36,6 +37,7 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
             form.setValues({
                 status: data.status ? data.status : undefined,
                 amount: data.amount ? data.amount : 0,
+                date: (data  && data.date) ? data.date.toString() : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +72,7 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 3 }}>
                     <Select
                         label="Equity Type"
                         withAsterisk
@@ -79,6 +81,12 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
                         onChange={(value) => form.setFieldValue("status", value ? value as "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid" : "InvoiceSent")}
                     />
                     <TextInput label="Amount" {...form.getInputProps('amount')} />
+                    <DateInput
+                        value={form.values.date ? new Date(form.values.date) : undefined}
+                        onChange={(value) => form.setFieldValue('date', value?.toISOString())}
+                        label="Date"
+                        placeholder="Date"
+                    />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} data-disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}

@@ -8,7 +8,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 
 
-const ReferralTrackerStagesTableRow:FC<ReferralTrackerStageType & {toggleModal: (value: ReferralTrackerStagesListModalProps) => void, toggleDrawer: (value: ReferralTrackerStagesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, amount, status, paymentTrackerID, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const ReferralTrackerStagesTableRow:FC<ReferralTrackerStageType & {toggleModal: (value: ReferralTrackerStagesListModalProps) => void, toggleDrawer: (value: ReferralTrackerStagesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, amount, status, paymentTrackerID, date, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteReferralTrackerStages = useDeleteReferralTrackerStageMutation(id, paymentTrackerID||0)
   const onDelete = async () => {
@@ -31,6 +31,11 @@ const ReferralTrackerStagesTableRow:FC<ReferralTrackerStageType & {toggleModal: 
       <Table.Td>
           <Text fz="sm" fw={500}>
               {status}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -92,6 +97,7 @@ const ReferralTrackerStagesTable:FC<{toggleModal: (value: ReferralTrackerStagesL
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Amount</Table.Th>
               <Table.Th style={{color: 'white'}}>Status</Table.Th>
+              <Table.Th style={{color: 'white'}}>Date</Table.Th>
               <Table.Th style={{color: 'white'}}>Created At</Table.Th>
               <Table.Th />
             </Table.Tr>

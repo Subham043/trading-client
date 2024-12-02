@@ -8,7 +8,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 
 
-const PaymentTrackerStagesTableRow:FC<PaymentTrackerStageType & {toggleModal: (value: PaymentTrackerStagesListModalProps) => void, toggleDrawer: (value: PaymentTrackerStagesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, amount, status, paymentTrackerID, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const PaymentTrackerStagesTableRow:FC<PaymentTrackerStageType & {toggleModal: (value: PaymentTrackerStagesListModalProps) => void, toggleDrawer: (value: PaymentTrackerStagesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, amount, status, paymentTrackerID, date, createdAt, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deletePaymentTrackerStages = useDeletePaymentTrackerStageMutation(id, paymentTrackerID||0)
   const onDelete = async () => {
@@ -31,6 +31,11 @@ const PaymentTrackerStagesTableRow:FC<PaymentTrackerStageType & {toggleModal: (v
       <Table.Td>
           <Text fz="sm" fw={500}>
               {status}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -92,6 +97,7 @@ const PaymentTrackerStagesTable:FC<{toggleModal: (value: PaymentTrackerStagesLis
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Amount</Table.Th>
               <Table.Th style={{color: 'white'}}>Status</Table.Th>
+              <Table.Th style={{color: 'white'}}>Date</Table.Th>
               <Table.Th style={{color: 'white'}}>Created At</Table.Th>
               <Table.Th />
             </Table.Tr>

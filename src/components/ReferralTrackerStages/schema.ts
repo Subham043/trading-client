@@ -10,11 +10,13 @@ enum StatusType {
 export type SchemaType = {
   status: "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid";
   amount: number;
+  date?: string | undefined;
 };
 
 export const initialValues: SchemaType = {
   status: "ToBePaid",
   amount: 0,
+  date: undefined,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -26,4 +28,5 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .number()
     .typeError("amount must be a number")
     .required("amount is required"),
+  date: yup.string().typeError("Date must be a string").optional(),
 });

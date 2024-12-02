@@ -223,6 +223,7 @@ export const useUpdatePaymentTrackerMutation = (
           noOfStagesReferral: Number(updatePaymentTrackerVal.noOfStagesReferral),
           percentageStageReferral: Number(updatePaymentTrackerVal.percentageStageReferral),
           amountReferral: Number(updatePaymentTrackerVal.amountReferral),
+          tdsPercentage: Number(updatePaymentTrackerVal.tdsPercentage),
         }
       );
       return response.data.data;
@@ -268,6 +269,7 @@ export const useAddPaymentTrackerMutation = (projectId: string) => {
           noOfStagesReferral: Number(newPaymentTrackerVal.noOfStagesReferral),
           percentageStageReferral: Number(newPaymentTrackerVal.percentageStageReferral),
           amountReferral: Number(newPaymentTrackerVal.amountReferral),
+          tdsPercentage: Number(newPaymentTrackerVal.tdsPercentage),
         }
       );
       return response.data.data;

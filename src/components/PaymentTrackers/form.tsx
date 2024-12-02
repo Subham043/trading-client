@@ -38,7 +38,7 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
             form.setValues({
-                gstFlag: data.gstFlag ? data.gstFlag : undefined,
+                tdsFlag: data.tdsFlag ? data.tdsFlag : undefined,
                 valuation: data.valuation ? data.valuation : 0,
                 percentageTotal: data.percentageTotal ? data.percentageTotal : 0,
                 noOfStages: data.noOfStages ? data.noOfStages : 0,
@@ -46,6 +46,7 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
                 noOfStagesReferral: data.noOfStagesReferral ? data.noOfStagesReferral : 0,
                 percentageStageReferral: data.percentageStageReferral ? data.percentageStageReferral : 0,
                 amountReferral: data.amountReferral ? data.amountReferral : 0,
+                tdsPercentage: data.tdsPercentage ? data.tdsPercentage : 0,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,15 +91,19 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
                     <TextInput label="No Of Stages For Referral" withAsterisk {...form.getInputProps('noOfStagesReferral')} />
                     <TextInput label="Percentage For Each Stage For Referral" withAsterisk {...form.getInputProps('percentageStageReferral')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt={"md"}>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt={"md"}>
                     <TextInput label="Referral amount" withAsterisk {...form.getInputProps('amountReferral')} />
                     <Select
-                        label="GST Flag"
+                        label="TDS Flag"
                         withAsterisk
                         data={["Yes" , "No"]}
-                        value={form.values.gstFlag ? form.values.gstFlag : null}
-                        onChange={(value) => form.setFieldValue("gstFlag", value ? value as "Yes" | "No" : "No")}
+                        value={form.values.tdsFlag ? form.values.tdsFlag : null}
+                        onChange={(value) => form.setFieldValue("tdsFlag", value ? value as "Yes" | "No" : "No")}
                     />
+                    {
+                        form.values.tdsFlag==="Yes" &&
+                        <TextInput label="TDS Percentage" withAsterisk {...form.getInputProps('tdsPercentage')} />
+                    }
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addPaymentTrackers.isPending : updatePaymentTrackers.isPending} disabled={props.type === "Create" ? addPaymentTrackers.isPending : updatePaymentTrackers.isPending} data-disabled={props.type === "Create" ? addPaymentTrackers.isPending : updatePaymentTrackers.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}

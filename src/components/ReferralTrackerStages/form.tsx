@@ -10,6 +10,7 @@ import { AxiosErrorResponseType, ReferralTrackerStageFormType, ReferralTrackerSt
 import { ReferralTrackerStagesListModalProps } from "../../pages/referralTrackerStages/list";
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { DateInput } from "@mantine/dates";
 
 type ReferralTrackerStagesFormProps = {
     status: boolean;
@@ -36,6 +37,7 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
             form.setValues({
                 status: data.status ? data.status : undefined,
                 amount: data.amount ? data.amount : 0,
+                date: (data  && data.date) ? data.date.toString() : undefined,
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +72,7 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 3 }}>
                     <Select
                         label="Equity Type"
                         withAsterisk
@@ -79,6 +81,12 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
                         onChange={(value) => form.setFieldValue("status", value ? value as "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid" : "ToBePaid")}
                     />
                     <TextInput label="Amount" {...form.getInputProps('amount')} />
+                    <DateInput
+                        value={form.values.date ? new Date(form.values.date) : undefined}
+                        onChange={(value) => form.setFieldValue('date', value?.toISOString())}
+                        label="Date"
+                        placeholder="Date"
+                    />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} data-disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}
