@@ -504,6 +504,19 @@ export type ShareHolderDetailType = {
   pincodeBank?: string | null;
   projectID?: number | null;
   createdAt?: Date | null;
+  addressAadhar?: string | null;
+  CIN?: string | null;
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  fatherFirstName?: string | null;
+  fatherMiddleName?: string | null;
+  fatherLastName?: string | null;
+  password?: string | null;
+  confirmPassword?: string | null;
+  hintQuestion?: string | null;
+  hintAnswer?: string | null;
+  isCompany?: string | null;
 };
 
 export interface ShareHolderDetailFormType
@@ -551,6 +564,18 @@ export type LegalHeirDetailType = {
   pincodeBank?: string | null;
   projectID?: number | null;
   createdAt?: Date | null;
+  addressAadhar?: string | null;
+  CIN?: string | null;
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  fatherFirstName?: string | null;
+  fatherMiddleName?: string | null;
+  fatherLastName?: string | null;
+  password?: string | null;
+  confirmPassword?: string | null;
+  hintQuestion?: string | null;
+  hintAnswer?: string | null;
 };
 
 export interface LegalHeirDetailFormType

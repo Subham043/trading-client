@@ -2,7 +2,6 @@ import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { PaymentTrackerType } from "../../utils/types";
-import dayjs from 'dayjs';
 import { PaymentTrackersListModalProps } from "../../pages/paymentTrackers/list";
 import { useDeletePaymentTrackerMutation, usePaymentTrackersQuery } from "../../hooks/data/payment_trackers";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -10,7 +9,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const PaymentTrackersTableRow:FC<PaymentTrackerType & {toggleModal: (value: PaymentTrackersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, percentageTotal, percentageStage, noOfStages, noOfStagesReferral, percentageStageReferral, tdsPercentage, amountReferral, valuation, createdAt, tdsFlag, selectedData, setSelectedData, toggleModal}) => {
+const PaymentTrackersTableRow:FC<PaymentTrackerType & {toggleModal: (value: PaymentTrackersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, percentageTotal, percentageStage, noOfStages, noOfStagesReferral, percentageStageReferral, tdsPercentage, amountReferral, valuation, tdsFlag, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deletePaymentTrackers = useDeletePaymentTrackerMutation(id, projectID?.toString() ?? '');
   const onDelete = async () => {
@@ -68,11 +67,6 @@ const PaymentTrackersTableRow:FC<PaymentTrackerType & {toggleModal: (value: Paym
       <Table.Td>
           <Text fz="sm" fw={500}>
               {tdsFlag==="Yes" ? tdsPercentage : ''}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -138,7 +132,6 @@ const PaymentTrackersTable:FC<{projectId: string, toggleModal: (value: PaymentTr
               <Table.Th style={{color: 'white'}}>Referral Amount</Table.Th>
               <Table.Th style={{color: 'white'}}>TDS Flag</Table.Th>
               <Table.Th style={{color: 'white'}}>TDS Percentage</Table.Th>
-              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, SimpleGrid, TextInput } from "@mantine/core";
+import { Button, Divider, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddLegalHeirDetailMutation, useLegalHeirDetailQuery, useUpdateLegalHeirDetailMutation } from "../../hooks/data/legal_heir_details";
 import { MutateOptions } from "@tanstack/react-query";
@@ -69,6 +69,18 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                 emailBank: (data && (typeof data.emailBank === "string")) ? data.emailBank : "",
                 phoneBank: (data && (typeof data.phoneBank === "string")) ? data.phoneBank : "",
                 pincodeBank: (data && (typeof data.pincodeBank === "string")) ? data.pincodeBank : "",
+                addressAadhar: (data && (typeof data.addressAadhar === "string")) ? data.addressAadhar : "",
+                CIN: (data && (typeof data.CIN === "string")) ? data.CIN : "",
+                firstName: (data && (typeof data.firstName === "string")) ? data.firstName : "",
+                middleName: (data && (typeof data.middleName === "string")) ? data.middleName : "",
+                lastName: (data && (typeof data.lastName === "string")) ? data.lastName : "",
+                fatherFirstName: (data && (typeof data.fatherFirstName === "string")) ? data.fatherFirstName : "",
+                fatherMiddleName: (data && (typeof data.fatherMiddleName === "string")) ? data.fatherMiddleName : "",
+                fatherLastName: (data && (typeof data.fatherLastName === "string")) ? data.fatherLastName : "",
+                password: (data && (typeof data.password === "string")) ? data.password : "",
+                confirmPassword: (data && (typeof data.confirmPassword === "string")) ? data.confirmPassword : "",
+                hintQuestion: (data && (typeof data.hintQuestion === "string")) ? data.hintQuestion : "",
+                hintAnswer: (data && (typeof data.hintAnswer === "string")) ? data.hintAnswer : "",
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,6 +177,34 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
                     <TextInput label="Client Occupation" {...form.getInputProps('occupation')} />
+                </SimpleGrid>
+                <Divider
+                    my="xs"
+                    variant="dashed"
+                    label={
+                        <Title order={5}>IEPF Information</Title>
+                    }
+                    labelPosition="left"
+                />
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="First Name" {...form.getInputProps('firstName')} />
+                    <TextInput label="Middle Name" {...form.getInputProps('middleName')} />
+                    <TextInput label="Last Name" {...form.getInputProps('lastName')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="Father's First Name" {...form.getInputProps('fatherFirstName')} />
+                    <TextInput label="Father's Middle Name" {...form.getInputProps('fatherMiddleName')} />
+                    <TextInput label="Father's Last Name" {...form.getInputProps('fatherLastName')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="Address as per Aadhar" {...form.getInputProps('addressAadhar')} />
+                    <TextInput label="Password" {...form.getInputProps('password')} />
+                    <TextInput label="Confirm Password" {...form.getInputProps('confirmPassword')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="CIN" {...form.getInputProps('CIN')} />
+                    <TextInput label="Hint Question" {...form.getInputProps('hintQuestion')} />
+                    <TextInput label="Hint Answer   " {...form.getInputProps('hintAnswer')} />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addLegalHeirDetails.isPending : updateLegalHeirDetails.isPending} disabled={props.type === "Create" ? addLegalHeirDetails.isPending : updateLegalHeirDetails.isPending} data-disabled={props.type === "Create" ? addLegalHeirDetails.isPending : updateLegalHeirDetails.isPending}>
                     {props.type === "Create" ? "Create" : "Update"}

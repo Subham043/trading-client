@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Table } from '@mantine/core';
+import { Table, Title } from '@mantine/core';
 import { ShareHolderDetailsListDrawerProps } from "../../pages/shareHolderDetails/list";
 import { useShareHolderDetailQuery } from "../../hooks/data/share_holder_details";
 import ErrorBoundary from "../Layout/ErrorBoundary";
@@ -13,7 +13,11 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
             <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>Share Holder Name</Table.Th>
+                        <Table.Th>Is Client a Company?</Table.Th>
+                        <Table.Td>{data.isCompany}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>{data.isCompany==='Yes' ? "Company Name" : "Share Holder Name"}</Table.Th>
                         <Table.Td>{data.shareholderName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
@@ -61,8 +65,8 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                         <Table.Td>{data.occupation}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
-                        <Table.Th>Client Date of Birth (if applicable)</Table.Th>
-                        <Table.Td>{dayjs(data.dob?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Th>{data.isCompany==='Yes' ? "Company Date of Incorporation (if applicable)" : "Client Date of Birth (if applicable)"}</Table.Th>
+                        <Table.Td>{data.dob ? dayjs(data.dob?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client nationality</Table.Th>
@@ -102,7 +106,7 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client Bank address</Table.Th>
-                        <Table.Td>{data.addressBank}</Table.Td>
+                        <Table.Td>{data.bankAddress}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client Bank Email</Table.Th>
@@ -130,7 +134,7 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client Account Opening Date</Table.Th>
-                        <Table.Td>{dayjs(data.accountOpeningDate?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Td>{data.accountOpeningDate ? dayjs(data.accountOpeningDate?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY'): ''}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Client address as per Bank</Table.Th>
@@ -151,6 +155,57 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                     <Table.Tr>
                         <Table.Th>Demat Account No.</Table.Th>
                         <Table.Td>{data.dematAccountNo}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th colSpan={2}><Title order={5} style={{textAlign: 'center'}}>IEPF Information</Title></Table.Th>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client First Name</Table.Th>
+                        <Table.Td>{data.firstName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Middle Name</Table.Th>
+                        <Table.Td>{data.middleName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Last Name</Table.Th>
+                        <Table.Td>{data.lastName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Father's First Name</Table.Th>
+                        <Table.Td>{data.fatherFirstName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Father's Middle Name</Table.Th>
+                        <Table.Td>{data.fatherMiddleName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Client Father's Last Name</Table.Th>
+                        <Table.Td>{data.fatherLastName}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Address as per Aadhar</Table.Th>
+                        <Table.Td>{data.addressAadhar}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>CIN</Table.Th>
+                        <Table.Td>{data.CIN}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Password</Table.Th>
+                        <Table.Td>{data.password}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Confirm Password</Table.Th>
+                        <Table.Td>{data.confirmPassword}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Hint Question</Table.Th>
+                        <Table.Td>{data.hintQuestion}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Hint Answer</Table.Th>
+                        <Table.Td>{data.hintAnswer}</Table.Td>
                     </Table.Tr>
                 </Table.Thead>
             </Table>

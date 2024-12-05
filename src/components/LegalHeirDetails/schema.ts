@@ -34,6 +34,18 @@ export type SchemaType = {
   emailBank?: string | undefined | null;
   phoneBank?: string | undefined | null;
   pincodeBank?: string | undefined | null;
+  addressAadhar?: string | undefined | null;
+  CIN?: string | undefined | null;
+  firstName?: string | undefined | null;
+  middleName?: string | undefined | null;
+  lastName?: string | undefined | null;
+  fatherFirstName?: string | undefined | null;
+  fatherMiddleName?: string | undefined | null;
+  fatherLastName?: string | undefined | null;
+  password?: string | undefined | null;
+  confirmPassword?: string | undefined | null;
+  hintQuestion?: string | undefined | null;
+  hintAnswer?: string | undefined | null;
 };
 
 export const initialValues: SchemaType = {
@@ -70,6 +82,18 @@ export const initialValues: SchemaType = {
   emailBank: null,
   phoneBank: null,
   pincodeBank: null,
+  addressAadhar: null,
+  CIN: null,
+  firstName: null,
+  middleName: null,
+  lastName: null,
+  fatherFirstName: null,
+  fatherMiddleName: null,
+  fatherLastName: null,
+  password: null,
+  confirmPassword: null,
+  hintQuestion: null,
+  hintAnswer: null,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -115,4 +139,16 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   emailBank: yup.string().trim().notRequired(),
   phoneBank: yup.string().trim().notRequired(),
   pincodeBank: yup.string().trim().notRequired(),
+  addressAadhar: yup.string().trim().notRequired(),
+  CIN: yup.string().trim().notRequired(),
+  firstName: yup.string().trim().notRequired(),
+  middleName: yup.string().trim().notRequired(),
+  lastName: yup.string().trim().notRequired(),
+  fatherFirstName: yup.string().trim().notRequired(),
+  fatherMiddleName: yup.string().trim().notRequired(),
+  fatherLastName: yup.string().trim().notRequired(),
+  password: yup.string().trim().notRequired(),
+  confirmPassword: yup.string().trim().notRequired(),
+  hintQuestion: yup.string().trim().notRequired(),
+  hintAnswer: yup.string().trim().notRequired(),
 });

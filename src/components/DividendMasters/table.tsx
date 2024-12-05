@@ -25,6 +25,11 @@ const DividendMastersTableRow:FC<DividendMasterType & {toggleModal: (value: Divi
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {dayjs(recorded_date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
@@ -95,6 +100,7 @@ const DividendMastersTable:FC<{toggleModal: (value: DividendMastersListModalProp
                     onChange={() => props.setSelectedData(allChecked ? [] : (dividendMasters ? dividendMasters.dividendMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Recorded Date</Table.Th>
               <Table.Th style={{color: 'white'}}>Financial Year</Table.Th>
               <Table.Th style={{color: 'white'}}>Dividend Per Share</Table.Th>

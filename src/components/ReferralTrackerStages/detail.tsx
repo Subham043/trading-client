@@ -22,7 +22,7 @@ const ReferralTrackerStageDetail:FC<ReferralTrackerStagesListDrawerProps> = (pro
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Date</Table.Th>
-                        <Table.Td>{dayjs(data.date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Td>{data.date ? dayjs(data.date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Created At</Table.Th>

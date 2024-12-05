@@ -192,14 +192,17 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         />
                     </SimpleGrid>
                     {form.values.isDeceased === "Yes" && <>
-                        <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
                             <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
+                        </SimpleGrid>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <DateInput
                                 label="Date of Death"
                                 value={form.values.dod ? new Date(form.values.dod) : undefined}
                                 onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
                             />
+                            <TextInput label="Place Of Death" {...form.getInputProps('placeOfDeath')} />
                         </SimpleGrid>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <Select

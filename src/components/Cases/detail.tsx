@@ -40,8 +40,12 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                                 <Table.Td>{data.deceasedRelationship}</Table.Td>
                             </Table.Tr>
                             <Table.Tr>
+                                <Table.Th>Place of Death</Table.Th>
+                                <Table.Td>{data.placeOfDeath}</Table.Td>
+                            </Table.Tr>
+                            <Table.Tr>
                                 <Table.Th>Date of Death</Table.Th>
-                                <Table.Td>{dayjs(data.dod?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                                <Table.Td>{data.dod ? dayjs(data.dod?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>Testate/Intestate</Table.Th>
@@ -65,7 +69,7 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>Date of document</Table.Th>
-                                <Table.Td>{dayjs(data.dateOfDocument?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                                <Table.Td>{data.dateOfDocument ? dayjs(data.dateOfDocument?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                             </Table.Tr>
                         </>}
                         <Table.Tr>
@@ -75,7 +79,7 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                         {data.isMinor==="Yes" && <>
                             <Table.Tr>
                                 <Table.Th>DOB of Minor</Table.Th>
-                                <Table.Td>{dayjs(data.dobMinor?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                                <Table.Td>{data.dobMinor ? dayjs(data.dobMinor?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>Name of Guardian of minor</Table.Th>
@@ -126,6 +130,23 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                         <Table.Tr>
                             <Table.Th>Transposition Order</Table.Th>
                             <Table.Td>{data.order.map((item) => item.shareholderName).join(", ")}</Table.Td>
+                        </Table.Tr>
+                    </>}
+                    {data.caseType.includes("Deletion") && <>
+                        <Table.Tr>
+                            <Table.Th colSpan={2}><Title order={5} style={{textAlign: 'center'}}>Deletion</Title></Table.Th>
+                        </Table.Tr>
+                        <Table.Tr>
+                            <Table.Th>Dead Shareholder</Table.Th>
+                            <Table.Td>{data.deadShareholder ? data.deadShareholder.shareholderName : "N/A"}</Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
+                            <Table.Th>Place of Death</Table.Th>
+                            <Table.Td>{data.placeOfDeath}</Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
+                            <Table.Th>Date of Death</Table.Th>
+                            <Table.Td>{data.dod ? dayjs(data.dod?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                         </Table.Tr>
                     </>}
                 </Table.Thead>

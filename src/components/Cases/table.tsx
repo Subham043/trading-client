@@ -53,6 +53,11 @@ const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: 
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {caseType}
           </Text>
       </Table.Td>
@@ -121,6 +126,7 @@ const CasesTable:FC<{shareCertificateId: number, toggleModal: (value: CasesListM
                     onChange={() => props.setSelectedData(allChecked ? [] : (shareHolderMasters ? shareHolderMasters.shareHolderMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Case Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Folios</Table.Th>
               <Table.Th style={{color: 'white'}}>Created On</Table.Th>

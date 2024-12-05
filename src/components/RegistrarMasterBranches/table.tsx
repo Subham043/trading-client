@@ -25,6 +25,11 @@ const RegistrarMasterBranchesTableRow:FC<RegistrarMasterBranchQueryType & {toggl
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {branch}
           </Text>
       </Table.Td>
@@ -100,6 +105,7 @@ const RegistrarMasterBranchesTable:FC<{toggleModal: (value: RegistrarMasterBranc
                     onChange={() => props.setSelectedData(allChecked ? [] : (registrarMasterBranches ? registrarMasterBranches.registrarMasterBranch.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Branch</Table.Th>
               <Table.Th style={{color: 'white'}}>City</Table.Th>
               <Table.Th style={{color: 'white'}}>State</Table.Th>

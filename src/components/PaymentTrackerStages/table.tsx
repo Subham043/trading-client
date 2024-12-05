@@ -25,6 +25,11 @@ const PaymentTrackerStagesTableRow:FC<PaymentTrackerStageType & {toggleModal: (v
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {amount}
           </Text>
       </Table.Td>
@@ -35,7 +40,7 @@ const PaymentTrackerStagesTableRow:FC<PaymentTrackerStageType & {toggleModal: (v
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
+              {date ? dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -95,6 +100,7 @@ const PaymentTrackerStagesTable:FC<{toggleModal: (value: PaymentTrackerStagesLis
                     onChange={() => props.setSelectedData(allChecked ? [] : (paymentTrackerStages ? paymentTrackerStages.paymentTrackerStages.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Amount</Table.Th>
               <Table.Th style={{color: 'white'}}>Status</Table.Th>
               <Table.Th style={{color: 'white'}}>Date</Table.Th>

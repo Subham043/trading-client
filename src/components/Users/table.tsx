@@ -32,6 +32,11 @@ const UserTableRow:FC<UserQueryType & {toggleDrawer: (value: UserDrawerProps) =>
         />
       </Table.Td>
       <Table.Td>
+          <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
           <Group gap="sm">
           <Avatar size={30} radius={30}>{initials}</Avatar>
           <Text fz="sm" fw={500}>
@@ -110,6 +115,7 @@ const UserTable:FC<{toggleDrawer: (value: UserDrawerProps) => void, selectedData
                     onChange={() => props.setSelectedData(allChecked ? [] : (users ? users.user.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+                <Table.Th style={{color: 'white'}}>ID</Table.Th>
                 <Table.Th style={{color: 'white'}}>Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Email</Table.Th>
                 <Table.Th style={{color: 'white'}}>Role</Table.Th>

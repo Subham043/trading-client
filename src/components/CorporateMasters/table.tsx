@@ -25,6 +25,11 @@ const CorporateMastersTableRow:FC<CorporateMasterType & {toggleModal: (value: Co
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
@@ -100,6 +105,7 @@ const CorporateMastersTable:FC<{toggleModal: (value: CorporateMastersListModalPr
                     onChange={() => props.setSelectedData(allChecked ? [] : (corporateMasters ? corporateMasters.corporateMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Date</Table.Th>
               <Table.Th style={{color: 'white'}}>Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Numerator</Table.Th>

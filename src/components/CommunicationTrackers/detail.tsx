@@ -26,11 +26,11 @@ const CommunicationTrackerDetail:FC<CommunicationTrackerDrawerProps> = (props) =
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Date Sent</Table.Th>
-                        <Table.Td>{dayjs(data.dateSent?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Td>{data.dateSent ? dayjs(data.dateSent?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Date Received</Table.Th>
-                        <Table.Td>{dayjs(data.dateReceived?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Td>{data.dateReceived ? dayjs(data.dateReceived?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
                         <Table.Th>Created At</Table.Th>

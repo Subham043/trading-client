@@ -25,6 +25,11 @@ const SecurityTypeMastersTableRow:FC<SecurityTypeMasterType & {toggleModal: (val
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {instrumentType}
           </Text>
       </Table.Td>
@@ -50,7 +55,7 @@ const SecurityTypeMastersTableRow:FC<SecurityTypeMasterType & {toggleModal: (val
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(dateOfListing?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
+              {dateOfListing ? dayjs(dateOfListing?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -110,6 +115,7 @@ const SecurityTypeMastersTable:FC<{toggleModal: (value: SecurityTypeMastersListM
                     onChange={() => props.setSelectedData(allChecked ? [] : (securityTypeMasters ? securityTypeMasters.securityTypeMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Intrument Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Name Of Company</Table.Th>
               <Table.Th style={{color: 'white'}}>Symbol</Table.Th>

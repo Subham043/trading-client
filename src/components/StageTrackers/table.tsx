@@ -25,6 +25,11 @@ const StageTrackersTableRow:FC<StageTrackerType & {toggleModal: (value: StageTra
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {stage}
           </Text>
       </Table.Td>
@@ -35,7 +40,7 @@ const StageTrackersTableRow:FC<StageTrackerType & {toggleModal: (value: StageTra
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
+              {date ? dayjs(date?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -95,6 +100,7 @@ const StageTrackersTable:FC<{projectId: string, toggleModal: (value: StageTracke
                     onChange={() => props.setSelectedData(allChecked ? [] : (stageTrackers ? stageTrackers.stageTracker.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Stage</Table.Th>
               <Table.Th style={{color: 'white'}}>Pending From</Table.Th>
               <Table.Th style={{color: 'white'}}>Date</Table.Th>

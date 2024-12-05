@@ -13,6 +13,10 @@ const SecurityTypeMasterDetail:FC<SecurityTypeMastersListDrawerProps> = (props) 
             <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
+                        <Table.Th>ID</Table.Th>
+                        <Table.Td>{data.id}</Table.Td>
+                    </Table.Tr>
+                    <Table.Tr>
                         <Table.Th>Intrument Type</Table.Th>
                         <Table.Td>{data.instrumentType}</Table.Td>
                     </Table.Tr>
@@ -48,12 +52,12 @@ const SecurityTypeMasterDetail:FC<SecurityTypeMastersListDrawerProps> = (props) 
                     </>}
                     <Table.Tr>
                         <Table.Th>Date Of Listing</Table.Th>
-                        <Table.Td>{dayjs(data.dateOfListing?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                        <Table.Td>{data.dateOfListing ? dayjs(data.dateOfListing?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                     </Table.Tr>
                     {data.instrumentType === "PreferenceShares" && <>
                         <Table.Tr>
                             <Table.Th>Date of Allotment</Table.Th>
-                            <Table.Td>{dayjs(data.dateOfAllotment?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}</Table.Td>
+                            <Table.Td>{data.dateOfAllotment ? dayjs(data.dateOfAllotment?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}</Table.Td>
                         </Table.Tr>
                         <Table.Tr>
                             <Table.Th>Security Name</Table.Th>

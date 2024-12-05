@@ -266,7 +266,13 @@ export const useUpdateFolioMutation = (
     mutationFn: async (updateFolioVal: FolioFormType) => {
       const response = await axios.put<{
         data: FolioType;
-      }>(api_routes.folios + `/${id}`, updateFolioVal);
+      }>(api_routes.folios + `/${id}`, {
+        ...updateFolioVal,
+        faceValue:
+          updateFolioVal.faceValue && !isNaN(Number(updateFolioVal.faceValue))
+            ? Number(updateFolioVal.faceValue)
+            : 0,
+      });
       return response.data.data;
     },
     // 💡 response of the mutation is passed to onSuccess

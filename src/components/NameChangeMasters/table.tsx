@@ -25,6 +25,11 @@ const NameChangeMasterTableRow:FC<NameChangeMasterType & {toggleModal: (value: N
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {currentName}
           </Text>
       </Table.Td>
@@ -105,6 +110,7 @@ const NameChangeMasterTable:FC<{toggleModal: (value: NameChangeMastersListModalP
                     onChange={() => props.setSelectedData(allChecked ? [] : (nameChangeMasters ? nameChangeMasters.nameChangeMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>New Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Previous Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Date of Name Change</Table.Th>

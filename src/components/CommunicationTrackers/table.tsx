@@ -8,7 +8,7 @@ import { useDeleteCommunicationTrackerMutation, useCommunicationTrackersQuery } 
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const CommunicationTrackersTableRow:FC<CommunicationTrackerType & {toggleModal: (value: CommunicationTrackersListModalProps) => void, toggleDrawer: (value: CommunicationTrackerDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, foliosSet, dateSent, dateReceived, stage, createdAt, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
+const CommunicationTrackersTableRow:FC<CommunicationTrackerType & {toggleModal: (value: CommunicationTrackersListModalProps) => void, toggleDrawer: (value: CommunicationTrackerDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, foliosSet, dateSent, dateReceived, stage, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteCommunicationTrackers = useDeleteCommunicationTrackerMutation(id, projectID?.toString() ?? '');
   const onDelete = async () => {
@@ -25,6 +25,11 @@ const CommunicationTrackersTableRow:FC<CommunicationTrackerType & {toggleModal: 
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {stage}
           </Text>
       </Table.Td>
@@ -35,17 +40,12 @@ const CommunicationTrackersTableRow:FC<CommunicationTrackerType & {toggleModal: 
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(dateSent?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
+              {dateSent ? dayjs(dateSent?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {dayjs(dateReceived?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {dayjs(createdAt?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}
+              {dateReceived ? dayjs(dateReceived?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -100,11 +100,11 @@ const CommunicationTrackersTable:FC<{projectId: string, toggleModal: (value: Com
                     onChange={() => props.setSelectedData(allChecked ? [] : (communicationTrackers ? communicationTrackers.communicationTracker.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>ID</Table.Th>
               <Table.Th style={{color: 'white'}}>Stage</Table.Th>
               <Table.Th style={{color: 'white'}}>Company/Folios</Table.Th>
               <Table.Th style={{color: 'white'}}>Date Sent</Table.Th>
               <Table.Th style={{color: 'white'}}>Date Received</Table.Th>
-              <Table.Th style={{color: 'white'}}>Created On</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

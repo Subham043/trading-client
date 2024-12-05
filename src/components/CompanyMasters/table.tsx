@@ -29,6 +29,13 @@ const CompanyMasterTableRow:FC<CompanyMasterQueryType & {toggleModal: (value: Co
       <Table.Td>
           <Link to={`${page_routes.companyMasters.list}/${id}`}>
             <Anchor component="button" size="sm">
+            {id}
+            </Anchor>
+          </Link>
+      </Table.Td>
+      <Table.Td>
+          <Link to={`${page_routes.companyMasters.list}/${id}`}>
+            <Anchor component="button" size="sm">
             {ISIN}
             </Anchor>
           </Link>
@@ -119,6 +126,7 @@ const CompanyMasterTable:FC<{toggleModal: (value: CompanyMastersModalProps) => v
                     onChange={() => props.setSelectedData(allChecked ? [] : (companyMasters ? companyMasters.companyMaster.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+                <Table.Th style={{color: 'white'}}>ID</Table.Th>
                 <Table.Th style={{color: 'white'}}>ISIN</Table.Th>
                 <Table.Th style={{color: 'white'}}>Current Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>CIN</Table.Th>

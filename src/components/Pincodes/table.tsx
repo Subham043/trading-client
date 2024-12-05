@@ -22,6 +22,13 @@ const PincodeTableRow:FC<PincodeQueryType & {toggleDrawer: (value: PincodesDrawe
       <Table.Td>
           <Group gap="sm">
           <Text fz="sm" fw={500}>
+              {id}
+          </Text>
+          </Group>
+      </Table.Td>
+      <Table.Td>
+          <Group gap="sm">
+          <Text fz="sm" fw={500}>
               {state_name}
           </Text>
           </Group>
@@ -111,6 +118,7 @@ const PincodeTable:FC<{toggleDrawer: (value: PincodesDrawerProps) => void, selec
                     onChange={() => props.setSelectedData(allChecked ? [] : (pincodes ? pincodes.pincode.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+                <Table.Th style={{color: 'white'}}>ID</Table.Th>
                 <Table.Th style={{color: 'white'}}>State Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Circle Name</Table.Th>
                 <Table.Th style={{color: 'white'}}>Region Name</Table.Th>
