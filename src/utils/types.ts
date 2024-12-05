@@ -634,6 +634,38 @@ export type StageTrackerType = {
 export interface StageTrackerFormType
   extends Omit<StageTrackerType, "id" | "projectID" | "createdAt"> {}
 
+  export type CommunicationTrackerType = {
+    id: number;
+    comments: string | null;
+    dateSent: string | null;
+    folios: string | null;
+    dateReceived: string | null;
+    stage: "DocumentsCouriered" | "DocumentsReceived";
+    foliosSet: {
+      id: number;
+      equityType: "Bonus" | "Shares" | "Splits" | "Rights";
+      Folio: string;
+      certificateNumber?: string | null | undefined;
+      faceValue: number | null | undefined;
+      shareCertificateMaster: {
+        companyMaster: {
+          nameChangeMasters: { currentName: string | null }[];
+        } | null;
+      } | null;
+      currentNameChangeMasters: {
+        currentName: string | null;
+      } | null;
+    }[];
+    projectID: number;
+    createdAt: Date;
+  };
+
+export interface CommunicationTrackerFormType
+  extends Omit<
+    CommunicationTrackerType,
+    "id" | "projectID" | "foliosSet" | "createdAt"
+  > {}
+
   export type PaymentTrackerType = {
   id: number;
   valuation: number;

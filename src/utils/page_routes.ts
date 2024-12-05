@@ -23,6 +23,7 @@ export const page_routes = {
     legalHeirDetails: "/projects/:projectId/legal-heir-details",
     paymentTrackers: "/projects/:projectId/payment-trackers",
     stageTrackers: "/projects/:projectId/stage-trackers",
+    communicationTrackers: "/projects/:projectId/communication-trackers",
   },
   registrarMasters: {
     list: "/registrar-masters",

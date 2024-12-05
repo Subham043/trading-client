@@ -32,6 +32,7 @@ export const api_routes = {
   folios: "/folios",
   securityTypeMasters: "/security-type-masters",
   stageTrackers: "/stage-trackers",
+  communicationTrackers: "/communication-trackers",
   paymentTrackers: "/payment-trackers",
   paymentTrackerStages: "/payment-tracker-stages",
   referralTrackerStages: "/referral-tracker-stages",

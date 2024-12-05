@@ -38,6 +38,7 @@ const DividendMastersListPage = lazy(()=>import("./pages/dividendMasters/list"))
 const PaymentTrackersListPage = lazy(()=>import("./pages/paymentTrackers/list"));
 const PaymentTrackersDetailPage = lazy(()=>import("./pages/paymentTrackers/detail"));
 const StageTrackersListPage = lazy(()=>import("./pages/stageTrackers/list"));
+const CommunicationTrackersListPage = lazy(()=>import("./pages/communicationTrackers/list"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -77,6 +78,7 @@ function App() {
                         <Route path={page_routes.projects.legalHeirDetails} element={<LegalHeirDetailsListPage />} />
                         <Route path={page_routes.projects.paymentTrackers} element={<PaymentTrackersListPage />} />
                         <Route path={page_routes.projects.stageTrackers} element={<StageTrackersListPage />} />
+                        <Route path={page_routes.projects.communicationTrackers} element={<CommunicationTrackersListPage />} />
                       </Route>
                       <Route path={page_routes.shareCertificateMasters.view} element={<ShareCertificateMastersDetailPage />} />
                       <Route path={page_routes.paymentTrackers.view} element={<PaymentTrackersDetailPage />} />
