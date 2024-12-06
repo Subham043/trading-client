@@ -14,7 +14,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 
 type StageNameFormProps = StageNamesDrawerProps;
 type pincodeMutateOptionsType = MutateOptions<StageNameQueryType, Error, SchemaType, unknown>;
-const StageNameForm:FC<StageNameFormProps & {toggleDrawer: (value: StageNamesDrawerProps) => void}> = (props) => {
+const StageNameForm:FC<StageNameFormProps & {toggleDrawer: (value: StageNamesDrawerProps) => void, refetchStageNames?: () => void}> = (props) => {
 
     const {toastError} = useToast();
     const {data, isFetching, isLoading, status, error, refetch} = useStageNameQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
@@ -38,6 +38,9 @@ const StageNameForm:FC<StageNameFormProps & {toggleDrawer: (value: StageNamesDra
             onSuccess: () => {
                 props.type==="Create" && form.reset();
                 props.toggleDrawer({status: false, type: 'Create'});
+                if(props.refetchStageNames){
+                    props.refetchStageNames();
+                }
             },
             onError: (error:Error) => {
                 if(isAxiosError<AxiosErrorResponseType>(error)){

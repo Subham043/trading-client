@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useToast } from "../../hooks/useToast";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { Button, Select, SimpleGrid, Textarea } from "@mantine/core";
+import { Button, Group, InputLabel, Select, SimpleGrid, Text, Textarea } from "@mantine/core";
 import { isAxiosError } from "axios";
 import { useAddStageTrackerMutation, useStageTrackerQuery, useUpdateStageTrackerMutation } from "../../hooks/data/stage_trackers";
 import { MutateOptions } from "@tanstack/react-query";
@@ -12,7 +12,9 @@ import { PendingFromType, SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { DateInput } from "@mantine/dates";
 import { useStageNamesSelectQuery } from "../../hooks/data/stage_names";
-import debounce from "lodash.debounce";
+import { IconPlus } from "@tabler/icons-react";
+import StageNamesDrawer from "../StageNames/drawer";
+import { StageNamesDrawerProps } from "../../pages/stageNames";
 
 
 type StageTrackersFormProps = {
@@ -30,9 +32,7 @@ type stageTrackersMutateOptionsType = MutateOptions<StageTrackerType, Error, Sta
 const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageTrackersListModalProps) => void}> = (props) => {
 
     const {toastError} = useToast();
-    const [search, setSearch] = useState<string>("");
-    const searchHandler = debounce((value: string) => setSearch(value), 500);
-    const {data:stageNames, isFetching:isStageNameFetching, isLoading:isStageNameLoading} = useStageNamesSelectQuery({search: search, enabled:props.status});
+    const {data:stageNames, isFetching:isStageNameFetching, isLoading:isStageNameLoading, refetch:refetchStageNames} = useStageNamesSelectQuery({search: "", enabled:props.status});
     const {data, isFetching, isLoading, status, error,  refetch} = useStageTrackerQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
     const addStageTrackers = useAddStageTrackerMutation(props.projectId)
     const updateStageTrackers = useUpdateStageTrackerMutation(props.type === "Edit" ? props.id : 0, (data && data.projectID) ? data.projectID.toString() : '')
@@ -40,6 +40,8 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
         initialValues,
         validate: yupResolver(schema),
     });
+    const [drawer, setDrawer] = useState<StageNamesDrawerProps>({status: false, type: 'Create'});
+    const toggleDrawer = (value:StageNamesDrawerProps) => setDrawer(value);
     
     useEffect(() => {
         if(props.type === "Edit" && data && props.status){
@@ -83,20 +85,26 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 3 }}>
-                    <Select
-                        label="Stage"
-                        placeholder="Type to search for stage"
-                        maxDropdownHeight={200}
-                        data={stageNames ? stageNames.map((item) => item.name) : []}
-                        searchable
-                        clearable
-                        nothingFoundMessage="Nothing found..."
-                        disabled={isStageNameFetching || isStageNameLoading}
-                        error={form.errors.stage}
-                        value={form.values.stage ? form.values.stage : undefined}
-                        onChange={(value) => form.setFieldValue("stage", value ? value : "")}
-                        onSearchChange={searchHandler}
-                    />
+                    <>
+                        <InputLabel>
+                            <Group justify="space-between" gap="sm" w="100%">
+                                <Text size="sm" fw={500}>Stage</Text>
+                                <Text size="sm" fw={500}><Button variant="transparent" size="xs" radius="xs" type="button" onClick={() => toggleDrawer({status: true, type: 'Create'})}><IconPlus size="0.8rem" /> Add New</Button></Text>
+                            </Group>
+                            <Select
+                                placeholder="Type to search for stage"
+                                maxDropdownHeight={200}
+                                data={stageNames ? stageNames.map((item) => item.name) : []}
+                                searchable={false}
+                                clearable
+                                nothingFoundMessage="Nothing found..."
+                                disabled={isStageNameFetching || isStageNameLoading}
+                                error={form.errors.stage}
+                                value={form.values.stage ? form.values.stage : undefined}
+                                onChange={(value) => form.setFieldValue("stage", value ? value : "")}
+                            />
+                        </InputLabel>
+                    </>
                     <Select
                         label="Pending From"
                         data={["Client", "RTA", "IEPF", "ServiceProvider"]}
@@ -117,6 +125,7 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
                     {props.type === "Create" ? "Create" : "Update"}
                 </Button>
             </form>
+            <StageNamesDrawer {...drawer} toggleDrawer={toggleDrawer} refetchStageNames={refetchStageNames} />
         </ErrorBoundary>
     )
 }
