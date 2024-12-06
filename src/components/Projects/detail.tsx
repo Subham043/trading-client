@@ -5,7 +5,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ProjectsListModalProps } from "../../pages/projects/list";
-import { IconBrandHipchat, IconCertificate, IconChartBar, IconReceiptRupee, IconUserExclamation, IconUsers } from "@tabler/icons-react";
+import { IconBrandHipchat, IconCertificate, IconChartBar, IconFileSpreadsheet, IconReceiptRupee, IconUserExclamation, IconUsers } from "@tabler/icons-react";
 import { page_routes } from "../../utils/page_routes";
 
 const iconStyle = { width: rem(12), height: rem(12) };
@@ -56,10 +56,10 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                         Share Certificate Masters
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-holder-details`} leftSection={<IconUserExclamation style={iconStyle} />}>
-                        Share Holder Details
+                        Share Holders
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/legal-heir-details`} leftSection={<IconUsers style={iconStyle} />}>
-                        Legal Heir Details
+                        Legal Heirs
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/payment-trackers`} leftSection={<IconReceiptRupee style={iconStyle} />}>
                         Payment Trackers
@@ -69,6 +69,9 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/communication-trackers`} leftSection={<IconBrandHipchat style={iconStyle} />}>
                         Communication Trackers
+                    </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/iepf-trackers`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
+                        IEPF
                     </Tabs.Tab>
                 </Tabs.List>
             </Tabs>

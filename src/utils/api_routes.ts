@@ -33,6 +33,7 @@ export const api_routes = {
   securityTypeMasters: "/security-type-masters",
   stageTrackers: "/stage-trackers",
   communicationTrackers: "/communication-trackers",
+  iepfTrackers: "/iepf-trackers",
   paymentTrackers: "/payment-trackers",
   paymentTrackerStages: "/payment-tracker-stages",
   referralTrackerStages: "/referral-tracker-stages",

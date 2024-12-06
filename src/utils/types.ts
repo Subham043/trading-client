@@ -691,6 +691,22 @@ export interface CommunicationTrackerFormType
     "id" | "projectID" | "foliosSet" | "createdAt"
   > {}
 
+  export type IepfTrackerType = {
+    id: number;
+    shareHolderDetails: string | null;
+    legalHeirDetails: string | null;
+    shareHolderDetailSet: ShareHolderDetailType[];
+    legalHeirDetailSet: LegalHeirDetailType[];
+    projectID: number;
+    createdAt: Date;
+  };
+
+export interface IepfTrackerFormType
+  extends Omit<
+    IepfTrackerType,
+    "id" | "projectID" | "shareHolderDetailSet" | "legalHeirDetailSet" | "createdAt"
+  > {}
+
   export type PaymentTrackerType = {
   id: number;
   valuation: number;
