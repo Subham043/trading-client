@@ -10,6 +10,7 @@ import { AxiosErrorResponseType, PaymentTrackerFormType, PaymentTrackerType } fr
 import { PaymentTrackersListModalProps } from "../../pages/paymentTrackers/list";
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { useProjectTotalValuationQuery } from "../../hooks/data/projects";
 
 
 type PaymentTrackersFormProps = {
@@ -28,6 +29,7 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
 
     const {toastError} = useToast();
     const {data, isFetching, isLoading, status, error,  refetch} = usePaymentTrackerQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id>0));
+    const {data:valuation, isFetching:isValuationFetching, isLoading:isValuationLoading} = useProjectTotalValuationQuery(Number(props.projectId), true);
     const addPaymentTrackers = useAddPaymentTrackerMutation(props.projectId)
     const updatePaymentTrackers = useUpdatePaymentTrackerMutation(props.type === "Edit" ? props.id : 0, (data && data.projectID) ? data.projectID.toString() : '')
     const form = useForm<SchemaType>({
@@ -82,7 +84,21 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
                 <SimpleGrid cols={{ base: 1, sm: 3 }}>
-                    <TextInput label="Valuation" withAsterisk {...form.getInputProps('valuation')} />
+                    {/* <TextInput label="Valuation" withAsterisk {...form.getInputProps('valuation')} /> */}
+                    <Select
+                        label="Valuation"
+                        placeholder="Valuation"
+                        maxDropdownHeight={200}
+                        data={valuation ? [{value: valuation.totalValuationInBse.toString(), label: valuation.totalValuationInBse.toString()+' (BSE)'}, {value: valuation.totalValuationInNse.toString(), label: valuation.totalValuationInNse.toString()+' (NSE)'}] : []}
+                        searchable={false}
+                        clearable
+                        withAsterisk
+                        nothingFoundMessage="Nothing found..."
+                        disabled={isValuationFetching || isValuationLoading}
+                        error={form.errors.valuation}
+                        value={form.values.valuation ? form.values.valuation.toString() : undefined}
+                        onChange={(value) => form.setFieldValue("valuation", value ? Number(value) : 0)}
+                    />
                     <TextInput label="Percentage For Total Billing" withAsterisk {...form.getInputProps('percentageTotal')} />
                     <TextInput label="No Of Stages" withAsterisk {...form.getInputProps('noOfStages')} />
                 </SimpleGrid>

@@ -18,6 +18,7 @@ import { isAxiosError } from "axios";
 
 export const ProjectKey = "project";
 export const ProjectsQueryKey = "projects";
+export const ProjectTotalValuationKey = "project_total_valuation";
 
 export const useProjectsQuery: (
   enabled?: boolean
@@ -52,6 +53,26 @@ export const useProjectQuery: (
       const response = await axios.get<{ data: ProjectType }>(
         api_routes.projects + `/${id}`
       );
+      return response.data.data;
+    },
+    enabled,
+  });
+};
+
+export const useProjectTotalValuationQuery: (
+  id: number,
+  enabled: boolean
+) => UseQueryResult<
+  { totalValuationInNse: number; totalValuationInBse: number },
+  unknown
+> = (id, enabled) => {
+  const { axios } = useAxios();
+  return useQuery({
+    queryKey: [ProjectTotalValuationKey, id],
+    queryFn: async () => {
+      const response = await axios.get<{
+        data: { totalValuationInNse: number; totalValuationInBse: number };
+      }>(api_routes.projects + `/${id}/total-valuation`);
       return response.data.data;
     },
     enabled,
