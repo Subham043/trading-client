@@ -5,7 +5,7 @@ import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ProjectsListModalProps } from "../../pages/projects/list";
-import { IconCloudLock } from "@tabler/icons-react";
+import { IconBrandHipchat, IconCertificate, IconChartBar, IconReceiptRupee, IconUserExclamation, IconUsers } from "@tabler/icons-react";
 import { page_routes } from "../../utils/page_routes";
 
 const iconStyle = { width: rem(12), height: rem(12) };
@@ -52,22 +52,22 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
         <Box bg="transparent" mt="md">
             <Tabs value={location.pathname} onChange={(value) =>  value ? navigate(value) : undefined}>
                 <Tabs.List justify="center">
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCertificate style={iconStyle} />}>
                         Share Certificate Masters
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-holder-details`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-holder-details`} leftSection={<IconUserExclamation style={iconStyle} />}>
                         Share Holder Details
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/legal-heir-details`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/legal-heir-details`} leftSection={<IconUsers style={iconStyle} />}>
                         Legal Heir Details
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/payment-trackers`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/payment-trackers`} leftSection={<IconReceiptRupee style={iconStyle} />}>
                         Payment Trackers
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/stage-trackers`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/stage-trackers`} leftSection={<IconChartBar style={iconStyle} />}>
                         Stage Trackers
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/communication-trackers`} leftSection={<IconCloudLock style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/communication-trackers`} leftSection={<IconBrandHipchat style={iconStyle} />}>
                         Communication Trackers
                     </Tabs.Tab>
                 </Tabs.List>

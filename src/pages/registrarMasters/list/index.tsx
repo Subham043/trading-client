@@ -1,4 +1,4 @@
-import { Button, Menu, Paper } from "@mantine/core";
+import { Badge, Button, Divider, Group, Menu, Paper, Text } from "@mantine/core";
 import { FC, useState } from "react";
 import classes from './registrarMasters.module.css';
 import RegistrarMasterTable from "../../../components/RegistrarMasters/table";
@@ -41,6 +41,24 @@ const RegistrarMastersPage:FC = () => {
 
     return (
         <div>
+            <Divider 
+                mb="xs" 
+                variant="dashed"
+                label={
+                    <Group justify="center">
+                        <Badge variant="filled" size="lg">
+                        Registrar Masters
+                        </Badge>
+                    </Group>
+                } 
+                labelPosition="center" 
+            />
+
+            <Text c="dimmed" ta="center">
+                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
+                hunger drives it to try biting a Steel-type Pokémon.
+            </Text>
+            <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create'})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={true} multipleButtons={
                 <Menu shadow="md" width={200} trigger="hover">
                     <Menu.Target>

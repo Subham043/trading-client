@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox } from '@mantine/core';
-import { IconCertificate, IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Tooltip } from '@mantine/core';
+import { IconCertificate, IconCertificate2, IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { FolioType } from "../../utils/types";
 import { FoliosCorporateMasterModalProps, FoliosDividendMasterModalProps, FoliosListDrawerProps, FoliosListModalProps } from "../../pages/folios/list";
 import { useDeleteFolioMutation, useFoliosQuery } from "../../hooks/data/folios";
@@ -54,23 +54,33 @@ const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValu
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleCorporateModal({status: true, id: id})}>
-                <IconCertificate style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleDividendModal({status: true, id: id})}>
-                <IconCertificate style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
-                <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            <Tooltip label="View">
+              <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
+                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Corporate Action">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleCorporateModal({status: true, id: id})}>
+                  <IconCertificate style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Dividend Action">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleDividendModal({status: true, id: id})}>
+                  <IconCertificate2 style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Edit">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
+                  <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
             <Popover width={200} opened={opened} onChange={setOpened} trapFocus position="bottom-end" withArrow shadow="md" clickOutsideEvents={['mouseup', 'touchend']}>
               <Popover.Target>
-                <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
-                    <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                </ActionIcon>
+                <Tooltip label="Delete">
+                  <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
+                      <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                  </ActionIcon>
+                </Tooltip>
               </Popover.Target>
               <Popover.Dropdown>
                 <Group gap={0} justify="space-between">

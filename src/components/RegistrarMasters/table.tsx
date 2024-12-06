@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Anchor } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Anchor, Tooltip } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { RegistrarMasterType } from "../../utils/types";
 import dayjs from 'dayjs';
@@ -50,19 +50,25 @@ const RegistrarMasterTableRow:FC<RegistrarMasterType & {toggleModal: (value: Reg
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.registrarMasters.list}/${id}`}>
-              <ActionIcon  variant="subtle" color="gray">
-                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            <Tooltip label="View">
+              <Link to={`${page_routes.registrarMasters.list}/${id}`}>
+                <ActionIcon  variant="subtle" color="gray">
+                    <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                </ActionIcon>
+              </Link>
+            </Tooltip>
+            <Tooltip label="Edit">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
+                  <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>
-            </Link>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
-                <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            </Tooltip>
             <Popover width={200} opened={opened} onChange={setOpened} trapFocus position="bottom-end" withArrow shadow="md" clickOutsideEvents={['mouseup', 'touchend']}>
               <Popover.Target>
-                <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
-                    <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                </ActionIcon>
+                <Tooltip label="Delete">
+                  <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
+                      <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                  </ActionIcon>
+                </Tooltip>
               </Popover.Target>
               <Popover.Dropdown>
                 <Group gap={0} justify="space-between">

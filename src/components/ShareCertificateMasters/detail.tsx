@@ -50,15 +50,9 @@ const ShareCertificateMasterDetail:FC<{toggleModal: (value: ShareCertificateMast
                 </Table>
             </Table.ScrollContainer>
             <Box bg="transparent" mt="md">
-                <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Folios</Text>
-                </div>
                 <FoliosListPage projectId={data.projectID || 0} />
             </Box>
             <Box bg="transparent" mt="lg">
-                <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Cases</Text>
-                </div>
                 <CasesListPage shareCertificateId={data.id || 0} projectId={data.projectID || 0} />
             </Box>
         </>}

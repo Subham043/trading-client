@@ -1,4 +1,4 @@
-import { Paper } from "@mantine/core";
+import { Badge, Divider, Group, Paper, Text } from "@mantine/core";
 import { FC, useState } from "react";
 import classes from './stageTrackers.module.css';
 import StageTrackersTable from "../../../components/StageTrackers/table";
@@ -49,6 +49,24 @@ const StageTrackersListPage:FC = () => {
 
     return (
         <div>
+            <Divider 
+                mb="xs" 
+                variant="dashed"
+                label={
+                    <Group justify="center">
+                        <Badge variant="filled" size="lg">
+                        Stage Trackers
+                        </Badge>
+                    </Group>
+                } 
+                labelPosition="center" 
+            />
+
+            <Text c="dimmed" ta="center">
+                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
+                hunger drives it to try biting a Steel-type Pokémon.
+            </Text>
+            <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <StageTrackersTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} projectId={param.projectId ?? ''} toggleDrawer={toggleDrawer} />

@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Checkbox, Text, Group, ActionIcon, rem, Popover } from '@mantine/core';
+import { Table, Checkbox, Text, Group, ActionIcon, rem, Popover, Tooltip } from '@mantine/core';
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { CasesListDrawerProps, CasesListModalProps } from "../../pages/cases/list";
 import { useDeleteCaseMutation, useCasesQuery } from "../../hooks/data/cases";
@@ -73,20 +73,28 @@ const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: 
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-                <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={generateDocs} loading={loading} disabled={loading}>
-                <IconDownload style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
-                <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
+            <Tooltip label="View">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
+                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Generate Docs">
+              <ActionIcon variant="subtle" color="gray" onClick={generateDocs} loading={loading} disabled={loading}>
+                  <IconDownload style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Edit">
+              <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
+                  <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
             <Popover width={200} opened={opened} onChange={setOpened} trapFocus position="bottom-end" withArrow shadow="md" clickOutsideEvents={['mouseup', 'touchend']}>
               <Popover.Target>
-                <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
-                    <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                </ActionIcon>
+                <Tooltip label="Delete">
+                  <ActionIcon variant="subtle" color="red" onClick={() => setOpened((o) => !o)}>
+                      <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                  </ActionIcon>
+                </Tooltip>
               </Popover.Target>
               <Popover.Dropdown>
                 <Group gap={0} justify="space-between">

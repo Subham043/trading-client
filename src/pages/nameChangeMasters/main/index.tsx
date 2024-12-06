@@ -1,4 +1,4 @@
-import { Paper } from "@mantine/core";
+import { Badge, Divider, Group, Paper, Text } from "@mantine/core";
 import { FC, useState } from "react";
 import classes from './nameChangeMasters.module.css';
 import NameChangeMasterMainTable from "../../../components/NameChangeMasters/main-table";
@@ -15,6 +15,24 @@ const NameChangeMastersMainPage:FC = () => {
 
     return (
         <div>
+            <Divider 
+                mb="xs" 
+                variant="dashed"
+                label={
+                    <Group justify="center">
+                        <Badge variant="filled" size="lg">
+                        Name Change Masters
+                        </Badge>
+                    </Group>
+                } 
+                labelPosition="center" 
+            />
+
+            <Text c="dimmed" ta="center">
+                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
+                hunger drives it to try biting a Steel-type Pokémon.
+            </Text>
+            <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={false} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={false} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <NameChangeMasterMainTable />

@@ -5,7 +5,7 @@ import { CompanyMastersDetailModalProps } from "../../pages/companyMasters/detai
 import { useCompanyMasterQuery } from "../../hooks/data/company_masters";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { page_routes } from "../../utils/page_routes";
-import { IconBriefcase, IconWriting } from "@tabler/icons-react";
+import { IconBriefcase, IconMoneybag, IconWriting } from "@tabler/icons-react";
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -207,7 +207,7 @@ const CompanyMasterDetail:FC<{toggleModal: (value: CompanyMastersDetailModalProp
                     <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/corporate-masters`} leftSection={<IconBriefcase style={iconStyle} />}>
                         Corporate Masters
                     </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/dividend-masters`} leftSection={<IconBriefcase style={iconStyle} />}>
+                    <Tabs.Tab value={`${page_routes.companyMasters.list}/${param.companyId}/dividend-masters`} leftSection={<IconMoneybag style={iconStyle} />}>
                         Dividend Masters
                     </Tabs.Tab>
                 </Tabs.List>

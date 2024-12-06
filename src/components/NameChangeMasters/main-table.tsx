@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Table, Group, Text, ActionIcon, rem, Anchor } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Anchor, Tooltip } from '@mantine/core';
 import { IconEye } from '@tabler/icons-react';
 import { NameChangeMasterQueryType } from "../../utils/types";
 import { Link } from "react-router-dom";
@@ -57,11 +57,13 @@ const NameChangeMasterMainTableRow:FC<NameChangeMasterQueryType> = ({id, ISIN, C
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
-            <Link to={`${page_routes.companyMasters.list}/${id}`}>
-              <ActionIcon  variant="subtle" color="gray">
-                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-              </ActionIcon>
-            </Link>
+            <Tooltip label="View">
+              <Link to={`${page_routes.companyMasters.list}/${id}`}>
+                <ActionIcon  variant="subtle" color="gray">
+                    <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                </ActionIcon>
+              </Link>
+            </Tooltip>
           </Group>
       </Table.Td>
     </Table.Tr>

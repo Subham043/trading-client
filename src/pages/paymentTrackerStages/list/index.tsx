@@ -1,4 +1,4 @@
-import { Paper } from "@mantine/core";
+import { Badge, Divider, Group, Paper, Text } from "@mantine/core";
 import { FC, useState } from "react";
 import classes from './paymentTrackerStages.module.css';
 import { useParams } from "react-router-dom";
@@ -62,6 +62,24 @@ const PaymentTrackerStagesListPage:FC<{projectId: number}> = ({projectId}) => {
 
     return (
         <div>
+            <Divider 
+                mb="xs" 
+                variant="dashed"
+                label={
+                    <Group justify="center">
+                        <Badge variant="filled" size="lg">
+                        Payment Tracker Stages
+                        </Badge>
+                    </Group>
+                } 
+                labelPosition="center" 
+            />
+
+            <Text c="dimmed" ta="center">
+                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
+                hunger drives it to try biting a Steel-type Pokémon.
+            </Text>
+            <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', paymentTrackerId: Number(param.paymentTrackerId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <PaymentTrackerStagesTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} paymentTrackerId={Number(param.paymentTrackerId)} selectedData={selectedData} setSelectedData={setSelectedData} />

@@ -52,15 +52,9 @@ const PaymentTrackerDetail:FC<{toggleModal: (value: PaymentTrackersListModalProp
                 </Table>
             </Table.ScrollContainer>
             <Box bg="transparent" mt="md">
-                <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Payment Tracker Stages</Text>
-                </div>
                 <PaymentTrackerStagesListPage projectId={data.projectID || 0} />
             </Box>
             <Box bg="transparent" mt="lg">
-                <div style={{textAlign: 'center'}}>
-                    <Text size="xl" fw={700} p="sm" >Referral Tracker Stages</Text>
-                </div>
                 <ReferralTrackerStagesListPage projectId={data.projectID || 0} />
             </Box>
         </>}
