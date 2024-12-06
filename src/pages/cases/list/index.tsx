@@ -57,8 +57,7 @@ const CasesListPage:FC<{shareCertificateId: number, projectId: number}> = ({shar
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This section contains the list of all the cases which is related to the share certificate master mentioned above. You can create a new cases by clicking the "Create" button. You can also export the list of cases to an excel file by clicking the "Export" button. You can also delete a cases by clicking the "Delete" button. You can generate docs for a case by clicking the "Generate Docs" button. You can also view a case by clicking the "View" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText={"Create"} buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareCertificateId: Number(shareCertificateId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

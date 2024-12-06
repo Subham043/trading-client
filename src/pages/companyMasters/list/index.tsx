@@ -55,8 +55,7 @@ const CompanyMastersPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the company masters. Each company master is associated with a name change master, corporate master & dividend master. You can create a new company master by clicking the "Create" button. You can also export the list of company masters to an excel file by clicking the "Export" button. You can also import a list of company masters from an excel file by clicking the "Import" button. You can also delete a company master by clicking the "Delete" button. Name change master, corporate master & dividend master can be monitored by clicking the "View" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create'})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={true} multipleButtons={

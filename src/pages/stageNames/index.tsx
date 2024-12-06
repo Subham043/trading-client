@@ -50,8 +50,7 @@ const StageNamesPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the stage names. You can create a new stage names by clicking the "Create" button. You can also export the list of stage names to an excel file by clicking the "Export" button. You can also delete a stage names by clicking the "Delete" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasSearch={true} buttonText="Create" buttonClickHandler={() => toggleDrawer({status: true, type: 'Create'})} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

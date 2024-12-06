@@ -22,8 +22,7 @@ const FailedExcelsPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the excels that failed to upload data. You can also view a failed excel by clicking the "Download" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={false} hasExport={false} hasImport={false} hasDelete={false} hasMultipleImport={false} />

@@ -45,9 +45,6 @@ const RegistrarMasterDetail:FC<{toggleModal: (value: RegistrarMastersModalProps)
             </Table.ScrollContainer>
         </>}
         <Box bg="transparent" mt="md">
-            <div style={{textAlign: 'center'}}>
-                <Text size="xl" fw={700} p="sm" >Registrar Master Branches</Text>
-            </div>
             <RegistrarMasterBranchesListPage />
         </Box>
     </ErrorBoundary>

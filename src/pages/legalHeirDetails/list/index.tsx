@@ -59,8 +59,7 @@ const LegalHeirDetailsListPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This section contains the list of all the legal heir details which is related to the project mentioned above. You can create a new legal heir details by clicking the "Create" button. You can also export the list of legal heir details to an excel file by clicking the "Export" button. You can also import a list of legal heir details from an excel file by clicking the "Import" button. You can also delete a legal heir details by clicking the "Delete" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText={"Create"} buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: Number(param.projectId)})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

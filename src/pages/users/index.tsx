@@ -52,8 +52,7 @@ const UsersPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the users who have access to the portal. You can create a new users by clicking the "Create" button. You can also export the list of users to an excel file by clicking the "Export" button. You can also import a list of users from an excel file by clicking the "Import" button. You can also delete a users by clicking the "Delete" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
 

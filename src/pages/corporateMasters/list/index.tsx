@@ -64,8 +64,7 @@ const CorporateMastersListPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This section contains the list of all the corporate masters which is related to the company master mentioned above. You can create a new corporate masters by clicking the "Create" button. You can also export the list of corporate masters to an excel file by clicking the "Export" button. You can also import a list of corporate masters from an excel file by clicking the "Import" button. You can also delete a corporate masters by clicking the "Delete" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', companyId: Number(param.companyId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

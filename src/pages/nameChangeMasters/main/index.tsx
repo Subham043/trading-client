@@ -29,8 +29,7 @@ const NameChangeMastersMainPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the name change masters. You can also export the list of name change masters to an excel file by clicking the "Export" button. You can also import a list of name change masters from an excel file by clicking the "Import" button. You can also view a name change masters by clicking the "View" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={false} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal} hasDelete={false} hasMultipleImport={false} />

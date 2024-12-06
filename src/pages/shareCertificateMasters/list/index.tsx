@@ -55,8 +55,7 @@ const ShareCertificateMastersListPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the share certificate masters. Each share certificate master is associated with a cases & folios. You can create a new share certificate master by clicking the "Create" button. You can also export the list of share certificate masters to an excel file by clicking the "Export" button. You can also import a list of share certificate masters from an excel file by clicking the "Import" button. You can also delete a share certificate master by clicking the "Delete" button. Cases & folios can be monitored by clicking the "View" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

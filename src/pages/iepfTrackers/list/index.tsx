@@ -4,7 +4,6 @@ import classes from './iepfTrackers.module.css';
 import IepfTrackersTable from "../../../components/IepfTrackers/table";
 import IepfTrackersModal from "../../../components/IepfTrackers/modal";
 import SearchButtonHeader from "../../../components/Layout/SearchButtonHeader";
-import { useExcelExport } from "../../../hooks/useExcelExport";
 import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { IepfTrackersQueryKey } from "../../../hooks/data/iepf_trackers";
@@ -23,9 +22,7 @@ export type IepfTrackersListModalProps = {
 const IepfTrackersListPage:FC = () => {
     const param = useParams<{projectId: string}>();
     const [selectedData, setSelectedData] = useState<number[]>([]);
-    const { exportExcel, excelLoading } = useExcelExport();
     const { deleteMultiple, deleteLoading } = useDeleteMultiple();
-    const exportExcelHandler = async () => await exportExcel(api_routes.iepfTrackers + `/export/${param.projectId}`, 'iepf_trackers.xlsx');
     const [modal, setModal] = useState<IepfTrackersListModalProps>({status: false, type: 'Create', projectId: param.projectId ?? ''});
     const toggleModal = (value:IepfTrackersListModalProps) => setModal(value);
 
@@ -52,11 +49,10 @@ const IepfTrackersListPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This section contains the list of all the iepf trackers which is related to the project mentioned above. You can create a new iepf trackers by clicking the "Create" button. You can also export the list of iepf trackers to an excel file by clicking the "Export" button. You can also import a list of iepf trackers from an excel file by clicking the "Import" button. You can also delete a iepf trackers by clicking the "Delete" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
-            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
+            <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={false} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
             <Paper shadow="sm" className={classes.paper_background}>
                 <IepfTrackersTable toggleModal={toggleModal} selectedData={selectedData} setSelectedData={setSelectedData} projectId={param.projectId ?? ''} />
             </Paper>

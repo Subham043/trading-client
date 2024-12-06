@@ -85,8 +85,7 @@ const FoliosListPage:FC<{projectId: number}> = ({projectId}) => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This section contains the list of all the folios which is related to the share certificate master mentioned above. You can create a new folios by clicking the "Create" button. You can also export the list of folios to an excel file by clicking the "Export" button. You can also delete a folios by clicking the "Delete" button. You can also view a folio by clicking the "View" button. You can also view a corporate action of a folio by clicking the "Corporate Action" button. You can also view a dividend action of a folio by clicking the "Dividend Action" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', shareCertificateMasterId: Number(param.shareCertificateMasterId)})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={true} importClickHandler={toggleExcelModal2} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />

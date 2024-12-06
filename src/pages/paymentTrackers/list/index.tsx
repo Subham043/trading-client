@@ -52,8 +52,7 @@ const PaymentTrackersListPage:FC = () => {
             />
 
             <Text c="dimmed" ta="center">
-                Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-                hunger drives it to try biting a Steel-type Pokémon.
+                This page contains the list of all the payment trackers. Each payment tracker is associated with a payment tracker stages & referral tracker stages. You can create a new payment tracker by clicking the "Create" button. You can also export the list of payment trackers to an excel file by clicking the "Export" button. You can also import a list of payment trackers from an excel file by clicking the "Import" button. You can also delete a payment tracker by clicking the "Delete" button. Payment tracker stages & referral tracker stages can be monitored by clicking the "View" button.
             </Text>
             <Divider my="sm" mb="lg" variant="dashed" />
             <SearchButtonHeader hasButton={true} buttonText="Create" buttonClickHandler={() => toggleModal({status: true, type: 'Create', projectId: param.projectId ?? ''})} hasExport={true} excelLoading={excelLoading} exportClickHandler={exportExcelHandler} hasImport={false} hasDelete={selectedData.length>0} deleteClickHandler={deleteMultipleHandler} deleteLoading={deleteLoading} hasMultipleImport={false} />
