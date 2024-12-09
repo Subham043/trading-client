@@ -49,7 +49,7 @@ export default function LegalHeirMultiSelect({ projectId, value, setValue }: Pro
  );
 
  return (
-  <div style={{ position: "relative", zIndex: 999999999999999 }}>
+  <div style={{ position: "relative", zIndex: 13 }}>
    <AsyncPaginate
     value={value}
     loadOptions={loadOptions}

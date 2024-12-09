@@ -50,7 +50,8 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
     });
     const [folios, setFolios] = useState<OptionType[]>([]);
     const [claimants, selectClaimants] = useState<OptionType[]>([]);
-    const [affidavits, selectAffidavits] = useState<OptionType[]>([]);
+    const [affidavitShareholders, selectAffidavitShareholders] = useState<OptionType[]>([]);
+    const [affidavitLegalHeirs, selectAffidavitLegalHeirs] = useState<OptionType[]>([]);
     const [order, setOrder] = useState<OptionType[]>([]);
     const [deadShareholder, setDeadShareholder] = useState<OptionType|undefined>(undefined);
 
@@ -77,7 +78,8 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                 deceasedRelationship: (data && (typeof data.deceasedRelationship === "string") && data.deceasedRelationship !== "null") ? data.deceasedRelationship : "",
                 taxStatus: (data && (typeof data.taxStatus === "string")) ? data.taxStatus : "",
                 selectClaimant: (data && (typeof data.selectClaimant === "string")) ? data.selectClaimant : "",
-                selectAffidavit: (data && (typeof data.selectAffidavit === "string")) ? data.selectAffidavit : "",
+                selectAffidavitShareholder: (data && (typeof data.selectAffidavitShareholder === "string")) ? data.selectAffidavitShareholder : "",
+                selectAffidavitLegalHeir: (data && (typeof data.selectAffidavitLegalHeir === "string")) ? data.selectAffidavitLegalHeir : "",
                 statusClaimant: (data && (typeof data.statusClaimant === "string")) ? data.statusClaimant : "",
                 percentageClaimant: (data && (typeof data.percentageClaimant === "string") && data.percentageClaimant !== "null") ? data.percentageClaimant : "",
                 occupationClaimant: (data && (typeof data.occupationClaimant === "string")) ? data.occupationClaimant : "",
@@ -89,10 +91,9 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
             selectClaimants(data.selectClaimant ? (data.clamaints.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
             setOrder(data.transpositionOrder ? (data.order.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
             setDeadShareholder(data.deadShareholder ? { value: data.deadShareholder.id, label: data.deadShareholder.shareholderName || "" } : undefined);
+            selectAffidavitShareholders(data.selectAffidavitShareholder ? (data.affidavitShareholders.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
             if(data.caseType.includes("Transmission")){
-                selectAffidavits(data.selectAffidavit ? (data.affidavits.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
-            }else{
-                selectAffidavits(data.selectAffidavit ? (data.affidavits.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
+                selectAffidavitLegalHeirs(data.selectAffidavitLegalHeir ? (data.affidavitLegalHeirs.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -145,7 +146,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         <InputError>{form.errors.folios}</InputError>
                     </div>
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: form.values.allowAffidavit === "Yes" ? (form.values.caseType.includes("Transmission") ? 3 : 2) : 1 }} mt="md">
                     <Select
                         label="Generate Affidavit"
                         data={["Yes", "No"]}
@@ -155,22 +156,23 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                     {
                         form.values.allowAffidavit === "Yes" && <>
                         <div>
-                            <InputLabel>Select Affidavit</InputLabel>
-                            {
-                                form.values.caseType.includes("Transmission") ? 
-                                <LegalHeirMultiSelect 
-                                    projectId={props.projectId} 
-                                    value={affidavits} 
-                                    setValue={(value) => {form.setFieldValue("selectAffidavit", value.map((folio) => folio.value).join("_")); selectAffidavits(value.map((folio) => folio))}}
-                                /> :
-                                <ShareHolderMultiSelect 
-                                    projectId={props.projectId} 
-                                    value={affidavits} 
-                                    setValue={(value) => {form.setFieldValue("selectAffidavit", value.map((folio) => folio.value).join("_")); selectAffidavits(value.map((folio) => folio))}} 
-                                />
-                            }
+                            <InputLabel>Select Affidavit From Share Holder</InputLabel>
+                            <ShareHolderMultiSelect 
+                                projectId={props.projectId} 
+                                value={affidavitShareholders} 
+                                setValue={(value) => {form.setFieldValue("selectAffidavitShareholder", value.map((folio) => folio.value).join("_")); selectAffidavitShareholders(value.map((folio) => folio))}} 
+                            />
                             <InputError>{form.errors.selectAffidavit}</InputError>
                         </div>
+                        {form.values.caseType.includes("Transmission") && <div>
+                            <InputLabel>Select Affidavit From Legal Heir</InputLabel>
+                            <LegalHeirMultiSelect 
+                                projectId={props.projectId} 
+                                value={affidavitLegalHeirs} 
+                                setValue={(value) => {form.setFieldValue("selectAffidavitLegalHeir", value.map((folio) => folio.value).join("_")); selectAffidavitLegalHeirs(value.map((folio) => folio))}}
+                            />
+                            <InputError>{form.errors.selectAffidavit}</InputError>
+                        </div>}
                         </> 
                     }
                 </SimpleGrid>
@@ -183,13 +185,25 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         }
                         labelPosition="left"
                     />
-                    <SimpleGrid cols={{ base: 1, sm: 1 }}>
+                    <SimpleGrid cols={{ base: 1, sm:  form.values.isDeceased==="Yes" ? 2 : 1 }}>
                         <Select
                             label="Is soleholder deceased"
                             data={["Yes", "No"]}
                             value={form.values.isDeceased ? form.values.isDeceased : null}
                             onChange={(value) => form.setFieldValue("isDeceased", value ? value : "No")}
                         />
+                        {
+                            form.values.isDeceased==="Yes" &&
+                            <div>
+                                <InputLabel>Select Deceased Shareholder</InputLabel>
+                                <ShareHolderSelect 
+                                    projectId={props.projectId} 
+                                    value={deadShareholder} 
+                                    setValue={(value) => {form.setFieldValue("deadShareholderID", value.value); setDeadShareholder({...value})}} 
+                                />
+                                <InputError>{form.errors.deadShareholderID}</InputError>
+                            </div>
+                        }
                     </SimpleGrid>
                     {form.values.isDeceased === "Yes" && <>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">

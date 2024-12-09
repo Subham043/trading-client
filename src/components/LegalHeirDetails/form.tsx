@@ -173,10 +173,11 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Client Phone number as per Bank" {...form.getInputProps('phoneBank')} />
                     <TextInput label="Client Husband/Father Name" {...form.getInputProps('husbandName')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 4 }} mt="md">
                     <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
                     <TextInput label="Client Occupation" {...form.getInputProps('occupation')} />
+                    <TextInput label="CIN" {...form.getInputProps('CIN')} />
                 </SimpleGrid>
                 <Divider
                     my="xs"
@@ -201,8 +202,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Password" {...form.getInputProps('password')} />
                     <TextInput label="Confirm Password" {...form.getInputProps('confirmPassword')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="CIN" {...form.getInputProps('CIN')} />
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="Hint Question" {...form.getInputProps('hintQuestion')} />
                     <TextInput label="Hint Answer   " {...form.getInputProps('hintAnswer')} />
                 </SimpleGrid>

@@ -101,13 +101,10 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   nameAadhar: yup
     .string()
     .trim()
-    .oneOf([yup.ref("namePan")], "It must match with name as per pan")
     .notRequired(),
   nameCml: yup
     .string()
     .trim()
-    .oneOf([yup.ref("namePan")], "It must match with name as per pan")
-    .oneOf([yup.ref("nameAadhar")], "It must match with name as per aadhar")
     .notRequired(),
   husbandName: yup.string().trim().notRequired(),
   occupation: yup.string().trim().notRequired(),

@@ -49,7 +49,7 @@ export default function FolioSelect({ shareCertificateMasterId, value, setValue 
  );
 
  return (
-  <div style={{ position: "relative", zIndex: 12 }}>
+  <div style={{ position: "relative", zIndex: 14 }}>
    <AsyncPaginate
     value={value}
     loadOptions={loadOptions}

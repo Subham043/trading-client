@@ -51,6 +51,8 @@ export const useCasesQuery: (
             order: ShareHolderDetailType[];
             clamaints: LegalHeirDetailType[];
             foliosSet: FolioType[];
+            affidavitShareholders: ShareHolderDetailType[];
+            affidavitLegalHeirs: ShareHolderDetailType[];
           })[];
         }>;
       }>(
@@ -88,7 +90,8 @@ export const useCaseInfoQuery: (
     order: ShareHolderDetailType[];
     clamaints: LegalHeirDetailType[];
     foliosSet: FolioType[];
-    affidavits: (ShareHolderDetailType)[];
+    affidavitShareholders: ShareHolderDetailType[];
+    affidavitLegalHeirs: ShareHolderDetailType[];
   },
   unknown
 > = (id, enabled) => {

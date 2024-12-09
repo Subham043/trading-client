@@ -95,7 +95,7 @@ const IepfTrackersForm:FC<IepfTrackersFormProps & {toggleModal: (value: IepfTrac
                         <InputError>{form.errors.shareHolderDetails}</InputError>
                     </div>
                     <div>
-                        <InputLabel>Select Share Holders</InputLabel>
+                        <InputLabel>Select Legal Heirs</InputLabel>
                         <LegalHeirSelect
                             projectId={Number(props.projectId)} 
                             value={legalHeirs} 

@@ -447,7 +447,8 @@ export type CaseType = {
   taxStatus?: string | null;
   allowAffidavit?: string | null;
   selectClaimant?: string | null;
-  selectAffidavit?: string | null;
+  selectAffidavitShareholder?: string | null;
+  selectAffidavitLegalHeir?: string | null;
   statusClaimant?: string | null;
   percentageClaimant?: string | null;
   occupationClaimant?: string | null;
