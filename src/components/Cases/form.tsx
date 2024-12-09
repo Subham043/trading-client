@@ -43,7 +43,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
     const { toastError } = useToast();
     const { data, isFetching, isLoading, status, error, refetch } = useCaseInfoQuery(props.type === "Edit" ? props.id : 0, (props.type === "Edit" && props.status && props.id > 0));
     const addCases = useAddCaseMutation(props.shareCertificateId)
-    const updateCases = useUpdateCaseMutation(props.type === "Edit" ? props.id : 0, (data && data.shareCertificateID) ? data.shareCertificateID.toString() : '')
+    const updateCases = useUpdateCaseMutation(props.type === "Edit" ? props.id : 0, (data && data.shareCertificateID) ? data.shareCertificateID : 0)
     const form = useForm<SchemaType>({
         initialValues,
         validate: yupResolver(schema),

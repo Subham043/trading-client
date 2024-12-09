@@ -15,7 +15,7 @@ const CasesTableRow:FC<(CaseType & { order: ShareHolderDetailType[], clamaints: 
   const [loading, setLoading] = useState<boolean>(false);
   const {toastError, toastSuccess} = useToast();
   const { axios } = useAxios();
-  const deleteCases = useDeleteCaseMutation(id, shareCertificateID?.toString() ?? '');
+  const deleteCases = useDeleteCaseMutation(id, shareCertificateID ?? 0);
   const onDelete = async () => {
     await deleteCases.mutateAsync(undefined)
   }

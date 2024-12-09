@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Tooltip } from '@mantine/core';
+import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Tooltip, Badge } from '@mantine/core';
 import { IconCheck, IconEye, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { CommunicationTrackerType } from "../../utils/types";
 import dayjs from 'dayjs';
@@ -47,6 +47,13 @@ const CommunicationTrackersTableRow:FC<CommunicationTrackerType & {toggleModal: 
           <Text fz="sm" fw={500}>
               {dateReceived ? dayjs(dateReceived?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY') : ''}
           </Text>
+      </Table.Td>
+      <Table.Td>
+          {dateReceived ? <Badge color={'green'} variant="light">
+            Received
+          </Badge> : <Badge color={Number(dayjs().diff(dayjs(dateSent?.toString()),'day',true).toFixed(0)) > 55 ? 'red' : (Number(dayjs().diff(dayjs(dateSent?.toString()),'day',true).toFixed(0)) > 25 ? 'blue' : 'green')} variant="light">
+            {dateSent ? dayjs().diff(dayjs(dateSent?.toString()),'day',true).toFixed(0) : ''}
+          </Badge>}
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
@@ -111,6 +118,7 @@ const CommunicationTrackersTable:FC<{projectId: string, toggleModal: (value: Com
               <Table.Th style={{color: 'white'}}>Company/Folios</Table.Th>
               <Table.Th style={{color: 'white'}}>Date Sent</Table.Th>
               <Table.Th style={{color: 'white'}}>Date Received</Table.Th>
+              <Table.Th style={{color: 'white'}}>Days Pending Unless Received</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

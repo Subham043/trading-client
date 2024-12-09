@@ -153,7 +153,7 @@ export const useCasesQuerySetData = () => {
   const updateCases = (
     id: number,
     updateCaseVal: CaseType,
-    shareCertificateId: string
+    shareCertificateId: number
   ) => {
     queryClient.setQueryData<
       PaginationType<{ shareHolderMaster: CaseType[] }>
@@ -175,7 +175,7 @@ export const useCasesQuerySetData = () => {
     );
   };
 
-  const deleteCases = (id: number, shareCertificateId: string) => {
+  const deleteCases = (id: number, shareCertificateId: number) => {
     queryClient.setQueryData<
       PaginationType<{ shareHolderMaster: CaseType[] }>
     >(
@@ -250,7 +250,7 @@ export const useCaseQuerySetData = () => {
 
 export const useUpdateCaseMutation = (
   id: number,
-  shareCertificateId: string
+  shareCertificateId: number
 ) => {
   const { axios } = useAxios();
   const { updateCases } =
@@ -336,7 +336,7 @@ export const useAddCaseMutation = (shareCertificateId: number) => {
 
 export const useDeleteCaseMutation = (
   id: number,
-  shareCertificateId: string
+  shareCertificateId: number
 ) => {
   const { axios } = useAxios();
   const { deleteCases } =

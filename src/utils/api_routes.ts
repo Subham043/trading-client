@@ -3,7 +3,9 @@
  */
 
 export const api_routes = {
-  dashboard: "/",
+  dashboard: {
+    stats: "/dashboard/stats",
+  },
   auth: {
     login: "/auth/login",
     forgot_password: "/auth/forgot-password",

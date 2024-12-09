@@ -755,6 +755,17 @@ export type PincodeQueryFormType = Omit<PincodeQueryType, "id" | "createdAt">;
 
 export type StageNameQueryFormType = Omit<StageNameQueryType, "id" | "createdAt">;
 
+export type DashboardQueryType = {
+  totalProjects: number;
+  totalRegistrarMasters: number;
+  totalCompanyMasters: number;
+  totalShares: number;
+  totalValuationInNse: number;
+  totalValuationInBse: number;
+  totalPaid: number;
+  totalValuation: number;
+};
+
 export type PaginationMainType = {
   total: number;
   current_page: number;

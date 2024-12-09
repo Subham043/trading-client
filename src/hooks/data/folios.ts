@@ -280,7 +280,7 @@ export const useUpdateFolioMutation = (
       // ✅ update detail view directly
       updateFolio(id, updateFolioVal);
       updateFolios(id, shareCertificateMasterId, updateFolioVal);
-      toastSuccess("Name Change Master updated successfully.");
+      toastSuccess("Folios updated successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -312,7 +312,7 @@ export const useAddFolioMutation = (shareCertificateMasterId: number) => {
       // ✅ update detail view directly
       addFolio(newFolioVal);
       addFolios(shareCertificateMasterId, newFolioVal);
-      toastSuccess("Name Change Master created successfully.");
+      toastSuccess("Folios created successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -343,7 +343,7 @@ export const useDeleteFolioMutation = (
       // ✅ update detail view directly
       deleteFolio(id);
       deleteFolios(id, shareCertificateMasterId);
-      toastSuccess("Name Change Master deleted successfully.");
+      toastSuccess("Folios deleted successfully.");
     },
     onError: (error) => {
       if (isAxiosError(error)) {

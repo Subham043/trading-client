@@ -269,7 +269,7 @@ export const useUpdateRegistrarMasterBranchMutation = (
         registrarMasterId,
         updateRegistrarMasterBranchVal
       );
-      toastSuccess("Name Change Master updated successfully.");
+      toastSuccess("Registrar Master Branches updated successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -308,7 +308,7 @@ export const useAddRegistrarMasterBranchMutation = (
         registrarMasterId,
         newRegistrarMasterBranchVal
       );
-      toastSuccess("Name Change Master created successfully.");
+      toastSuccess("Registrar Master Branches created successfully.");
     },
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -341,7 +341,7 @@ export const useDeleteRegistrarMasterBranchMutation = (
       // ✅ update detail view directly
       deleteRegistrarMasterBranch(id);
       deleteRegistrarMasterBranches(id, registrarMasterId);
-      toastSuccess("Name Change Master deleted successfully.");
+      toastSuccess("Registrar Master Branches deleted successfully.");
     },
     onError: (error) => {
       if (isAxiosError(error)) {
