@@ -1,19 +1,51 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Tooltip } from '@mantine/core';
-import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconDownload, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { IepfTrackerType } from "../../utils/types";
 import dayjs from 'dayjs';
 import { IepfTrackersListModalProps } from "../../pages/iepfTrackers/list";
 import { useDeleteIepfTrackerMutation, useIepfTrackersQuery } from "../../hooks/data/iepf_trackers";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { useToast } from "../../hooks/useToast";
+import { useAxios } from "../../hooks/useAxios";
+import { api_routes } from "../../utils/api_routes";
 
 
 const IepfTrackersTableRow:FC<IepfTrackerType & {toggleModal: (value: IepfTrackersListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, shareHolderDetailSet, legalHeirDetailSet, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {toastError, toastSuccess} = useToast();
+  const { axios } = useAxios();
   const deleteIepfTrackers = useDeleteIepfTrackerMutation(id, projectID?.toString() ?? '');
+
   const onDelete = async () => {
     await deleteIepfTrackers.mutateAsync(undefined)
   }
+
+  const generateDocs = async () => {
+    setLoading(true);
+    try {
+        const response = await axios.get(api_routes.iepfTrackers + `/generate-docs/${id}`, {responseType: 'blob'});
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', "docs-"+dayjs().format("YYYYMMDDHHmmss")+".xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        toastSuccess("Docs generated successfully.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+        if(error?.response?.data?.message){
+            toastError(error.response.data.message);
+        }else{
+            toastError('Something went wrong. Please try again later.');
+        }
+    } finally {
+        setLoading(false);
+    }
+  }
+
   return (
     <Table.Tr>
       <Table.Td>
@@ -48,6 +80,11 @@ const IepfTrackersTableRow:FC<IepfTrackerType & {toggleModal: (value: IepfTracke
             <Tooltip label="Edit">
               <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                   <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Generate Docs">
+              <ActionIcon variant="subtle" color="gray" onClick={generateDocs} loading={loading} disabled={loading}>
+                  <IconDownload style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>
             </Tooltip>
             <Popover width={200} opened={opened} onChange={setOpened} trapFocus position="bottom-end" withArrow shadow="md" clickOutsideEvents={['mouseup', 'touchend']}>
