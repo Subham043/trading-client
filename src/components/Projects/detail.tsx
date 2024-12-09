@@ -30,7 +30,8 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                         <Table.Tr>
                             <Table.Th style={{color: 'white'}}>ID</Table.Th>
                             <Table.Th style={{color: 'white'}}>Name</Table.Th>
-                            <Table.Th style={{color: 'white'}}>User ID</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Total Consolidated Holdings</Table.Th>
+                            <Table.Th style={{color: 'white'}}>Total Valuation In NSE/BSE</Table.Th>
                             <Table.Th style={{color: 'white'}}>Created On</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
@@ -38,7 +39,8 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                         <Table.Tr>
                             <Table.Td>{data.id}</Table.Td>
                             <Table.Td>{data.name}</Table.Td>
-                            <Table.Td>{data.userID}</Table.Td>
+                            <Table.Td>{data.totalShares}</Table.Td>
+                            <Table.Td>{data.totalValuationInNse} / {data.totalValuationInBse}</Table.Td>
                             <Table.Td>
                                 <Text fz="sm" fw={500}>
                                     {(data && data.createdAt) && dayjs(data.createdAt.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY hh:mm a')}

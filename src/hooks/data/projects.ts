@@ -22,9 +22,17 @@ export const ProjectTotalValuationKey = "project_total_valuation";
 
 export const useProjectsQuery: (
   enabled?: boolean
-) => UseQueryResult<PaginationType<{ project: (ProjectType & {noOfCompanies: number})[] }>, unknown> = (
-  enabled = true
-) => {
+) => UseQueryResult<
+  PaginationType<{
+    project: (ProjectType & {
+      noOfCompanies: number;
+      totalShares: number;
+      totalValuationInNse: number;
+      totalValuationInBse: number;
+    })[];
+  }>,
+  unknown
+> = (enabled = true) => {
   const { axios } = useAxios();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || QueryInitialPageParam.toString();
@@ -34,7 +42,14 @@ export const useProjectsQuery: (
     queryKey: [ProjectsQueryKey, page, limit, search],
     queryFn: async () => {
       const response = await axios.get<{
-        data: PaginationType<{ project: (ProjectType & {noOfCompanies: number})[] }>;
+        data: PaginationType<{
+          project: (ProjectType & {
+            noOfCompanies: number;
+            totalShares: number;
+            totalValuationInNse: number;
+            totalValuationInBse: number;
+          })[];
+        }>;
       }>(api_routes.projects + `?page=${page}&limit=${limit}&search=${search}`);
       return response.data.data;
     },
@@ -45,14 +60,25 @@ export const useProjectsQuery: (
 export const useProjectQuery: (
   id: number,
   enabled: boolean
-) => UseQueryResult<ProjectType, unknown> = (id, enabled) => {
+) => UseQueryResult<
+  ProjectType & {
+    totalShares: number;
+    totalValuationInNse: number;
+    totalValuationInBse: number;
+  },
+  unknown
+> = (id, enabled) => {
   const { axios } = useAxios();
   return useQuery({
     queryKey: [ProjectKey, id],
     queryFn: async () => {
-      const response = await axios.get<{ data: ProjectType }>(
-        api_routes.projects + `/${id}`
-      );
+      const response = await axios.get<{
+        data: ProjectType & {
+          totalShares: number;
+          totalValuationInNse: number;
+          totalValuationInBse: number;
+        };
+      }>(api_routes.projects + `/${id}`);
       return response.data.data;
     },
     enabled,
