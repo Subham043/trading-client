@@ -38,6 +38,7 @@ export type SchemaType = {
   pincodeBank?: string | undefined | null;
   addressAadhar?: string | undefined | null;
   CIN?: string | undefined | null;
+  companyCIN?: string | undefined | null;
   firstName?: string | undefined | null;
   middleName?: string | undefined | null;
   lastName?: string | undefined | null;
@@ -89,6 +90,7 @@ export const initialValues: SchemaType = {
   pincodeBank: null,
   addressAadhar: null,
   CIN: null,
+  companyCIN: null,
   firstName: null,
   middleName: null,
   lastName: null,
@@ -152,6 +154,7 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   pincodeBank: yup.string().trim().notRequired(),
   addressAadhar: yup.string().trim().notRequired(),
   CIN: yup.string().trim().notRequired(),
+  companyCIN: yup.string().trim().notRequired(),
   firstName: yup.string().trim().notRequired(),
   middleName: yup.string().trim().notRequired(),
   lastName: yup.string().trim().notRequired(),

@@ -72,6 +72,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                 pincodeBank: (data && (typeof data.pincodeBank === "string")) ? data.pincodeBank : "",
                 addressAadhar: (data && (typeof data.addressAadhar === "string")) ? data.addressAadhar : "",
                 CIN: (data && (typeof data.CIN === "string")) ? data.CIN : "",
+                companyCIN: (data && (typeof data.companyCIN === "string")) ? data.companyCIN : "",
                 firstName: (data && (typeof data.firstName === "string")) ? data.firstName : "",
                 middleName: (data && (typeof data.middleName === "string")) ? data.middleName : "",
                 lastName: (data && (typeof data.lastName === "string")) ? data.lastName : "",
@@ -192,16 +193,19 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Client Phone number as per Bank" {...form.getInputProps('phoneBank')} />
                     <TextInput label="Client Husband/Father Name" {...form.getInputProps('husbandName')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 4 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                     <TextInput label="Client DP ID" {...form.getInputProps('DPID')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="Client address as per Aadhar" {...form.getInputProps('addressAadhar')} />
+                    <TextInput label="Applicant CIN" {...form.getInputProps('CIN')} />
                     <Select
                         label="Client Occupation"
                         data={["Private Sector Service", "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
                         value={form.values.occupation ? form.values.occupation : null}
                         onChange={(value) => form.setFieldValue("occupation", value ? value : "No")}
                     />
-                    <TextInput label="Applicant CIN" {...form.getInputProps('CIN')} />
                 </SimpleGrid>
                 <Divider
                     my="xs"
@@ -222,7 +226,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Father's Last Name" {...form.getInputProps('fatherLastName')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
-                    <TextInput label="Address as per Aadhar" {...form.getInputProps('addressAadhar')} />
+                    <TextInput label="Company CIN" {...form.getInputProps('companyCIN')} />
                     <TextInput label="Password" {...form.getInputProps('password')} />
                     <TextInput label="Confirm Password" {...form.getInputProps('confirmPassword')} />
                 </SimpleGrid>

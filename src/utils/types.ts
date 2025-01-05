@@ -507,6 +507,7 @@ export type ShareHolderDetailType = {
   createdAt?: Date | null;
   addressAadhar?: string | null;
   CIN?: string | null;
+  companyCIN?: string | null;
   firstName?: string | null;
   middleName?: string | null;
   lastName?: string | null;
@@ -567,6 +568,7 @@ export type LegalHeirDetailType = {
   createdAt?: Date | null;
   addressAadhar?: string | null;
   CIN?: string | null;
+  companyCIN?: string | null;
   firstName?: string | null;
   middleName?: string | null;
   lastName?: string | null;
