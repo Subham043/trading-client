@@ -75,6 +75,12 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/iepf-trackers`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
                         IEPF
                     </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/surety`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
+                        Surety
+                    </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/nomination`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
+                        Nomination
+                    </Tabs.Tab>
                 </Tabs.List>
             </Tabs>
             <Box bg="transparent" mt="md">

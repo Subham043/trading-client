@@ -40,6 +40,8 @@ const PaymentTrackersDetailPage = lazy(()=>import("./pages/paymentTrackers/detai
 const StageTrackersListPage = lazy(()=>import("./pages/stageTrackers/list"));
 const CommunicationTrackersListPage = lazy(()=>import("./pages/communicationTrackers/list"));
 const IepfTrackersListPage = lazy(()=>import("./pages/iepfTrackers/list"));
+const SuretysListPage = lazy(()=>import("./pages/suretys/list"));
+const NominationsListPage = lazy(()=>import("./pages/nominations/list"));
 
 // Create a client
 const queryClient = new QueryClient(QueryClientOptions);
@@ -81,6 +83,8 @@ function App() {
                         <Route path={page_routes.projects.stageTrackers} element={<StageTrackersListPage />} />
                         <Route path={page_routes.projects.communicationTrackers} element={<CommunicationTrackersListPage />} />
                         <Route path={page_routes.projects.iepfTrackers} element={<IepfTrackersListPage />} />
+                        <Route path={page_routes.projects.suretys} element={<SuretysListPage />} />
+                        <Route path={page_routes.projects.nominations} element={<NominationsListPage />} />
                       </Route>
                       <Route path={page_routes.shareCertificateMasters.view} element={<ShareCertificateMastersDetailPage />} />
                       <Route path={page_routes.paymentTrackers.view} element={<PaymentTrackersDetailPage />} />

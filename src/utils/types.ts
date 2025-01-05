@@ -709,6 +709,68 @@ export interface IepfTrackerFormType
     IepfTrackerType,
     "id" | "projectID" | "shareHolderDetailSet" | "legalHeirDetailSet" | "createdAt"
   > {}
+  
+  export type SuretyType = {
+    id: number;
+    companyName: string;
+    fullName: string;
+    age: string | null;
+    address: string | null;
+    isEmployed: string | null;
+    employerName: string | null;
+    salary: string | null;
+    employerAddress: string | null;
+    isBusiness: string | null;
+    businessName: string | null;
+    businessNature: string | null;
+    businessIncome: string | null;
+    businessProfit: string | null;
+    businessAddress: string | null;
+    isProperty: string | null;
+    propertyType: string | null;
+    propertySituation: string | null;
+    propertyValue: string | null;
+    propertyRent: string | null;
+    projectID: number;
+    createdAt: Date;
+  };
+
+export interface SuretyFormType
+  extends Omit<
+    SuretyType,
+    "id" | "projectID" | "createdAt"
+  > {}
+  
+  export type NominationType = {
+    id: number;
+    companyName: string;
+    fullName: string;
+    age: string | null;
+    address: string | null;
+    isEmployed: string | null;
+    employerName: string | null;
+    salary: string | null;
+    employerAddress: string | null;
+    isBusiness: string | null;
+    businessName: string | null;
+    businessNature: string | null;
+    businessIncome: string | null;
+    businessProfit: string | null;
+    businessAddress: string | null;
+    isProperty: string | null;
+    propertyType: string | null;
+    propertySituation: string | null;
+    propertyValue: string | null;
+    propertyRent: string | null;
+    projectID: number;
+    createdAt: Date;
+  };
+
+export interface NominationFormType
+  extends Omit<
+    NominationType,
+    "id" | "projectID" | "createdAt"
+  > {}
 
   export type PaymentTrackerType = {
   id: number;

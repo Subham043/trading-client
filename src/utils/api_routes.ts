@@ -36,6 +36,8 @@ export const api_routes = {
   stageTrackers: "/stage-trackers",
   communicationTrackers: "/communication-trackers",
   iepfTrackers: "/iepf-trackers",
+  suretys: "/surety",
+  nominations: "/nomination",
   paymentTrackers: "/payment-trackers",
   paymentTrackerStages: "/payment-tracker-stages",
   referralTrackerStages: "/referral-tracker-stages",

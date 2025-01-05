@@ -25,6 +25,8 @@ export const page_routes = {
     stageTrackers: "/projects/:projectId/stage-trackers",
     communicationTrackers: "/projects/:projectId/communication-trackers",
     iepfTrackers: "/projects/:projectId/iepf-trackers",
+    suretys: "/projects/:projectId/surety",
+    nominations: "/projects/:projectId/nomination",
   },
   registrarMasters: {
     list: "/registrar-masters",
