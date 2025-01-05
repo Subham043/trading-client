@@ -81,6 +81,7 @@ const DividendMastersForm:FC<DividendMastersFormProps & {mainCompanyId: number, 
                         onChange={(value) => form.setFieldValue('recorded_date', value?.toISOString() ? value.toISOString() : new Date().toISOString())}
                         label="Recorded Date"
                         placeholder="Recorded Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                     <TextInput label="Financial Year" {...form.getInputProps('financial_year')} />
                     <TextInput label="Dividend Per Share" {...form.getInputProps('dividend_per_share')} />

@@ -188,7 +188,7 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                         <Table.Td>{data.addressAadhar}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
-                        <Table.Th>CIN</Table.Th>
+                        <Table.Th>Applicant CIN</Table.Th>
                         <Table.Td>{data.CIN}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>

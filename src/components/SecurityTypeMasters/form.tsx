@@ -143,6 +143,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         onChange={(value) => form.setFieldValue('dateOfListing', value?.toISOString())}
                         label="Date of Listing"
                         placeholder="Date of Listing"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 {form.values.instrumentType === "PreferenceShares" && <><SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -151,6 +152,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         onChange={(value) => form.setFieldValue('dateOfAllotment', value?.toISOString())}
                         label="Date of Allotment"
                         placeholder="Date of Allotment"
+                        valueFormat="DD/MM/YYYY"
                     />
                     <TextInput label="Dividend" {...form.getInputProps('dividend')} />
                     <TextInput label="Security Name" {...form.getInputProps('securityName')} />
@@ -162,6 +164,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         onChange={(value) => form.setFieldValue('redemptionDate', value?.toISOString())}
                         label="Redemption Date"
                         placeholder="Redemption Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
@@ -171,6 +174,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         onChange={(value) => form.setFieldValue('conversionDate', value?.toISOString())}
                         label="Conversion Date"
                         placeholder="Conversion Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid></>}
                 {form.values.instrumentType === "Warrant" && <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">

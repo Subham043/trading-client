@@ -54,14 +54,14 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
         <Box bg="transparent" mt="md">
             <Tabs value={location.pathname} onChange={(value) =>  value ? navigate(value) : undefined}>
                 <Tabs.List justify="center">
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCertificate style={iconStyle} />}>
-                        Share Certificate Masters
-                    </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-holder-details`} leftSection={<IconUserExclamation style={iconStyle} />}>
                         Share Holders
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/legal-heir-details`} leftSection={<IconUsers style={iconStyle} />}>
                         Legal Heirs
+                    </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCertificate style={iconStyle} />}>
+                        Share Certificate Masters
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/payment-trackers`} leftSection={<IconReceiptRupee style={iconStyle} />}>
                         Payment Trackers

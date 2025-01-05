@@ -82,6 +82,7 @@ const CorporateMastersForm:FC<CorporateMastersFormProps & {mainCompanyId: number
                         onChange={(value) => form.setFieldValue('date', value?.toISOString() ? value.toISOString() : new Date().toISOString())}
                         label="Date"
                         placeholder="Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                     <Select
                         label="Equity Type"

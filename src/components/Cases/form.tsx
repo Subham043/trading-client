@@ -213,6 +213,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <DateInput
                                 label="Date of Death"
+                                valueFormat="DD/MM/YYYY"
                                 value={form.values.dod ? new Date(form.values.dod) : undefined}
                                 onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
                             />
@@ -242,6 +243,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             />
                             <DateInput
                                 label="Date of document"
+                                valueFormat="DD/MM/YYYY"
                                 value={form.values.dateOfDocument ? new Date(form.values.dateOfDocument) : undefined}
                                 onChange={(value) => form.setFieldValue('dateOfDocument', value?.toISOString() ? value.toISOString() : null)}
                             />
@@ -259,6 +261,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <DateInput
                                 label="DOB of Minor"
+                                valueFormat="DD/MM/YYYY"
                                 value={form.values.dobMinor ? new Date(form.values.dobMinor) : undefined}
                                 onChange={(value) => form.setFieldValue('dobMinor', value?.toISOString() ? value.toISOString() : null)}
                             />
@@ -361,6 +364,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         <TextInput label="Place Of Death" {...form.getInputProps('placeOfDeath')} />
                         <DateInput
                             label="Date of Death"
+                            valueFormat="DD/MM/YYYY"
                             value={form.values.dod ? new Date(form.values.dod) : undefined}
                             onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
                         />

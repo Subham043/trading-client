@@ -116,6 +116,7 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
                         onChange={(value) => form.setFieldValue('date', value?.toISOString())}
                         label="Date"
                         placeholder="Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 1 }} mt={"md"}>

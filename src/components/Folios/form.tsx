@@ -179,17 +179,18 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, pro
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Face Value" {...form.getInputProps('faceValue')} />
-                    <TextInput label="No. of Shares" {...form.getInputProps('noOfShares')} />
-                    <TextInput label="No. of Shares in Words" {...form.getInputProps('noOfSharesWords')} />
-                </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Distinctive Nos From" {...form.getInputProps('distinctiveNosFrom')} />
                     <TextInput label="Distinctive Nos To" {...form.getInputProps('distinctiveNosTo')} />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
+                    <TextInput label="No. of Shares" {...form.getInputProps('noOfShares')} />
+                    <TextInput label="No. of Shares in Words" {...form.getInputProps('noOfSharesWords')} />
                     <DateInput
                         value={form.values.dateOfAllotment ? new Date(form.values.dateOfAllotment) : undefined}
                         onChange={(value) => form.setFieldValue('dateOfAllotment', value?.toISOString())}
                         label="Date of Allotment"
                         placeholder="Date of Allotment"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -207,6 +208,7 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, pro
                             onChange={(value) => form.setFieldValue('endorsementDate', value?.toISOString())}
                             label="Endorsement Date"
                             placeholder="Endorsement Date"
+                            valueFormat="DD/MM/YYYY"
                         />
                     </>}
                 </SimpleGrid>

@@ -86,6 +86,7 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
                         onChange={(value) => form.setFieldValue('date', value?.toISOString())}
                         label="Date"
                         placeholder="Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} data-disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending}>

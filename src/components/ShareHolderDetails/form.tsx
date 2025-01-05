@@ -11,6 +11,7 @@ import { ShareHolderDetailsListModalProps } from "../../pages/shareHolderDetails
 import { SchemaType, initialValues, schema } from "./schema";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import { DateInput } from "@mantine/dates";
+import dayjs from "dayjs";
 
 
 type ShareHolderDetailsFormProps = {
@@ -88,6 +89,17 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, props.type, props.status]);
+
+    useEffect(() => {
+        if(props.status && form.values.dob){
+            const dob = dayjs(form.values.dob, 'YYYY-MM-DD');
+            if (dob.isValid() && dayjs().isAfter(dob)) {
+                const val = dayjs().diff(dob, 'year');
+                form.setFieldValue('age', val.toString());
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.status, form.values.dob]);
     
     const onSubmit = async () => {
         const foliosMutateOptions:foliosMutateOptionsType = {
@@ -144,6 +156,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         label={form.values.isCompany === "Yes" ? "Company Date of Incorporation (if applicable)" : "Client Date of Birth (if applicable)" }
                         value={form.values.dob ? new Date(form.values.dob) : undefined}
                         onChange={(value) => form.setFieldValue('dob', value?.toISOString() ? value.toISOString() : null)}
+                        valueFormat="DD/MM/YYYY"
                     />
                     <TextInput label="Client Age" {...form.getInputProps('age')} />
                 </SimpleGrid>
@@ -155,7 +168,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client State" {...form.getInputProps('state')} />
                     <TextInput label="Client country of birth" {...form.getInputProps('countryOfBirth')} />
-                    <TextInput label="Client DP ID" {...form.getInputProps('DPID')} />
+                    <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client name as per Bank account" {...form.getInputProps('nameBank')} />
@@ -170,7 +183,12 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client Bank account IFS code" {...form.getInputProps('bankIFS')} />
                     <TextInput label="Client Bank Account Number" {...form.getInputProps('bankAccountNo')} />
-                    <TextInput label="Client Bank account type" {...form.getInputProps('bankAccountType')} />
+                    <Select
+                        label="Client Bank account type"
+                        data={["SB", "Current", "NRO", "NRE", "FCNR"]}
+                        value={form.values.bankAccountType ? form.values.bankAccountType : null}
+                        onChange={(value) => form.setFieldValue("bankAccountType", value ? value : "No")}
+                    />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client Bank Branch Name" {...form.getInputProps('branchName')} />
@@ -178,6 +196,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         label="Client Account Opening Date" 
                         value={form.values.accountOpeningDate ? new Date(form.values.accountOpeningDate) : undefined}
                         onChange={(value) => form.setFieldValue('accountOpeningDate', value?.toISOString() ? value.toISOString() : null)}
+                        valueFormat="DD/MM/YYYY"
                     />
                     <TextInput label="Client address as per Bank" {...form.getInputProps('addressBank')} />
                 </SimpleGrid>
@@ -187,10 +206,15 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                     <TextInput label="Client Husband/Father Name" {...form.getInputProps('husbandName')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 4 }} mt="md">
-                    <TextInput label="Client address PIN code" {...form.getInputProps('pincodeBank')} />
+                    <TextInput label="Client DP ID" {...form.getInputProps('DPID')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
-                    <TextInput label="Client Occupation" {...form.getInputProps('occupation')} />
-                    <TextInput label="CIN" {...form.getInputProps('CIN')} />
+                    <Select
+                        label="Client Occupation"
+                        data={["Private Sector Service", "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
+                        value={form.values.occupation ? form.values.occupation : null}
+                        onChange={(value) => form.setFieldValue("occupation", value ? value : "No")}
+                    />
+                    <TextInput label="Applicant CIN" {...form.getInputProps('CIN')} />
                 </SimpleGrid>
                 <Divider
                     my="xs"

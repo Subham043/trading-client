@@ -108,12 +108,14 @@ const CommunicationTrackersForm:FC<CommunicationTrackersFormProps & {toggleModal
                         onChange={(value) => form.setFieldValue('dateSent', value?.toISOString())}
                         label="Date Sent"
                         placeholder="Date Sent"
+                        valueFormat="DD/MM/YYYY"
                     />
                     <DateInput
                         value={form.values.dateReceived ? new Date(form.values.dateReceived) : undefined}
                         onChange={(value) => form.setFieldValue('dateReceived', value?.toISOString())}
                         label="Date Received"
                         placeholder="Date Received"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 1 }} mt={"md"}>

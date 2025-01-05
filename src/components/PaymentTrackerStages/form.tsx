@@ -86,6 +86,7 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
                         onChange={(value) => form.setFieldValue('date', value?.toISOString())}
                         label="Date"
                         placeholder="Date"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} data-disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending}>

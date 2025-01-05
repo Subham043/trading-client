@@ -97,6 +97,7 @@ const NameChangeMasterForm:FC<NameChangeMasterFormProps & {mainCompanyId: number
                         onChange={(value) => form.setFieldValue('dateNameChange', value?.toISOString())}
                         label="Date of Name Change"
                         placeholder="Date of Name Change"
+                        valueFormat="DD/MM/YYYY"
                     />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending} data-disabled={props.type === "Create" ? addNameChangeMaster.isPending : updateNameChangeMaster.isPending}>
