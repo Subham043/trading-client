@@ -321,8 +321,6 @@ export type FolioType = {
   id: number;
   equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio?: string | null;
-  certificateNumber?: string | null;
-  certificateSerialNumber?: string | null;
   shareholderName1ID?: number | null;
   shareholderName1?: ShareHolderDetailType | null;
   shareholderName2ID?: number | null;
@@ -351,6 +349,17 @@ export type FolioType = {
 
 export interface FolioFormType
   extends Omit<FolioType, "id" | "createdAt" | "shareCertificateMaster"> {}
+
+export type CertificateType = {
+  id: number;
+  certificateNumber: string;
+  certificateSerialNumber?: string | null;
+  folioID?: number | null;
+  createdAt?: Date | null;
+};
+
+export interface CertificateFormType
+  extends Omit<CertificateType, "id" | "createdAt"> {}
 
 export type FolioCorporateMasterType = {
   type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";

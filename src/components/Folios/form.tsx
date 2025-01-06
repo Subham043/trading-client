@@ -61,8 +61,6 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, pro
             form.setValues({
                 equityType: data.equityType ? data.equityType : undefined,
                 Folio: data.Folio ? data.Folio : "",
-                certificateNumber: data.certificateNumber ? data.certificateNumber : undefined,
-                certificateSerialNumber: data.certificateSerialNumber ? data.certificateSerialNumber : undefined,
                 shareholderName1ID: data.shareholderName1ID ? data.shareholderName1ID : undefined,
                 shareholderName2ID: data.shareholderName2ID ? data.shareholderName2ID : undefined,
                 shareholderName3ID: data.shareholderName3ID ? data.shareholderName3ID : undefined,
@@ -136,7 +134,7 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, pro
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 4 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
                         label="Equity Type"
                         withAsterisk
@@ -145,8 +143,6 @@ const FoliosForm:FC<FoliosFormProps & {mainShareCertificateMasterId: number, pro
                         onChange={(value) => form.setFieldValue("equityType", value ? value as "Bonus" | "Shares" | "Splits" | "Rights" : "Bonus")}
                     />
                     <TextInput label="Folio" {...form.getInputProps('Folio')} />
-                    <TextInput label="Certificate Number" {...form.getInputProps('certificateNumber')} />
-                    <TextInput label="Certificate Serial Number" {...form.getInputProps('certificateSerialNumber')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <div>

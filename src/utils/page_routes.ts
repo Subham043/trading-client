@@ -46,6 +46,10 @@ export const page_routes = {
     list: "/share-holder-masters",
     view: "/share-holder-masters/:shareHolderMasterId",
   },
+  folios: {
+    list: "/folio",
+    view: "/folio/:folioId",
+  },
   paymentTrackers: {
     list: "/payment-trackers",
     view: "/payment-trackers/:paymentTrackerId",

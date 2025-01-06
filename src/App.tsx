@@ -26,6 +26,7 @@ const ShareHolderDetailsListPage = lazy(()=>import("./pages/shareHolderDetails/l
 const LegalHeirDetailsListPage = lazy(()=>import("./pages/legalHeirDetails/list"));
 const ShareCertificateMastersListPage = lazy(()=>import("./pages/shareCertificateMasters/list"));
 const ShareCertificateMastersDetailPage = lazy(()=>import("./pages/shareCertificateMasters/detail"));
+const FoliosDetailPage = lazy(()=>import("./pages/folios/detail"));
 const ProjectsListPage = lazy(()=>import("./pages/projects/list"));
 const ProjectsDetailPage = lazy(()=>import("./pages/projects/detail"));
 const SecurityTypeMastersListPage = lazy(()=>import("./pages/securityTypeMasters/list"));
@@ -86,6 +87,7 @@ function App() {
                         <Route path={page_routes.projects.suretys} element={<SuretysListPage />} />
                         <Route path={page_routes.projects.nominations} element={<NominationsListPage />} />
                       </Route>
+                      <Route path={page_routes.folios.view} element={<FoliosDetailPage />} />
                       <Route path={page_routes.shareCertificateMasters.view} element={<ShareCertificateMastersDetailPage />} />
                       <Route path={page_routes.paymentTrackers.view} element={<PaymentTrackersDetailPage />} />
                       <Route path={page_routes.failed_excel} element={<FailedExcelsPage />} />

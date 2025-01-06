@@ -5,9 +5,11 @@ import { FolioType } from "../../utils/types";
 import { FoliosCorporateMasterModalProps, FoliosDividendMasterModalProps, FoliosListDrawerProps, FoliosListModalProps } from "../../pages/folios/list";
 import { useDeleteFolioMutation, useFoliosQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { Link } from "react-router-dom";
+import { page_routes } from "../../utils/page_routes";
 
 
-const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValue:number; toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, consolidatedHolding, totalMarketValue, shareCertificateID, toggleCorporateModal, toggleDividendModal, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValue:number; toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, consolidatedHolding, totalMarketValue, shareCertificateID, toggleCorporateModal, toggleDividendModal, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteFolios = useDeleteFolioMutation(id, shareCertificateID||0)
   const onDelete = async () => {
@@ -55,9 +57,11 @@ const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValu
       <Table.Td>
           <Group gap={0} justify="flex-end">
             <Tooltip label="View">
-              <ActionIcon  variant="subtle" color="gray" onClick={() => toggleDrawer({drawerStatus: true, id: id})}>
-                  <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-              </ActionIcon>
+              <Link to={`${page_routes.folios.list}/${id}`}>
+                <ActionIcon  variant="subtle" color="gray">
+                    <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                </ActionIcon>
+              </Link>
             </Tooltip>
             <Tooltip label="Corporate Action">
               <ActionIcon variant="subtle" color="gray" onClick={() => toggleCorporateModal({status: true, id: id})}>

@@ -17,14 +17,6 @@ const FolioDetail:FC<FoliosListDrawerProps> = (props) => {
                         <Table.Td>{data.Folio}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
-                        <Table.Th>Certificate Number</Table.Th>
-                        <Table.Td>{data.certificateNumber}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
-                        <Table.Th>Certificate Serial Number</Table.Th>
-                        <Table.Td>{data.certificateSerialNumber}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
                         <Table.Th>Shareholder Name 1</Table.Th>
                         <Table.Td>{data.shareholderName1?.shareholderName}</Table.Td>
                     </Table.Tr>

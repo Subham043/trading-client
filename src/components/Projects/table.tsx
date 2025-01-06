@@ -62,7 +62,7 @@ const ProjectsTableRow: FC<ProjectType & {
       <Table.Td>
         <Group gap={0} justify="flex-end">
           <Tooltip label="View">
-            <Link to={`${page_routes.projects.list}/${id}/share-certificate-masters`}>
+            <Link to={`${page_routes.projects.list}/${id}/share-holder-details`}>
               <ActionIcon variant="subtle" color="gray">
                 <IconEye style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
               </ActionIcon>

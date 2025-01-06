@@ -16,8 +16,6 @@ enum TruthyType {
 export type SchemaType = {
   equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio: string;
-  certificateNumber?: string | undefined;
-  certificateSerialNumber?: string | undefined;
   shareholderName1ID?: number | undefined;
   shareholderName2ID?: number | undefined;
   shareholderName3ID?: number | undefined;
@@ -38,8 +36,6 @@ export type SchemaType = {
 export const initialValues: SchemaType = {
   equityType: "Bonus",
   Folio: "",
-  certificateNumber: undefined,
-  certificateSerialNumber: undefined,
   shareholderName1ID: undefined,
   shareholderName2ID: undefined,
   shareholderName3ID: undefined,
@@ -66,14 +62,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .string()
     .typeError("Folio must be a string")
     .required("Folio is required"),
-  certificateNumber: yup
-    .string()
-    .typeError("Certificate Number must be a string")
-    .optional(),
-  certificateSerialNumber: yup
-    .string()
-    .typeError("Certificate Serial Number must be a string")
-    .optional(),
   shareholderName1ID: yup
     .number()
     .typeError("Shareholder Name 1 must be a number")

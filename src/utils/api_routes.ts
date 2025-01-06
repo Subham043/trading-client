@@ -32,6 +32,7 @@ export const api_routes = {
   legalHeirDetails: "/legal-heir-details",
   cases: "/cases",
   folios: "/folios",
+  certificates: "/certificates",
   securityTypeMasters: "/security-type-masters",
   stageTrackers: "/stage-trackers",
   communicationTrackers: "/communication-trackers",
