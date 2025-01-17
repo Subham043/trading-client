@@ -1,13 +1,27 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Flex, Modal, Table, Text } from '@mantine/core';
 import { FoliosCorporateMasterModalProps } from "../../pages/folios/list";
 import { useFoliosCorporateMasterQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 import RightSelect from "./rightSelect";
+import type { MultiValue } from "react-select";
+
+type OptionType = {
+ value: number;
+ label: string;
+};
 
 const FolioCorporateMasterModal:FC<FoliosCorporateMasterModalProps & {toggleModal: (value: FoliosCorporateMasterModalProps) => void}> = (props) => {
-    const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery(props.status ? {id: props.id, enabled: true} : {id: 0, enabled: false});
+    const [rights, setRights] = useState<MultiValue<OptionType>>([]);
+    const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery(props.status ? 
+        {
+            id: props.id, 
+            rights: rights.length>0 ? rights.map(i => i.value).join(";") : undefined,
+            enabled: true
+        } 
+        : 
+        {id: 0, enabled: false});
     return (
         <Modal 
             opened={props.status} 
@@ -18,7 +32,7 @@ const FolioCorporateMasterModal:FC<FoliosCorporateMasterModalProps & {toggleModa
                 <Flex justify="flex-end" align="center" gap="lg">
                     {/* <Text>Corporate Action</Text> */}
                     {props.status && <div style={{maxWidth: 300}}>
-                        <RightSelect folioId={props.id} value={undefined} setValue={(value) => console.log(value)} />
+                        <RightSelect folioId={props.id} value={rights} setValue={(value) => setRights(value)} />
                     </div>}
                 </Flex>
             } 

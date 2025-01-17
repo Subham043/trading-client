@@ -1,19 +1,49 @@
 import { FC, useState } from "react"
 import { Table, Group, Text, ActionIcon, rem, Popover, Checkbox, Tooltip } from '@mantine/core';
-import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconDownload, IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { SuretyType } from "../../utils/types";
 import dayjs from 'dayjs';
 import { SuretysListModalProps } from "../../pages/suretys/list";
 import { useDeleteSuretyMutation, useSuretysQuery } from "../../hooks/data/suretys";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import { useToast } from "../../hooks/useToast";
+import { useAxios } from "../../hooks/useAxios";
+import { api_routes } from "../../utils/api_routes";
 
 
 const SuretysTableRow:FC<SuretyType & {toggleModal: (value: SuretysListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, companyName, fullName, age, isEmployed, isProperty, isBusiness, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {toastError, toastSuccess} = useToast();
+  const { axios } = useAxios();
   const deleteSuretys = useDeleteSuretyMutation(id, projectID?.toString() ?? '');
 
   const onDelete = async () => {
     await deleteSuretys.mutateAsync(undefined)
+  }
+
+  const generateSurety = async () => {
+    setLoading(true);
+    try {
+        const response = await axios.get(api_routes.suretys + `/generate-docs/${id}`, {responseType: 'blob'});
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', "surety-"+dayjs().format("YYYYMMDDHHmmss")+".zip");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        toastSuccess("Docs generated successfully.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error:any) {
+        if(error?.response?.data?.message){
+            toastError(error.response.data.message);
+        }else{
+            toastError('Something went wrong. Please try again later.');
+        }
+    } finally {
+        setLoading(false);
+    }
   }
 
   return (
@@ -67,6 +97,11 @@ const SuretysTableRow:FC<SuretyType & {toggleModal: (value: SuretysListModalProp
       </Table.Td>
       <Table.Td>
           <Group gap={0} justify="flex-end">
+            <Tooltip label="Generate Surety">
+              <ActionIcon variant="subtle" color="gray" onClick={generateSurety} loading={loading} disabled={loading}>
+                  <IconDownload style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
             <Tooltip label="Edit">
               <ActionIcon variant="subtle" color="gray" onClick={() => toggleModal({status: true, type: 'Edit', id: id})}>
                   <IconPencil style={{ width: rem(16), height: rem(16) }} stroke={1.5} />

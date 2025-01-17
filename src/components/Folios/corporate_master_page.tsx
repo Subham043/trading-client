@@ -1,12 +1,23 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Badge, Divider, Group, Flex, Table, Text } from '@mantine/core';
 import { useFoliosCorporateMasterQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
 import RightSelect from "./rightSelect";
+import type { MultiValue } from "react-select";
+
+type OptionType = {
+ value: number;
+ label: string;
+};
 
 const FolioCorporateMasterPage:FC<{id: number}> = (props) => {
-    const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery({id: props.id, enabled: true});
+    const [rights, setRights] = useState<MultiValue<OptionType>>([]);
+    const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery({
+        id: props.id, 
+        rights: rights.length>0 ? rights.map(i => i.value).join(";") : undefined,
+        enabled: true
+    });
     return (
         <>
             <Divider
@@ -23,7 +34,7 @@ const FolioCorporateMasterPage:FC<{id: number}> = (props) => {
             />
             <Flex justify="flex-end" mt="md" mb="md">
                 <div style={{maxWidth: 300}}>
-                    <RightSelect folioId={props.id} value={undefined} setValue={(value) => console.log(value)} />
+                    <RightSelect folioId={props.id} value={rights} setValue={(value) => setRights(value)} />
                 </div>
             </Flex>
             <ErrorBoundary hasData={data ? data.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} total={data?.length ?? 0} refetch={refetch}>

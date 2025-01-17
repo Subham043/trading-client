@@ -93,21 +93,26 @@ export const useFolioQuery: (
 
 export const useFoliosCorporateMasterQuery: (params: {
   id: number;
+  rights?: string;
   enabled?: boolean;
 }) => UseQueryResult<FolioCorporateMasterType[], unknown> = ({
   id,
+  rights,
   enabled = true,
 }) => {
   const { axios } = useAxios();
 
   return useQuery({
-    queryKey: [FoliosCorporateMasterQueryKey, id],
+    queryKey: [FoliosCorporateMasterQueryKey, rights, id],
     queryFn: async () => {
       const response = await axios.get<{
         data: PaginationType<{
           folio: FolioCorporateMasterType[];
         }>;
-      }>(api_routes.folios + `/list-corporate-master/${id}`);
+      }>(
+        api_routes.folios +
+          `/list-corporate-master/${id}${rights ? `?rights=${rights}` : ""}`
+      );
       return response.data.data;
     },
     enabled,
