@@ -83,13 +83,15 @@ const CorporateMastersForm:FC<CorporateMastersFormProps & {mainCompanyId: number
                         label="Date"
                         placeholder="Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.date}
                     />
                     <Select
                         label="Equity Type"
                         withAsterisk
-                        data={["Equity", "Bonus", "ShareBought", "Rights", "Splits"]}
+                        data={["Bonus", "Rights", "Splits"]}
                         value={form.values.type ? form.values.type : null}
-                        onChange={(value) => form.setFieldValue("type", value ? value as "Equity" | "Bonus" | "ShareBought" | "Rights" | "Splits" : "Bonus")}
+                        onChange={(value) => form.setFieldValue("type", value ? value as "Bonus" | "Rights" | "Splits" : "Bonus")}
+                        error={form.errors.type}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">

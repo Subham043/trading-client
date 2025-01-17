@@ -79,6 +79,7 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
                         data={["Paid", "ToBePaid"]}
                         value={form.values.status ? form.values.status : null}
                         onChange={(value) => form.setFieldValue("status", value ? value as "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid" : "ToBePaid")}
+                        error={form.errors.status}
                     />
                     <TextInput label="Amount" {...form.getInputProps('amount')} />
                     <DateInput
@@ -87,6 +88,7 @@ const ReferralTrackerStagesForm:FC<ReferralTrackerStagesFormProps & {mainPayment
                         label="Date"
                         placeholder="Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.date}
                     />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending} data-disabled={props.type === "Create" ? addReferralTrackerStages.isPending : updateReferralTrackerStages.isPending}>

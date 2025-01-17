@@ -79,6 +79,7 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
                         data={["InvoiceSent", "Paid", "ReceiptSent", "ToBePaid"]}
                         value={form.values.status ? form.values.status : null}
                         onChange={(value) => form.setFieldValue("status", value ? value as "InvoiceSent" | "Paid" | "ReceiptSent" | "ToBePaid" : "InvoiceSent")}
+                        error={form.errors.status}
                     />
                     <TextInput label="Amount" {...form.getInputProps('amount')} />
                     <DateInput
@@ -87,6 +88,7 @@ const PaymentTrackerStagesForm:FC<PaymentTrackerStagesFormProps & {mainPaymentTr
                         label="Date"
                         placeholder="Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.date}
                     />
                 </SimpleGrid>
                 <Button type='submit' variant="filled" color='blue' mt="lg" loading={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending} data-disabled={props.type === "Create" ? addPaymentTrackerStages.isPending : updatePaymentTrackerStages.isPending}>

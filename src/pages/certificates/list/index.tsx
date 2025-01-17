@@ -11,6 +11,7 @@ import { api_routes } from "../../../utils/api_routes";
 import { useDeleteMultiple } from "../../../hooks/useDeleteMultiple";
 import { CertificatesQueryKey } from "../../../hooks/data/certificates";
 import ExcelUploadModal from "../../../components/Layout/ExcelUploadModal";
+import { ShareHolderDetailType } from "../../../utils/types";
 
 export type CertificatesListModalProps = {
     status: boolean;
@@ -29,7 +30,11 @@ export type CertificatesListDrawerProps = {
     id: number;
 }
 
-const CertificatesListPage:FC = () => {
+const CertificatesListPage:FC<{
+    shareHolder1?: ShareHolderDetailType | null | undefined;
+    shareHolder2?: ShareHolderDetailType | null | undefined;
+    shareHolder3?: ShareHolderDetailType | null | undefined;
+}> = (props) => {
     const param = useParams<{folioId: string}>()
     const [selectedData, setSelectedData] = useState<number[]>([]);
     const { exportExcel, excelLoading } = useExcelExport();
@@ -72,7 +77,7 @@ const CertificatesListPage:FC = () => {
             <Paper shadow="sm" className={classes.paper_background}>
                 <CertificatesTable toggleModal={toggleModal} toggleDrawer={toggleDrawer} folioId={Number(param.folioId)} selectedData={selectedData} setSelectedData={setSelectedData} />
             </Paper>
-            <CertificatesModal {...modal} mainFolioId={Number(param.folioId)} toggleModal={toggleModal} />
+            <CertificatesModal {...modal} mainFolioId={Number(param.folioId)} toggleModal={toggleModal} shareHolder1={props.shareHolder1} shareHolder2={props.shareHolder2} shareHolder3={props.shareHolder3} />
             <CertificatesDrawer {...drawerStatus} toggleDrawer={toggleDrawer} />
             <ExcelUploadModal status={excelModal2} toggleModal={toggleExcelModal2} title="Certificates" uploadUrl={`${api_routes.certificates}/import`} sampleUrl="/Sample_Certificates.xlsx" />
         </div>

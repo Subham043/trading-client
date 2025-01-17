@@ -38,7 +38,6 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
         if(props.status){
             form.setValues({
                 shareholderName: (data && (typeof data.shareholderName === "string")) ? data.shareholderName : "",
-                shareholderNameCertificate: (data && (typeof data.shareholderNameCertificate === "string")) ? data.shareholderNameCertificate : "",
                 namePan: (data && (typeof data.namePan === "string")) ? data.namePan : "",
                 nameAadhar: (data && (typeof data.nameAadhar === "string")) ? data.nameAadhar : "",
                 nameCml: (data && (typeof data.nameCml === "string")) ? data.nameCml : "",
@@ -131,15 +130,15 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
     return (
         <ErrorBoundary hasData={props.status && props.type==="Edit" ? (data ? true : false): true} isLoading={props.status && props.type==="Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type==="Edit" ? status : "success"} error={props.status && props.type==="Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type==="Edit" ? refetch : () => {}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 3 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <Select
                         label="Is Client a Company?"
                         data={["Yes", "No"]}
                         value={form.values.isCompany ? form.values.isCompany : null}
                         onChange={(value) => form.setFieldValue("isCompany", value ? value : "No")}
+                        error={form.errors.isCompany}
                     />
                     <TextInput label={form.values.isCompany === "Yes" ? "Company Name" : "Share Holder Name"} {...form.getInputProps('shareholderName')} />
-                    <TextInput label="Share Holder Name as per Certificate" {...form.getInputProps('shareholderNameCertificate')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Name as per PAN" {...form.getInputProps('namePan')} />
@@ -158,6 +157,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         value={form.values.dob ? new Date(form.values.dob) : undefined}
                         onChange={(value) => form.setFieldValue('dob', value?.toISOString() ? value.toISOString() : null)}
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.dob}
                     />
                     <TextInput label="Client Age" {...form.getInputProps('age')} />
                 </SimpleGrid>
@@ -189,6 +189,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         data={["SB", "Current", "NRO", "NRE", "FCNR"]}
                         value={form.values.bankAccountType ? form.values.bankAccountType : null}
                         onChange={(value) => form.setFieldValue("bankAccountType", value ? value : "No")}
+                        error={form.errors.bankAccountType}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -198,6 +199,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         value={form.values.accountOpeningDate ? new Date(form.values.accountOpeningDate) : undefined}
                         onChange={(value) => form.setFieldValue('accountOpeningDate', value?.toISOString() ? value.toISOString() : null)}
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.accountOpeningDate}
                     />
                     <TextInput label="Client address as per Bank" {...form.getInputProps('addressBank')} />
                 </SimpleGrid>
@@ -218,6 +220,7 @@ const ShareHolderDetailsForm:FC<ShareHolderDetailsFormProps & {mainProjectId: nu
                         data={["Private Sector Service", "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
                         value={form.values.occupation ? form.values.occupation : null}
                         onChange={(value) => form.setFieldValue("occupation", value ? value : "No")}
+                        error={form.errors.occupation}
                     />
                 </SimpleGrid>
                 <Divider

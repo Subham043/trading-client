@@ -2,7 +2,6 @@ import * as yup from "yup";
 
 export type SchemaType = {
   shareholderName?: string | undefined | null;
-  shareholderNameCertificate?: string | undefined | null;
   namePan?: string | undefined | null;
   nameAadhar?: string | undefined | null;
   nameCml?: string | undefined | null;
@@ -54,7 +53,6 @@ export type SchemaType = {
 
 export const initialValues: SchemaType = {
   shareholderName: null,
-  shareholderNameCertificate: null,
   namePan: null,
   nameAadhar: null,
   nameCml: null,
@@ -109,10 +107,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
     .string()
     .trim()
     .required("Share Holder Name is required"),
-  shareholderNameCertificate: yup
-    .string()
-    .trim()
-    .required("Share Holder Name as per certificate is required"),
   namePan: yup.string().trim().notRequired(),
   nameAadhar: yup
     .string()

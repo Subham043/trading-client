@@ -91,6 +91,7 @@ const CommunicationTrackersForm:FC<CommunicationTrackersFormProps & {toggleModal
                         data={["DocumentsCouriered", "DocumentsReceived"]}
                         value={form.values.stage ? form.values.stage : null}
                         onChange={(value) => form.setFieldValue("stage", value ? value as StageType : "DocumentsCouriered")}
+                        error={form.errors.stage}
                     />
                     <div>
                         <InputLabel>Select Company/Folio</InputLabel>
@@ -109,6 +110,7 @@ const CommunicationTrackersForm:FC<CommunicationTrackersFormProps & {toggleModal
                         label="Date Sent"
                         placeholder="Date Sent"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.dateSent}
                     />
                     <DateInput
                         value={form.values.dateReceived ? new Date(form.values.dateReceived) : undefined}
@@ -116,6 +118,7 @@ const CommunicationTrackersForm:FC<CommunicationTrackersFormProps & {toggleModal
                         label="Date Received"
                         placeholder="Date Received"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.dateReceived}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 1 }} mt={"md"}>

@@ -111,6 +111,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         data={["InvIT" , "IDR" , "MFs" , "PreferenceShares" , "REiT" , "Equity" , "Warrant"]}
                         value={form.values.instrumentType ? form.values.instrumentType : null}
                         onChange={(value) => form.setFieldValue("instrumentType", value ? value as "InvIT" | "IDR" | "MFs" | "PreferenceShares" | "REiT" | "Equity" | "Warrant" : "InvIT")}
+                        error={form.errors.instrumentType}
                     />
                     <Select
                         label="Company Name"
@@ -144,6 +145,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         label="Date of Listing"
                         placeholder="Date of Listing"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.dateOfListing}
                     />
                 </SimpleGrid>
                 {form.values.instrumentType === "PreferenceShares" && <><SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -153,6 +155,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         label="Date of Allotment"
                         placeholder="Date of Allotment"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.dateOfAllotment}
                     />
                     <TextInput label="Dividend" {...form.getInputProps('dividend')} />
                     <TextInput label="Security Name" {...form.getInputProps('securityName')} />
@@ -165,6 +168,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         label="Redemption Date"
                         placeholder="Redemption Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.redemptionDate}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
@@ -175,6 +179,7 @@ const SecurityTypeMastersForm:FC<SecurityTypeMastersFormProps & {toggleModal: (v
                         label="Conversion Date"
                         placeholder="Conversion Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.conversionDate}
                     />
                 </SimpleGrid></>}
                 {form.values.instrumentType === "Warrant" && <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">

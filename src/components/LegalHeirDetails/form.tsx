@@ -145,6 +145,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                         valueFormat="DD/MM/YYYY"
                         value={form.values.dob ? new Date(form.values.dob) : undefined}
                         onChange={(value) => form.setFieldValue('dob', value?.toISOString() ? value.toISOString() : null)}
+                        error={form.errors.dob}
                     />
                     <TextInput label="Client Age" {...form.getInputProps('age')} />
                 </SimpleGrid>
@@ -176,6 +177,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                         data={["SB", "Current", "NRO", "NRE", "FCNR"]}
                         value={form.values.bankAccountType ? form.values.bankAccountType : null}
                         onChange={(value) => form.setFieldValue("bankAccountType", value ? value : "No")}
+                        error={form.errors.bankAccountType}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
@@ -185,6 +187,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                         label="Client Account Opening Date" 
                         value={form.values.accountOpeningDate ? new Date(form.values.accountOpeningDate) : undefined}
                         onChange={(value) => form.setFieldValue('accountOpeningDate', value?.toISOString() ? value.toISOString() : null)}
+                        error={form.errors.accountOpeningDate}
                     />
                     <TextInput label="Client address as per Bank" {...form.getInputProps('addressBank')} />
                 </SimpleGrid>
@@ -205,6 +208,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                         data={["Private Sector Service", "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
                         value={form.values.occupation ? form.values.occupation : null}
                         onChange={(value) => form.setFieldValue("occupation", value ? value : "No")}
+                        error={form.errors.occupation}
                     />
                 </SimpleGrid>
                 <Divider

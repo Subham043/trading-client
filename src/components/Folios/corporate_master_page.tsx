@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { Badge, Divider, Group, Table, Text } from '@mantine/core';
+import { Badge, Divider, Group, Flex, Table, Text } from '@mantine/core';
 import { useFoliosCorporateMasterQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
+import RightSelect from "./rightSelect";
 
 const FolioCorporateMasterPage:FC<{id: number}> = (props) => {
     const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery({id: props.id, enabled: true});
@@ -20,6 +21,11 @@ const FolioCorporateMasterPage:FC<{id: number}> = (props) => {
                 } 
                 labelPosition="center" 
             />
+            <Flex justify="flex-end" mt="md" mb="md">
+                <div style={{maxWidth: 300}}>
+                    <RightSelect folioId={props.id} value={undefined} setValue={(value) => console.log(value)} />
+                </div>
+            </Flex>
             <ErrorBoundary hasData={data ? data.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} total={data?.length ?? 0} refetch={refetch}>
                 <Table.ScrollContainer minWidth={700}>
                     <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>

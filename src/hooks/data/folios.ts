@@ -268,10 +268,6 @@ export const useUpdateFolioMutation = (
         data: FolioType;
       }>(api_routes.folios + `/${id}`, {
         ...updateFolioVal,
-        faceValue:
-          updateFolioVal.faceValue && !isNaN(Number(updateFolioVal.faceValue))
-            ? Number(updateFolioVal.faceValue)
-            : 0,
       });
       return response.data.data;
     },
@@ -298,12 +294,11 @@ export const useAddFolioMutation = (shareCertificateMasterId: number) => {
 
   return useMutation({
     mutationFn: async (newFolioVal: FolioFormType) => {
-      const {faceValue, ...rest} = newFolioVal;
+      const {...rest} = newFolioVal;
       const response = await axios.post<{
         data: FolioType;
       }>(api_routes.folios + `/create/${shareCertificateMasterId}`, {
         ...rest,
-        faceValue: (faceValue && !isNaN(Number(faceValue))) ? Number(faceValue) : 0,
       });
       return response.data.data;
     },

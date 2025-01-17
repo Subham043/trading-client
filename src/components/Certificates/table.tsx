@@ -5,9 +5,10 @@ import { CertificateType } from "../../utils/types";
 import { CertificatesListDrawerProps, CertificatesListModalProps } from "../../pages/certificates/list";
 import { useDeleteCertificateMutation, useCertificatesQuery } from "../../hooks/data/certificates";
 import ErrorBoundary from "../Layout/ErrorBoundary";
+import dayjs from "dayjs";
 
 
-const CertificatesTableRow:FC<CertificateType & {toggleModal: (value: CertificatesListModalProps) => void, toggleDrawer: (value: CertificatesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, certificateNumber, certificateSerialNumber, folioID, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
+const CertificatesTableRow:FC<CertificateType & {toggleModal: (value: CertificatesListModalProps) => void, toggleDrawer: (value: CertificatesListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, certificateNumber, noOfShares, faceValue, dateOfAction, folioID, toggleDrawer, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteCertificates = useDeleteCertificateMutation(id, folioID||0)
   const onDelete = async () => {
@@ -24,12 +25,27 @@ const CertificatesTableRow:FC<CertificateType & {toggleModal: (value: Certificat
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
+              {equityType}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
               {certificateNumber}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {certificateSerialNumber}
+              {noOfShares}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {faceValue}
+          </Text>
+      </Table.Td>
+      <Table.Td>
+          <Text fz="sm" fw={500}>
+              {dayjs(dateOfAction?.toString()).locale(Intl.DateTimeFormat().resolvedOptions().locale).format('DD MMM YYYY')}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -90,8 +106,11 @@ const CertificatesTable:FC<{toggleModal: (value: CertificatesListModalProps) => 
                     onChange={() => props.setSelectedData(allChecked ? [] : (certificates ? certificates.certificate.map((value) => value.id) : []))}
                   />
                 </Table.Th>
+              <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
               <Table.Th style={{color: 'white'}}>Certificate Number</Table.Th>
-              <Table.Th style={{color: 'white'}}>Certificate Serial Number</Table.Th>
+              <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
+              <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
+              <Table.Th style={{color: 'white'}}>Date Of Action</Table.Th>
               <Table.Th />
             </Table.Tr>
           </Table.Thead>

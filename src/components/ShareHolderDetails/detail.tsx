@@ -21,10 +21,6 @@ const ShareHolderDetailDetail:FC<ShareHolderDetailsListDrawerProps> = (props) =>
                         <Table.Td>{data.shareholderName}</Table.Td>
                     </Table.Tr>
                     <Table.Tr>
-                        <Table.Th>Share Holder Name as per Certificate</Table.Th>
-                        <Table.Td>{data.shareholderNameCertificate}</Table.Td>
-                    </Table.Tr>
-                    <Table.Tr>
                         <Table.Th>Name as Per Pan</Table.Th>
                         <Table.Td>{data.namePan}</Table.Td>
                     </Table.Tr>

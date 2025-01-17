@@ -135,6 +135,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         data={Object.values(CaseEnumType)}
                         value={form.values.caseType ? form.values.caseType : null}
                         onChange={(value) => form.setFieldValue("caseType", value ? value as CaseEnumType : CaseEnumType.Claim)}
+                        error={form.errors.caseType}
                     />
                     <div>
                         <InputLabel>Select Folio</InputLabel>
@@ -152,6 +153,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         data={["Yes", "No"]}
                         value={form.values.allowAffidavit ? form.values.allowAffidavit : null}
                         onChange={(value) => form.setFieldValue("allowAffidavit", value ? value : "No")}
+                        error={form.errors.allowAffidavit}
                     />
                     {
                         form.values.allowAffidavit === "Yes" && <>
@@ -191,6 +193,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["Yes", "No"]}
                             value={form.values.isDeceased ? form.values.isDeceased : null}
                             onChange={(value) => form.setFieldValue("isDeceased", value ? value : "No")}
+                            error={form.errors.isDeceased}
                         />
                         {
                             form.values.isDeceased==="Yes" &&
@@ -216,6 +219,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                                 valueFormat="DD/MM/YYYY"
                                 value={form.values.dod ? new Date(form.values.dod) : undefined}
                                 onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
+                                error={form.errors.dod}
                             />
                             <TextInput label="Place Of Death" {...form.getInputProps('placeOfDeath')} />
                         </SimpleGrid>
@@ -225,12 +229,14 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                                 data={["Yes", "No"]}
                                 value={form.values.isTestate ? form.values.isTestate : null}
                                 onChange={(value) => form.setFieldValue("isTestate", value ? value : "No")}
+                                error={form.errors.isTestate}
                             />
                             <Select
                                 label="Proof of sucession"
                                 data={["Yes", "No"]}
                                 value={form.values.proofOfSucession ? form.values.proofOfSucession : null}
                                 onChange={(value) => form.setFieldValue("proofOfSucession", value ? value : "No")}
+                                error={form.errors.proofOfSucession}
                             />
                         </SimpleGrid>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
@@ -246,6 +252,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                                 valueFormat="DD/MM/YYYY"
                                 value={form.values.dateOfDocument ? new Date(form.values.dateOfDocument) : undefined}
                                 onChange={(value) => form.setFieldValue('dateOfDocument', value?.toISOString() ? value.toISOString() : null)}
+                                error={form.errors.dateOfDocument}
                             />
                         </SimpleGrid>
                     </>}
@@ -255,6 +262,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["Yes", "No"]}
                             value={form.values.isMinor ? form.values.isMinor : null}
                             onChange={(value) => form.setFieldValue("isMinor", value ? value : "No")}
+                            error={form.errors.isMinor}
                         />
                     </SimpleGrid>
                     {form.values.isMinor === "Yes" && <>
@@ -264,6 +272,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                                 valueFormat="DD/MM/YYYY"
                                 value={form.values.dobMinor ? new Date(form.values.dobMinor) : undefined}
                                 onChange={(value) => form.setFieldValue('dobMinor', value?.toISOString() ? value.toISOString() : null)}
+                                error={form.errors.dobMinor}
                             />
                             <TextInput label="Name of Guardian of minor" {...form.getInputProps('guardianName')} />
                         </SimpleGrid>
@@ -278,6 +287,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["Resident Individual", "Resident Minor (through Guardian)", "NRI", "PIO"]}
                             value={form.values.taxStatus ? form.values.taxStatus : null}
                             onChange={(value) => form.setFieldValue("taxStatus", value ? value : "No")}
+                            error={form.errors.taxStatus}
                         />
                         <div>
                             <InputLabel>Select Claimant</InputLabel>
@@ -293,6 +303,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["Nominee", "Legal Heir", "Successor to the Estate of the deceased", "Administrator of the Estate of the deceased"]}
                             value={form.values.statusClaimant ? form.values.statusClaimant : null}
                             onChange={(value) => form.setFieldValue("statusClaimant", value ? value : "No")}
+                            error={form.errors.statusClaimant}
                         />
                     </SimpleGrid>
                     <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
@@ -302,6 +313,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["Private Sector Service", "Public Sector Service", "Government Service", "Business", "Professional Agriculturist", "Retired", "Home Maker", "Student", "Forex Dealer", "Others"]}
                             value={form.values.occupationClaimant ? form.values.occupationClaimant : null}
                             onChange={(value) => form.setFieldValue("occupationClaimant", value ? value : "No")}
+                            error={form.errors.occupationClaimant}
                         />
                     </SimpleGrid>
                     <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
@@ -310,12 +322,14 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             data={["a Politically Exposed Person", "Related to a Politically Exposed Person", "Neither (Not applicable)"]}
                             value={form.values.politicalExposureClaimant ? form.values.politicalExposureClaimant : null}
                             onChange={(value) => form.setFieldValue("politicalExposureClaimant", value ? value : "No")}
+                            error={form.errors.politicalExposureClaimant}
                         />
                         <Select
                             label="Claimant Annual Income"
                             data={["Below 1 Lac", "1-5 Lacs", "5-10 Lacs", "10-25 Lacs", "25 Lacs-1crore", ">1 crore"]}
                             value={form.values.annualIncomeClaimant ? form.values.annualIncomeClaimant : null}
                             onChange={(value) => form.setFieldValue("annualIncomeClaimant", value ? value : "No")}
+                            error={form.errors.annualIncomeClaimant}
                         />
                     </SimpleGrid>
                 </>}
@@ -367,6 +381,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             valueFormat="DD/MM/YYYY"
                             value={form.values.dod ? new Date(form.values.dod) : undefined}
                             onChange={(value) => form.setFieldValue('dod', value?.toISOString() ? value.toISOString() : null)}
+                            error={form.errors.dod}
                         />
                     </SimpleGrid>
                 </>}

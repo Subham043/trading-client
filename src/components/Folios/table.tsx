@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { page_routes } from "../../utils/page_routes";
 
 
-const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValue:number; toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, equityType, faceValue, noOfShares, shareholderName1, shareholderName2, shareholderName3, consolidatedHolding, totalMarketValue, shareCertificateID, toggleCorporateModal, toggleDividendModal, selectedData, setSelectedData, toggleModal}) => {
+const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValue:number; toggleModal: (value: FoliosListModalProps) => void, toggleCorporateModal: (value: FoliosCorporateMasterModalProps) => void, toggleDividendModal: (value: FoliosDividendMasterModalProps) => void, toggleDrawer: (value: FoliosListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, Folio, shareholderName1, shareholderName2, shareholderName3, consolidatedHolding, totalMarketValue, shareCertificateID, toggleCorporateModal, toggleDividendModal, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteFolios = useDeleteFolioMutation(id, shareCertificateID||0)
   const onDelete = async () => {
@@ -31,17 +31,7 @@ const FoliosTableRow:FC<FolioType & {consolidatedHolding:string; totalMarketValu
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {equityType}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {faceValue}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
-              {noOfShares}
+              {Folio}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -125,9 +115,7 @@ const FoliosTable:FC<{toggleModal: (value: FoliosListModalProps) => void, toggle
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Name of Shareholder(s)</Table.Th>
-              <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
-              <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-              <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
+              <Table.Th style={{color: 'white'}}>Folio</Table.Th>
               <Table.Th style={{color: 'white'}}>Consolidated Holdings</Table.Th>
               <Table.Th style={{color: 'white'}}>Total Market Share</Table.Th>
               <Table.Th />

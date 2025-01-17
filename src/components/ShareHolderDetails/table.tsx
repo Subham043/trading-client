@@ -7,7 +7,7 @@ import { useDeleteShareHolderDetailMutation, useShareHolderDetailsQuery } from "
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareholderName, shareholderNameCertificate, namePan, nameAadhar, nameBank, nameCml, phone, email, aadhar, pan, projectID, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
+const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value: ShareHolderDetailsListModalProps) => void, toggleDrawer: (value: ShareHolderDetailsListDrawerProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, shareholderName, namePan, nameAadhar, nameBank, nameCml, phone, email, aadhar, pan, projectID, selectedData, setSelectedData, toggleModal, toggleDrawer}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteShareHolderDetails = useDeleteShareHolderDetailMutation(id, projectID||0)
   const onDelete = async () => {
@@ -29,17 +29,12 @@ const ShareHolderDetailsTableRow:FC<ShareHolderDetailType & {toggleModal: (value
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {shareholderNameCertificate}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
               {namePan}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {namePan===shareholderName && shareholderName === shareholderNameCertificate && shareholderNameCertificate === nameAadhar && nameAadhar === nameBank && nameBank === nameCml ? 'No' : 'Yes'}
+              {namePan===shareholderName && shareholderName === nameAadhar && nameAadhar === nameBank && nameBank === nameCml ? 'No' : 'Yes'}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -129,7 +124,6 @@ const ShareHolderDetailsTable:FC<{toggleModal: (value: ShareHolderDetailsListMod
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>Share Holder Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>Name as per Share Holder Certificate</Table.Th>
               <Table.Th style={{color: 'white'}}>Name as per pan</Table.Th>
               <Table.Th style={{color: 'white'}}>Generate Affidavit</Table.Th>
               <Table.Th style={{color: 'white'}}>Phone</Table.Th>

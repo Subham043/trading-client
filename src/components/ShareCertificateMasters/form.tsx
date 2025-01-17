@@ -97,6 +97,7 @@ const ShareCertificateMastersForm:FC<ShareCertificateMastersFormProps & {toggleM
                         data={["InvIT" , "IDR" , "MFs" , "PreferenceShares" , "REiT" , "Equity" , "Warrant"]}
                         value={form.values.instrumentType ? form.values.instrumentType : null}
                         onChange={(value) => form.setFieldValue("instrumentType", value ? value as "InvIT" | "IDR" | "MFs" | "PreferenceShares" | "REiT" | "Equity" | "Warrant" : "InvIT")}
+                        error={form.errors.instrumentType}
                     />
                     <Select
                         label="Company Name"

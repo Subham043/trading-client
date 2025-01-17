@@ -26,9 +26,6 @@ const FolioDetailPage:FC<{toggleModal: (value: FoliosListModalProps) => void}> =
                             <Table.Th style={{color: 'white'}}>ID</Table.Th>
                             <Table.Th style={{color: 'white'}}>Name Of Shareholders</Table.Th>
                             <Table.Th style={{color: 'white'}}>Folio</Table.Th>
-                            <Table.Th style={{color: 'white'}}>Equity Type</Table.Th>
-                            <Table.Th style={{color: 'white'}}>Face Value</Table.Th>
-                            <Table.Th style={{color: 'white'}}>No. Of Shares</Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
@@ -40,15 +37,12 @@ const FolioDetailPage:FC<{toggleModal: (value: FoliosListModalProps) => void}> =
                                 </Text>
                             </Table.Td>
                             <Table.Td>{data.Folio}</Table.Td>
-                            <Table.Td>{data.equityType}</Table.Td>
-                            <Table.Td>{data.faceValue}</Table.Td>
-                            <Table.Td>{data.noOfShares}</Table.Td>
                         </Table.Tr>
                     </Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
             <Box bg="transparent" mt="md">
-                <CertificatesListPage />
+                <CertificatesListPage shareHolder1={data.shareholderName1} shareHolder2={data.shareholderName2} shareHolder3={data.shareholderName3} />
             </Box>
             <Box bg="transparent" mt="xl">
                 <FolioCorporateMasterPage id={data.id} />

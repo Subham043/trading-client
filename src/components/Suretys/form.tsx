@@ -104,6 +104,7 @@ const SuretysForm:FC<SuretysFormProps & {toggleModal: (value: SuretysListModalPr
                         data={["Yes", "No"]}
                         value={form.values.isEmployed ? form.values.isEmployed : null}
                         onChange={(value) => form.setFieldValue("isEmployed", value ? value : "No")}
+                        error={form.errors.isEmployed}
                     />
                     {
                         form.values.isEmployed==="Yes" &&
@@ -122,6 +123,7 @@ const SuretysForm:FC<SuretysFormProps & {toggleModal: (value: SuretysListModalPr
                         data={["Yes", "No"]}
                         value={form.values.isBusiness ? form.values.isBusiness : null}
                         onChange={(value) => form.setFieldValue("isBusiness", value ? value : "No")}
+                        error={form.errors.isBusiness}
                     />
                     {
                         form.values.isBusiness==="Yes" &&
@@ -144,6 +146,7 @@ const SuretysForm:FC<SuretysFormProps & {toggleModal: (value: SuretysListModalPr
                         data={["Yes", "No"]}
                         value={form.values.isProperty ? form.values.isProperty : null}
                         onChange={(value) => form.setFieldValue("isProperty", value ? value : "No")}
+                        error={form.errors.isProperty}
                     />
                     {
                         form.values.isProperty==="Yes" &&
@@ -152,6 +155,7 @@ const SuretysForm:FC<SuretysFormProps & {toggleModal: (value: SuretysListModalPr
                             data={["House", "Mere Land"]}
                             value={form.values.propertyType ? form.values.propertyType : null}
                             onChange={(value) => form.setFieldValue("propertyType", value ? value : "House")}
+                            error={form.errors.propertyType}
                         />
                     }
                 </SimpleGrid>

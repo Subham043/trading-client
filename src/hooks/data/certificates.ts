@@ -194,6 +194,10 @@ export const useUpdateCertificateMutation = (
         data: CertificateType;
       }>(api_routes.certificates + `/${id}`, {
         ...updateCertificateVal,
+        faceValue:
+          updateCertificateVal.faceValue && !isNaN(Number(updateCertificateVal.faceValue))
+            ? Number(updateCertificateVal.faceValue)
+            : 0,
       });
       return response.data.data;
     },
@@ -220,11 +224,13 @@ export const useAddCertificateMutation = (folioId: number) => {
 
   return useMutation({
     mutationFn: async (newCertificateVal: CertificateFormType) => {
-      const {...rest} = newCertificateVal;
+      const { faceValue, ...rest } = newCertificateVal;
       const response = await axios.post<{
         data: CertificateType;
       }>(api_routes.certificates + `/create/${folioId}`, {
         ...rest,
+        faceValue:
+          faceValue && !isNaN(Number(faceValue)) ? Number(faceValue) : 0,
       });
       return response.data.data;
     },

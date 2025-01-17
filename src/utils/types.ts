@@ -319,7 +319,6 @@ export interface ShareCertificateMasterFormType
 
 export type FolioType = {
   id: number;
-  equityType: "Bonus" | "Shares" | "Splits" | "Rights";
   Folio?: string | null;
   shareholderName1ID?: number | null;
   shareholderName1?: ShareHolderDetailType | null;
@@ -327,21 +326,6 @@ export type FolioType = {
   shareholderName2?: ShareHolderDetailType | null;
   shareholderName3ID?: number | null;
   shareholderName3?: ShareHolderDetailType | null;
-  noOfShares?: string | null;
-  noOfSharesWords?: string | null;
-  dateOfAllotment?: Date | null;
-  faceValue: number | null;
-  distinctiveNosFrom?: string | null;
-  distinctiveNosTo?: string | null;
-  endorsement: "Yes" | "No";
-  endorsementFolio?: string | null;
-  endorsementDate?: Date | null;
-  endorsementShareholderName1ID?: number | null;
-  endorsementShareholderName1?: ShareHolderDetailType | null;
-  endorsementShareholderName2ID?: number | null;
-  endorsementShareholderName2?: ShareHolderDetailType | null;
-  endorsementShareholderName3ID?: number | null;
-  endorsementShareholderName3?: ShareHolderDetailType | null;
   shareCertificateMaster?: ShareCertificateMasterType | null;
   shareCertificateID?: number | null;
   createdAt?: Date | null;
@@ -354,6 +338,26 @@ export type CertificateType = {
   id: number;
   certificateNumber: string;
   certificateSerialNumber?: string | null;
+  equityType: "Bonus" | "ShareBought" | "Equity" | "Splits" | "Rights";
+  shareholderName1Txt?: string | null;
+  shareholderName2Txt?: string | null;
+  shareholderName3Txt?: string | null;
+  noOfShares?: string | null;
+  noOfSharesWords?: string | null;
+  dateOfAllotment?: Date | null;
+  dateOfAction?: Date | null;
+  faceValue: number | null;
+  distinctiveNosFrom?: string | null;
+  distinctiveNosTo?: string | null;
+  endorsement: "Yes" | "No";
+  endorsementFolio?: string | null;
+  endorsementDate?: Date | null;
+  endorsementShareholderName1ID?: number | null;
+  endorsementShareholderName1?: ShareHolderDetailType | null;
+  endorsementShareholderName2ID?: number | null;
+  endorsementShareholderName2?: ShareHolderDetailType | null;
+  endorsementShareholderName3ID?: number | null;
+  endorsementShareholderName3?: ShareHolderDetailType | null;
   folioID?: number | null;
   createdAt?: Date | null;
 };
@@ -362,7 +366,7 @@ export interface CertificateFormType
   extends Omit<CertificateType, "id" | "createdAt"> {}
 
 export type FolioCorporateMasterType = {
-  type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
+  type: "Bonus" | "Splits" | "Rights";
   date: Date;
   numerator?: string | null;
   denominator?: string | null;
@@ -382,7 +386,7 @@ export type FolioDividendMasterType = {
 
 export type CorporateMasterType = {
   id: number;
-  type: "Equity" | "Bonus" | "Splits" | "Rights" | "ShareBought";
+  type: "Bonus" | "Splits" | "Rights";
   date: Date;
   numerator?: string | null;
   denominator?: string | null;
@@ -478,7 +482,6 @@ export interface CaseFormType
 export type ShareHolderDetailType = {
   id: number;
   shareholderName?: string | null;
-  shareholderNameCertificate?: string | null;
   namePan?: string | null;
   nameAadhar?: string | null;
   nameCml?: string | null;
@@ -680,7 +683,6 @@ export interface StageTrackerFormType
     stage: "DocumentsCouriered" | "DocumentsReceived";
     foliosSet: {
       id: number;
-      equityType: "Bonus" | "Shares" | "Splits" | "Rights";
       Folio: string;
       certificateNumber?: string | null | undefined;
       faceValue: number | null | undefined;

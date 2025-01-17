@@ -1,17 +1,32 @@
 import { FC } from "react";
-import { Modal, Table, Text } from '@mantine/core';
+import { Flex, Modal, Table, Text } from '@mantine/core';
 import { FoliosCorporateMasterModalProps } from "../../pages/folios/list";
 import { useFoliosCorporateMasterQuery } from "../../hooks/data/folios";
 import ErrorBoundary from "../Layout/ErrorBoundary";
 import dayjs from "dayjs";
+import RightSelect from "./rightSelect";
 
 const FolioCorporateMasterModal:FC<FoliosCorporateMasterModalProps & {toggleModal: (value: FoliosCorporateMasterModalProps) => void}> = (props) => {
     const {data, isFetching, isLoading, status, error,  refetch} = useFoliosCorporateMasterQuery(props.status ? {id: props.id, enabled: true} : {id: 0, enabled: false});
     return (
-        <Modal opened={props.status} onClose={() => props.toggleModal({status: false})} centered size="xl" withCloseButton={true}  title="Corporate Action" overlayProps={{
-          backgroundOpacity: 0.55,
-          blur: 3,
-        }}>
+        <Modal 
+            opened={props.status} 
+            onClose={() => props.toggleModal({status: false})} 
+            centered size="xl" 
+            withCloseButton={true}  
+            title={
+                <Flex justify="flex-end" align="center" gap="lg">
+                    {/* <Text>Corporate Action</Text> */}
+                    {props.status && <div style={{maxWidth: 300}}>
+                        <RightSelect folioId={props.id} value={undefined} setValue={(value) => console.log(value)} />
+                    </div>}
+                </Flex>
+            } 
+            overlayProps={{
+                backgroundOpacity: 0.55,
+                blur: 3,
+            }}
+        >
             <ErrorBoundary hasData={data ? data.length>0 : false} isLoading={isLoading || isFetching} status={status} error={error} hasPagination={false} total={data?.length ?? 0} refetch={refetch}>
                 <Table.ScrollContainer minWidth={700}>
                     <Table verticalSpacing="sm" striped highlightOnHover withTableBorder>

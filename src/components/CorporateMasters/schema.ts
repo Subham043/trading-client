@@ -1,23 +1,21 @@
 import * as yup from "yup";
 
 enum CorporateActionType {
-  Equity = "Equity",
   Bonus = "Bonus",
   Splits = "Splits",
   Rights = "Rights",
-  ShareBought = "ShareBought",
 }
 
 export type SchemaType = {
   date: string;
-  type: "Equity" | "Bonus" | "Shares" | "Splits" | "Rights" | "ShareBought";
+  type: "Bonus" | "Splits" | "Rights";
   numerator: number;
   denominator: number;
 };
 
 export const initialValues: SchemaType = {
   date: "",
-  type: "Equity",
+  type: "Bonus",
   numerator: 0,
   denominator: 0,
 };

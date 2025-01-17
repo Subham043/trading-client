@@ -82,6 +82,7 @@ const DividendMastersForm:FC<DividendMastersFormProps & {mainCompanyId: number, 
                         label="Recorded Date"
                         placeholder="Recorded Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.recorded_date}
                     />
                     <TextInput label="Financial Year" {...form.getInputProps('financial_year')} />
                     <TextInput label="Dividend Per Share" {...form.getInputProps('dividend_per_share')} />

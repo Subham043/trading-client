@@ -110,6 +110,7 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
                         data={["Client", "RTA", "IEPF", "ServiceProvider"]}
                         value={form.values.pendingFrom ? form.values.pendingFrom : null}
                         onChange={(value) => form.setFieldValue("pendingFrom", value ? value as PendingFromType : "Client")}
+                        error={form.errors.pendingFrom}
                     />
                     <DateInput
                         value={form.values.date ? new Date(form.values.date) : undefined}
@@ -117,6 +118,7 @@ const StageTrackersForm:FC<StageTrackersFormProps & {toggleModal: (value: StageT
                         label="Date"
                         placeholder="Date"
                         valueFormat="DD/MM/YYYY"
+                        error={form.errors.date}
                     />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 1 }} mt={"md"}>

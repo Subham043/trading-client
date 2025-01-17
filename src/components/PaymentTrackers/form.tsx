@@ -115,6 +115,7 @@ const PaymentTrackersForm:FC<PaymentTrackersFormProps & {toggleModal: (value: Pa
                         data={["Yes" , "No"]}
                         value={form.values.tdsFlag ? form.values.tdsFlag : null}
                         onChange={(value) => form.setFieldValue("tdsFlag", value ? value as "Yes" | "No" : "No")}
+                        error={form.errors.tdsFlag}
                     />
                     {
                         form.values.tdsFlag==="Yes" &&
