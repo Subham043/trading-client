@@ -2,67 +2,79 @@ import * as yup from "yup";
 
 
 export type SchemaType = {
-  companyName: string;
   fullName: string;
-  age?: string | null | undefined;
+  fatherName: string;
+  isMinor: string;
+  isDeceased: string;
+  occupation?: string | null | undefined;
+  nationality?: string | null | undefined;
+  email?: string | null | undefined;
+  relationship?: string | null | undefined;
+  mobile?: string | null | undefined;
+  pan?: string | null | undefined;
   address?: string | null | undefined;
-  isEmployed: string;
-  employerName?: string | null | undefined;
-  salary?: string | null | undefined;
-  employerAddress?: string | null | undefined;
-  isBusiness: string;
-  businessName?: string | null | undefined;
-  businessNature?: string | null | undefined;
-  businessIncome?: string | null | undefined;
-  businessProfit?: string | null | undefined;
-  businessAddress?: string | null | undefined;
-  isProperty: string;
-  propertyType?: string | null | undefined;
-  propertySituation?: string | null | undefined;
-  propertyValue?: string | null | undefined;
-  propertyRent?: string | null | undefined;
+  dobMinor?: string | null | undefined;
+  dateMajority?: string | null | undefined;
+  gurdianName?: string | null | undefined;
+  gurdianAddress?: string | null | undefined;
+  deceasedName?: string | null | undefined;
+  dobDeceased?: string | null | undefined;
+  deceasedFatherName?: string | null | undefined;
+  deceasedOccupation?: string | null | undefined;
+  deceasedNationality?: string | null | undefined;
+  deceasedEmail?: string | null | undefined;
+  deceasedRelationship?: string | null | undefined;
+  deceasedRelationshipMinor?: string | null | undefined;
 };
 
 export const initialValues: SchemaType = {
-  isEmployed: "No",
-  isBusiness: "No",
-  isProperty: "No",
-  companyName: "",
+  isMinor: "No",
+  isDeceased: "No",
+  fatherName: "",
   fullName: "",
-  age: undefined,
+  occupation: undefined,
+  nationality: undefined,
+  email: undefined,
+  relationship: undefined,
+  mobile: undefined,
+  pan: undefined,
   address: undefined,
-  employerName: undefined,
-  salary: undefined,
-  employerAddress: undefined,
-  businessName: undefined,
-  businessNature: undefined,
-  businessIncome: undefined,
-  businessProfit: undefined,
-  businessAddress: undefined,
-  propertyType: "House",
-  propertySituation: undefined,
-  propertyValue: undefined,
-  propertyRent: undefined,
+  dobMinor: undefined,
+  dateMajority: undefined,
+  gurdianName: undefined,
+  gurdianAddress: undefined,
+  deceasedName: undefined,
+  dobDeceased: undefined,
+  deceasedFatherName: undefined,
+  deceasedOccupation: undefined,
+  deceasedNationality: undefined,
+  deceasedEmail: undefined,
+  deceasedRelationship: undefined,
+  deceasedRelationshipMinor: undefined,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
-  companyName: yup.string().trim().required(),
+  fatherName: yup.string().trim().required(),
   fullName: yup.string().trim().required(),
-  isEmployed: yup.string().trim().required(),
-  isBusiness: yup.string().trim().required(),
-  isProperty: yup.string().trim().required(),
-  age: yup.string().trim().notRequired(),
+  isMinor: yup.string().trim().required(),
+  isDeceased: yup.string().trim().required(),
+  occupation: yup.string().trim().notRequired(),
+  nationality: yup.string().trim().notRequired(),
+  email: yup.string().trim().notRequired(),
+  relationship: yup.string().trim().notRequired(),
+  mobile: yup.string().trim().notRequired(),
+  pan: yup.string().trim().notRequired(),
   address: yup.string().trim().notRequired(),
-  employerName: yup.string().trim().notRequired(),
-  salary: yup.string().trim().notRequired(),
-  employerAddress: yup.string().trim().notRequired(),
-  businessName: yup.string().trim().notRequired(),
-  businessNature: yup.string().trim().notRequired(),
-  businessIncome: yup.string().trim().notRequired(),
-  businessProfit: yup.string().trim().notRequired(),
-  businessAddress: yup.string().trim().notRequired(),
-  propertyType: yup.string().trim().notRequired(),
-  propertySituation: yup.string().trim().notRequired(),
-  propertyValue: yup.string().trim().notRequired(),
-  propertyRent: yup.string().trim().notRequired(),
+  dobMinor: yup.string().trim().notRequired(),
+  dateMajority: yup.string().trim().notRequired(),
+  gurdianName: yup.string().trim().notRequired(),
+  gurdianAddress: yup.string().trim().notRequired(),
+  deceasedName: yup.string().trim().notRequired(),
+  dobDeceased: yup.string().trim().notRequired(),
+  deceasedFatherName: yup.string().trim().notRequired(),
+  deceasedOccupation: yup.string().trim().notRequired(),
+  deceasedNationality: yup.string().trim().notRequired(),
+  deceasedEmail: yup.string().trim().notRequired(),
+  deceasedRelationship: yup.string().trim().notRequired(),
+  deceasedRelationshipMinor: yup.string().trim().notRequired(),
 });

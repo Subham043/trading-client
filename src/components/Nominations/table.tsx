@@ -8,7 +8,7 @@ import { useDeleteNominationMutation, useNominationsQuery } from "../../hooks/da
 import ErrorBoundary from "../Layout/ErrorBoundary";
 
 
-const NominationsTableRow:FC<NominationType & {toggleModal: (value: NominationsListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, companyName, fullName, age, isEmployed, isProperty, isBusiness, createdAt, selectedData, setSelectedData, toggleModal}) => {
+const NominationsTableRow:FC<NominationType & {toggleModal: (value: NominationsListModalProps) => void, selectedData: number[], setSelectedData: (value: number[]) => void}> = ({id, projectID, fatherName, fullName, relationship, isMinor, isDeceased, createdAt, selectedData, setSelectedData, toggleModal}) => {
   const [opened, setOpened] = useState<boolean>(false);
   const deleteNominations = useDeleteNominationMutation(id, projectID?.toString() ?? '');
 
@@ -32,32 +32,27 @@ const NominationsTableRow:FC<NominationType & {toggleModal: (value: NominationsL
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {companyName}
-          </Text>
-      </Table.Td>
-      <Table.Td>
-          <Text fz="sm" fw={500}>
               {fullName}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {age}
+              {fatherName}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {isEmployed}
+              {relationship}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {isBusiness}
+              {isMinor}
           </Text>
       </Table.Td>
       <Table.Td>
           <Text fz="sm" fw={500}>
-              {isProperty}
+              {isDeceased}
           </Text>
       </Table.Td>
       <Table.Td>
@@ -119,12 +114,11 @@ const NominationsTable:FC<{projectId: string, toggleModal: (value: NominationsLi
                   />
                 </Table.Th>
               <Table.Th style={{color: 'white'}}>ID</Table.Th>
-              <Table.Th style={{color: 'white'}}>Company Name</Table.Th>
               <Table.Th style={{color: 'white'}}>Full Name</Table.Th>
-              <Table.Th style={{color: 'white'}}>Age</Table.Th>
-              <Table.Th style={{color: 'white'}}>Is Employed</Table.Th>
-              <Table.Th style={{color: 'white'}}>Is Self-Occupied/Business</Table.Th>
-              <Table.Th style={{color: 'white'}}>Own Property</Table.Th>
+              <Table.Th style={{color: 'white'}}>Father/Mother/Spouse Name</Table.Th>
+              <Table.Th style={{color: 'white'}}>Relationship with security holder</Table.Th>
+              <Table.Th style={{color: 'white'}}>Is Minor</Table.Th>
+              <Table.Th style={{color: 'white'}}>Is Deceased</Table.Th>
               <Table.Th style={{color: 'white'}}>Created At</Table.Th>
               <Table.Th />
             </Table.Tr>
