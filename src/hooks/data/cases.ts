@@ -12,6 +12,7 @@ import {
   ShareHolderDetailType,
   FolioType,
   LegalHeirDetailType,
+  NominationType,
 } from "../../utils/types";
 import { api_routes } from "../../utils/api_routes";
 import { QueryInitialPageParam, QueryTotalCount } from "../../utils/constant";
@@ -32,7 +33,8 @@ export const useCasesQuery: (
       order: ShareHolderDetailType[];
       clamaints: LegalHeirDetailType[];
       foliosSet: FolioType[];
-      affidavits: (ShareHolderDetailType)[];
+      affidavits: ShareHolderDetailType[];
+      nominations: NominationType[];
     })[];
   }>,
   unknown
@@ -53,6 +55,7 @@ export const useCasesQuery: (
             foliosSet: FolioType[];
             affidavitShareholders: ShareHolderDetailType[];
             affidavitLegalHeirs: ShareHolderDetailType[];
+            nominations: NominationType[];
           })[];
         }>;
       }>(
@@ -92,6 +95,7 @@ export const useCaseInfoQuery: (
     foliosSet: FolioType[];
     affidavitShareholders: ShareHolderDetailType[];
     affidavitLegalHeirs: ShareHolderDetailType[];
+    nominations: NominationType[];
   },
   unknown
 > = (id, enabled) => {
@@ -104,6 +108,9 @@ export const useCaseInfoQuery: (
           order: ShareHolderDetailType[];
           clamaints: LegalHeirDetailType[];
           foliosSet: FolioType[];
+          affidavitShareholders: ShareHolderDetailType[];
+          affidavitLegalHeirs: ShareHolderDetailType[];
+          nominations: NominationType[];
         };
       }>(api_routes.cases + `/info/${id}`);
       return response.data.data;

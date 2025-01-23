@@ -462,6 +462,7 @@ export type CaseType = {
   selectClaimant?: string | null;
   selectAffidavitShareholder?: string | null;
   selectAffidavitLegalHeir?: string | null;
+  selectNomination?: string | null;
   statusClaimant?: string | null;
   percentageClaimant?: string | null;
   occupationClaimant?: string | null;

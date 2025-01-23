@@ -35,6 +35,7 @@ export type SchemaType = {
   allowAffidavit?: string | undefined | null;
   selectAffidavitShareholder?: string | undefined | null;
   selectAffidavitLegalHeir?: string | undefined | null;
+  selectNomination?: string | undefined | null;
   statusClaimant?: string | undefined | null;
   percentageClaimant?: string | undefined | null;
   occupationClaimant?: string | undefined | null;
@@ -64,6 +65,7 @@ export const initialValues: SchemaType = {
   allowAffidavit: "No",
   selectAffidavitShareholder: null,
   selectAffidavitLegalHeir: null,
+  selectNomination: null,
   statusClaimant: null,
   percentageClaimant: null,
   occupationClaimant: null,
@@ -109,6 +111,7 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   allowAffidavit: yup.string().trim().notRequired(),
   selectAffidavitShareholder: yup.string().trim().notRequired(),
   selectAffidavitLegalHeir: yup.string().trim().notRequired(),
+  selectNomination: yup.string().trim().notRequired(),
   statusClaimant: yup.string().trim().notRequired(),
   percentageClaimant: yup.string().trim().notRequired(),
   occupationClaimant: yup.string().trim().notRequired(),

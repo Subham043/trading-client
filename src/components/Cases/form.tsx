@@ -16,6 +16,7 @@ import FolioSelect from "./folioSelect";
 import ShareHolderMultiSelect from "./shareholderMultiSelect";
 import LegalHeirMultiSelect from "./legalHeirSelect";
 import ShareHolderSelect from "./shareholderSelect";
+import NominationMultiSelect from "./nominationMultiSelect";
 
 
 type CasesFormProps = {
@@ -52,6 +53,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
     const [claimants, selectClaimants] = useState<OptionType[]>([]);
     const [affidavitShareholders, selectAffidavitShareholders] = useState<OptionType[]>([]);
     const [affidavitLegalHeirs, selectAffidavitLegalHeirs] = useState<OptionType[]>([]);
+    const [nominations, selectNominations] = useState<OptionType[]>([]);
     const [order, setOrder] = useState<OptionType[]>([]);
     const [deadShareholder, setDeadShareholder] = useState<OptionType|undefined>(undefined);
 
@@ -80,6 +82,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                 selectClaimant: (data && (typeof data.selectClaimant === "string")) ? data.selectClaimant : "",
                 selectAffidavitShareholder: (data && (typeof data.selectAffidavitShareholder === "string")) ? data.selectAffidavitShareholder : "",
                 selectAffidavitLegalHeir: (data && (typeof data.selectAffidavitLegalHeir === "string")) ? data.selectAffidavitLegalHeir : "",
+                selectNomination: (data && (typeof data.selectNomination === "string")) ? data.selectNomination : "",
                 statusClaimant: (data && (typeof data.statusClaimant === "string")) ? data.statusClaimant : "",
                 percentageClaimant: (data && (typeof data.percentageClaimant === "string") && data.percentageClaimant !== "null") ? data.percentageClaimant : "",
                 occupationClaimant: (data && (typeof data.occupationClaimant === "string")) ? data.occupationClaimant : "",
@@ -92,6 +95,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
             setOrder(data.transpositionOrder ? (data.order.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
             setDeadShareholder(data.deadShareholder ? { value: data.deadShareholder.id, label: data.deadShareholder.shareholderName || "" } : undefined);
             selectAffidavitShareholders(data.selectAffidavitShareholder ? (data.affidavitShareholders.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.shareholderName || "" }))) : []);
+            selectNominations(data.selectNomination ? (data.nominations.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.fullName || "" }))) : []);
             if(data.caseType.includes("Transmission")){
                 selectAffidavitLegalHeirs(data.selectAffidavitLegalHeir ? (data.affidavitLegalHeirs.map((shareHolder) => ({ value: shareHolder.id, label: shareHolder.namePan || "" }))) : []);
             }
@@ -128,7 +132,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
     return (
         <ErrorBoundary hasData={props.status && props.type === "Edit" ? (data ? true : false) : true} isLoading={props.status && props.type === "Edit" ? (isLoading || isFetching) : (false)} status={props.status && props.type === "Edit" ? status : "success"} error={props.status && props.type === "Edit" ? error : undefined} hasPagination={false} refetch={props.status && props.type === "Edit" ? refetch : () => { }}>
             <form onSubmit={form.onSubmit(onSubmit)}>
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 3 }}>
                     <Select
                         label="Case Type"
                         withAsterisk
@@ -145,6 +149,15 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             setValue={(value) => {form.setFieldValue("folios", value.map((folio) => folio.value).join("_")); setFolios(value.map((folio) => folio))}} 
                         />
                         <InputError>{form.errors.folios}</InputError>
+                    </div>
+                    <div>
+                        <InputLabel>Select Nomination</InputLabel>
+                        <NominationMultiSelect 
+                            projectId={props.projectId} 
+                            value={nominations} 
+                            setValue={(value) => {form.setFieldValue("selectNomination", value.map((folio) => folio.value).join("_")); selectNominations(value.map((folio) => folio))}} 
+                        />
+                        <InputError>{form.errors.selectAffidavit}</InputError>
                     </div>
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: form.values.allowAffidavit === "Yes" ? (form.values.caseType.includes("Transmission") ? 3 : 2) : 1 }} mt="md">
