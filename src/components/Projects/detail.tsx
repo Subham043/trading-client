@@ -60,6 +60,9 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/legal-heir-details`} leftSection={<IconUsers style={iconStyle} />}>
                         Legal Heirs
                     </Tabs.Tab>
+                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/nomination`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
+                        Nomination
+                    </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/share-certificate-masters`} leftSection={<IconCertificate style={iconStyle} />}>
                         Share Certificate Masters
                     </Tabs.Tab>
@@ -77,9 +80,6 @@ const ProjectDetail:FC<{toggleModal: (value: ProjectsListModalProps) => void}> =
                     </Tabs.Tab>
                     <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/surety`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
                         Surety
-                    </Tabs.Tab>
-                    <Tabs.Tab value={`${page_routes.projects.list}/${param.projectId}/nomination`} leftSection={<IconFileSpreadsheet style={iconStyle} />}>
-                        Nomination
                     </Tabs.Tab>
                 </Tabs.List>
             </Tabs>

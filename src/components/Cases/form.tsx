@@ -376,7 +376,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         }
                         labelPosition="left"
                     />
-                    <SimpleGrid cols={{ base: 1, sm: 1 }} mt="md">
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                         <div>
                             <InputLabel>Select Deleted Shareholder</InputLabel>
                             <ShareHolderSelect 
@@ -386,6 +386,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             />
                             <InputError>{form.errors.deadShareholderID}</InputError>
                         </div>
+                        <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
                     </SimpleGrid>
                     <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                         <TextInput label="Place Of Death" {...form.getInputProps('placeOfDeath')} />
