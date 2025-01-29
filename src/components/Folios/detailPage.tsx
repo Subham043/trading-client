@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { FoliosListModalProps } from "../../pages/folios/list";
 import CertificatesListPage from "../../pages/certificates/list";
 import FolioCorporateMasterPage from "./corporate_master_page";
+import FolioDividendMasterPage from "./dividend_master_page";
 
 const FolioDetailPage:FC<{toggleModal: (value: FoliosListModalProps) => void}> = (props) => {
   const param = useParams<{folioId: string}>();
@@ -46,6 +47,9 @@ const FolioDetailPage:FC<{toggleModal: (value: FoliosListModalProps) => void}> =
             </Box>
             <Box bg="transparent" mt="xl">
                 <FolioCorporateMasterPage id={data.id} />
+            </Box>
+            <Box bg="transparent" mt="xl">
+                <FolioDividendMasterPage id={data.id} />
             </Box>
         </>}
     </ErrorBoundary>
