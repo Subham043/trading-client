@@ -47,6 +47,7 @@ export type SchemaType = {
   confirmPassword?: string | undefined | null;
   hintQuestion?: string | undefined | null;
   hintAnswer?: string | undefined | null;
+  deceasedRelationship?: string | undefined | null;
 };
 
 export const initialValues: SchemaType = {
@@ -96,6 +97,7 @@ export const initialValues: SchemaType = {
   confirmPassword: null,
   hintQuestion: null,
   hintAnswer: null,
+  deceasedRelationship: null,
 };
 
 export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
@@ -151,4 +153,5 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   confirmPassword: yup.string().trim().notRequired(),
   hintQuestion: yup.string().trim().notRequired(),
   hintAnswer: yup.string().trim().notRequired(),
+  deceasedRelationship: yup.string().trim().notRequired(),
 });

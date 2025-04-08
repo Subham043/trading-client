@@ -195,6 +195,10 @@ const LegalHeirDetailDetail:FC<LegalHeirDetailsListDrawerProps> = (props) => {
                         <Table.Th>Hint Answer</Table.Th>
                         <Table.Td>{data.hintAnswer}</Table.Td>
                     </Table.Tr>
+                    <Table.Tr>
+                        <Table.Th>Relationship with Deceased</Table.Th>
+                        <Table.Td>{data.deceasedRelationship}</Table.Td>
+                    </Table.Tr>
                 </Table.Thead>
             </Table>
         </Table.ScrollContainer>}

@@ -83,6 +83,7 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                 confirmPassword: (data && (typeof data.confirmPassword === "string")) ? data.confirmPassword : "",
                 hintQuestion: (data && (typeof data.hintQuestion === "string")) ? data.hintQuestion : "",
                 hintAnswer: (data && (typeof data.hintAnswer === "string")) ? data.hintAnswer : "",
+                deceasedRelationship: (data && (typeof data.deceasedRelationship === "string") && data.deceasedRelationship !== "null") ? data.deceasedRelationship : "",
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -196,9 +197,10 @@ const LegalHeirDetailsForm:FC<LegalHeirDetailsFormProps & {mainProjectId: number
                     <TextInput label="Client Phone number as per Bank" {...form.getInputProps('phoneBank')} />
                     <TextInput label="Client Husband/Father Name" {...form.getInputProps('husbandName')} />
                 </SimpleGrid>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
+                <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client DP ID" {...form.getInputProps('DPID')} />
                     <TextInput label="Demat Account No." {...form.getInputProps('dematAccountNo')} />
+                    <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
                 </SimpleGrid>
                 <SimpleGrid cols={{ base: 1, sm: 3 }} mt="md">
                     <TextInput label="Client address as per Aadhar" {...form.getInputProps('addressAadhar')} />

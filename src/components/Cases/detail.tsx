@@ -35,10 +35,10 @@ const CaseDetail:FC<CasesListDrawerProps> = (props) => {
                                 <Table.Th>Shareholder name as per Death Certificate</Table.Th>
                                 <Table.Td>{data.shareholderNameDeath}</Table.Td>
                             </Table.Tr>
-                            <Table.Tr>
+                            {/* <Table.Tr>
                                 <Table.Th>Relationship with Deceased</Table.Th>
                                 <Table.Td>{data.deceasedRelationship}</Table.Td>
-                            </Table.Tr>
+                            </Table.Tr> */}
                             <Table.Tr>
                                 <Table.Th>Place of Death</Table.Th>
                                 <Table.Td>{data.placeOfDeath}</Table.Td>

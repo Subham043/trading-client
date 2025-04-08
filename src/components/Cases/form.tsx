@@ -77,7 +77,6 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                 guardianName: (data && (typeof data.guardianName === "string") && data.guardianName !== "null") ? data.guardianName : "",
                 guardianRelationship: (data && (typeof data.guardianRelationship === "string") && data.guardianRelationship !== "null") ? data.guardianRelationship : "",
                 guardianPan: (data && (typeof data.guardianPan === "string")) ? data.guardianPan : "",
-                deceasedRelationship: (data && (typeof data.deceasedRelationship === "string") && data.deceasedRelationship !== "null") ? data.deceasedRelationship : "",
                 taxStatus: (data && (typeof data.taxStatus === "string")) ? data.taxStatus : "",
                 selectClaimant: (data && (typeof data.selectClaimant === "string")) ? data.selectClaimant : "",
                 selectAffidavitShareholder: (data && (typeof data.selectAffidavitShareholder === "string")) ? data.selectAffidavitShareholder : "",
@@ -200,7 +199,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                         }
                         labelPosition="left"
                     />
-                    <SimpleGrid cols={{ base: 1, sm:  form.values.isDeceased==="Yes" ? 2 : 1 }}>
+                    <SimpleGrid cols={{ base: 1, sm: 1 }}>
                         <Select
                             label="Is soleholder deceased"
                             data={["Yes", "No"]}
@@ -208,8 +207,9 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                             onChange={(value) => form.setFieldValue("isDeceased", value ? value : "No")}
                             error={form.errors.isDeceased}
                         />
-                        {
-                            form.values.isDeceased==="Yes" &&
+                    </SimpleGrid>
+                    {form.values.isDeceased === "Yes" && <>
+                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <div>
                                 <InputLabel>Select Deceased Shareholder</InputLabel>
                                 <ShareHolderSelect 
@@ -219,12 +219,7 @@ const CasesForm: FC<CasesFormProps & { toggleModal: (value: CasesListModalProps)
                                 />
                                 <InputError>{form.errors.deadShareholderID}</InputError>
                             </div>
-                        }
-                    </SimpleGrid>
-                    {form.values.isDeceased === "Yes" && <>
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <TextInput label="Shareholder name as per Death Certificate" {...form.getInputProps('shareholderNameDeath')} />
-                            <TextInput label="Relationship with Deceased" {...form.getInputProps('deceasedRelationship')} />
                         </SimpleGrid>
                         <SimpleGrid cols={{ base: 1, sm: 2 }} mt="md">
                             <DateInput

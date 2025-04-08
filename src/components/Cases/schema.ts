@@ -29,7 +29,6 @@ export type SchemaType = {
   guardianName?: string | undefined | null;
   guardianRelationship?: string | undefined | null;
   guardianPan?: string | undefined | null;
-  deceasedRelationship?: string | undefined | null;
   taxStatus?: string | undefined | null;
   selectClaimant?: string | undefined | null;
   allowAffidavit?: string | undefined | null;
@@ -59,7 +58,6 @@ export const initialValues: SchemaType = {
   guardianName: null,
   guardianRelationship: null,
   guardianPan: null,
-  deceasedRelationship: null,
   taxStatus: null,
   selectClaimant: null,
   allowAffidavit: "No",
@@ -105,7 +103,6 @@ export const schema: yup.ObjectSchema<SchemaType> = yup.object().shape({
   guardianName: yup.string().trim().notRequired(),
   guardianRelationship: yup.string().trim().notRequired(),
   guardianPan: yup.string().trim().notRequired(),
-  deceasedRelationship: yup.string().trim().notRequired(),
   taxStatus: yup.string().trim().notRequired(),
   selectClaimant: yup.string().trim().notRequired(),
   allowAffidavit: yup.string().trim().notRequired(),

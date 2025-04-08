@@ -592,6 +592,7 @@ export type LegalHeirDetailType = {
   confirmPassword?: string | null;
   hintQuestion?: string | null;
   hintAnswer?: string | null;
+  deceasedRelationship?: string | null;
 };
 
 export interface LegalHeirDetailFormType
