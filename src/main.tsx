@@ -8,6 +8,11 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import App from './App.tsx'
 import { Notifications } from '@mantine/notifications';
 import { mantineThemOptions } from './utils/constant.ts';
+// Do this once in your application root file
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 const theme = createTheme(mantineThemOptions);
 
